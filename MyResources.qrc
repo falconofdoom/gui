@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images/viewicon.png</file>
+        <file>images/eraser.png</file>
+        <file>images/newicon.png</file>
+        <file>images/editicon.png</file>
+        <file>images/logoforwizard.png</file>
+        <file>images/assist.png</file>
+    </qresource>
+</RCC>
