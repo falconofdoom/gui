@@ -13,6 +13,7 @@ class AddJournal : public QDialog
 
 public:
     explicit AddJournal(QWidget *parent = 0);
+
     ~AddJournal();
 
 private slots:

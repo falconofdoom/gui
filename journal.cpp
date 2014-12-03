@@ -5,13 +5,17 @@
 #include "addjournal.h"
 #include "QDebug"
 #include "QMessageBox"
+#include "addvolume.h"
+/* Current Journal Selected */
+QString curJourn;
+QString curIssue;
+QString curJournName;
 Journal::Journal(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Journal)
 {
     ui->setupUi(this);
     setTableView();
-
 
 }
 
@@ -77,7 +81,7 @@ void Journal::setTableView(){
     ui->tableView->resizeRowsToContents();
 }
 
-void Journal::setIssueView(QString index){
+void Journal::setVolumeView(QString index){
     QSqlQueryModel *model = new QSqlQueryModel;
 
       model->setQuery(QString("SELECT volume FROM journal_issue where journal_id = %1").arg(index));
@@ -97,10 +101,68 @@ void Journal::setIssueView(QString index){
 
 }
 
+void Journal::setIssueView(QString index){
+    QSqlQueryModel *model = new QSqlQueryModel;
+
+      model->setQuery(QString("SELECT issue,month,year FROM journal_issue where journal_id = %1 and volume = %2").arg(curJourn).arg(index));
+       //model->setHeaderData(0,Qt::Horizontal,tr("Volume"));
+      ui->tableView_3->setModel(model);
+      ui->tableView_3->verticalHeader()->setVisible(false);
+
+
+    ui->tableView_3->resizeColumnsToContents();
+    QHeaderView* header = ui->tableView_3->horizontalHeader();
+
+    header->setStretchLastSection(true);
+
+    ui->tableView_3->setHorizontalHeader(header);
+    ui->tableView_3->resizeRowsToContents();
+
+
+}
 void Journal::on_tableView_activated(const QModelIndex &index)
 {
     QString data = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),0)).toString();
     qDebug()<<data.toInt();
+    curJourn = data;
+    QString data2 = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),1)).toString();
+    qDebug()<<data2;
+     curJournName = data2;
+
+    setVolumeView(data);
+}
+
+void Journal::on_tableView_2_activated(const QModelIndex &index)
+{
+    QString data = ui->tableView_2->model()->data(ui->tableView_2->model()->index(index.row(),0)).toString();
     setIssueView(data);
+}
+
+void Journal::on_tableView_3_clicked(const QModelIndex &index)
+{
+    ui->tableView_3->selectRow(index.row());
+}
+
+void Journal::on_tableView_3_activated(const QModelIndex &index)
+{
+    QString data = ui->tableView_3->model()->data(ui->tableView_3->model()->index(index.row(),0)).toString();
+    curIssue = data;
+
+
+
+}
+
+void Journal::on_toolButton_5_clicked()
+{
+    addVolume *av = new addVolume;
+    av->setJournalDets(curJourn,curJournName);
+   int retCode= av->exec();
+    //if accepted then reset view for volume of current journal
+    if(retCode==1) setVolumeView(curJourn);
+    connect(av,SIGNAL(destroyed()),av,SLOT(deleteLater()));
+}
+
+void Journal::on_toolButton_6_clicked()
+{
 
 }

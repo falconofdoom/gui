@@ -6,5 +6,6 @@
         <file>images/editicon.png</file>
         <file>images/logoforwizard.png</file>
         <file>images/assist.png</file>
+        <file>images/journal.png</file>
     </qresource>
 </RCC>

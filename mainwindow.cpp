@@ -48,10 +48,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_3->setIconSize(QSize(175,175));
     ui->toolButton_3->setText("     Edit Reference Text   ");
 
-    ui->toolButton_5->setIcon(QIcon(QPixmap(":images/editicon.png")));
+    ui->toolButton_5->setIcon(QIcon(QPixmap(":images/journal.png")));
     ui->toolButton_5->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButton_5->setIconSize(QSize(175,175));
-    ui->toolButton_5->setText("     Edit Reference Text   ");
+    ui->toolButton_5->setText("     Journals   ");
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbpath = QCoreApplication::applicationDirPath().append("/db/refdb.db");

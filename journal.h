@@ -24,9 +24,20 @@ private slots:
 
     void on_tableView_activated(const QModelIndex &index);
 
+    void on_tableView_2_activated(const QModelIndex &index);
+
+    void on_tableView_3_clicked(const QModelIndex &index);
+
+    void on_tableView_3_activated(const QModelIndex &index);
+
+    void on_toolButton_5_clicked();
+
+    void on_toolButton_6_clicked();
+
 private:
     Ui::Journal *ui;
     void setTableView();
+    void setVolumeView(QString index);
     void setIssueView(QString index);
 };
 
