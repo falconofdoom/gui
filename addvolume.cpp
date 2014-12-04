@@ -26,7 +26,7 @@ addVolume::~addVolume()
 void addVolume::on_buttonBox_accepted()
 {
     QString issue = ui->spinBox->text();
-   QString ins = QString("insert into journal_issue values(NULL,%1,NULL,NULL,NULL,%2)").arg(issue).arg(jIndex);
+   QString ins = QString("insert into journal_volume values(NULL,%1,%2)").arg(issue).arg(jIndex);
 
 
     QSqlQuery insqry;

@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     editrefindb.cpp \
     journal.cpp \
     addjournal.cpp \
-    addvolume.cpp
+    addvolume.cpp \
+    addissue.cpp
 
 HEADERS  += mainwindow.h \
     classwizard.h \
@@ -33,7 +34,8 @@ HEADERS  += mainwindow.h \
     editrefindb.h \
     journal.h \
     addjournal.h \
-    addvolume.h
+    addvolume.h \
+    addissue.h
 
 FORMS    += mainwindow.ui \
     editparsedreferences.ui \
@@ -43,7 +45,8 @@ FORMS    += mainwindow.ui \
     editrefindb.ui \
     journal.ui \
     addjournal.ui \
-    addvolume.ui
+    addvolume.ui \
+    addissue.ui
 
 RESOURCES += \
     MyResources.qrc

@@ -34,6 +34,10 @@ private slots:
 
     void on_toolButton_6_clicked();
 
+    void on_toolButton_7_clicked();
+
+    void on_toolButton_4_clicked();
+
 private:
     Ui::Journal *ui;
     void setTableView();
