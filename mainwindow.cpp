@@ -2,6 +2,7 @@
 #include "ui_mainwindow.h"
 #include "QDesktopWidget"
 #include "QWizard"
+#include "parsewizard.h"
 #include "deleteparsedreferences.h"
 #include "journal.h"
 #include "QWizardPage"
@@ -113,4 +114,12 @@ void MainWindow::on_toolButton_5_clicked()
     j->exec();
 
     connect(j,SIGNAL(destroyed()),j,SLOT(deleteLater()));
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    parseWizard *pw = new parseWizard;
+    pw->exec();
+
+    connect(pw,SIGNAL(destroyed()),pw,SLOT(deleteLater()));
 }

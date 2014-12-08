@@ -23,7 +23,9 @@ SOURCES += main.cpp\
     journal.cpp \
     addjournal.cpp \
     addvolume.cpp \
-    addissue.cpp
+    addissue.cpp \
+    parsewizard.cpp \
+    addauthor.cpp
 
 HEADERS  += mainwindow.h \
     classwizard.h \
@@ -35,7 +37,9 @@ HEADERS  += mainwindow.h \
     journal.h \
     addjournal.h \
     addvolume.h \
-    addissue.h
+    addissue.h \
+    parsewizard.h \
+    addauthor.h
 
 FORMS    += mainwindow.ui \
     editparsedreferences.ui \
@@ -46,7 +50,9 @@ FORMS    += mainwindow.ui \
     journal.ui \
     addjournal.ui \
     addvolume.ui \
-    addissue.ui
+    addissue.ui \
+    parsewizard.ui \
+    addauthor.ui
 
 RESOURCES += \
     MyResources.qrc
