@@ -14,7 +14,6 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    classwizard.cpp \
     editparsedreferences.cpp \
     viewparsedreferences.cpp \
     deleteparsedreferences.cpp \
@@ -28,7 +27,6 @@ SOURCES += main.cpp\
     addauthor.cpp
 
 HEADERS  += mainwindow.h \
-    classwizard.h \
     editparsedreferences.h \
     viewparsedreferences.h \
     deleteparsedreferences.h \

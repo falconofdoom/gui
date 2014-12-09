@@ -176,7 +176,7 @@ void parseWizard::viewPage(int index)
 {
     editIndex=index;
     ui->textEdit_2->setText(accumulate(index));
-    ui->label_14->setText(errCount[editIndex]);
+    ui->label_14->setText(QString("%1").arg(errCount[editIndex]));
 }
 
 void parseWizard::on_parseWizard_currentIdChanged(int id)
@@ -357,4 +357,47 @@ void parseWizard::addError()
 void parseWizard::eraseError()
 {
     proxtotal=0;
+}
+
+void parseWizard::on_parseWizard_accepted()
+{
+    QString articleName = ui->lineEdit->text();
+    QString journData = cJourn;
+    QString volData = ui->comboBox->currentText();
+    QString issData = ui->comboBox_2->currentText();
+    QString parseVer = "Parser 2";
+    QString pages = "1-2";
+    QString querystring = QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);").arg(articleName).arg(pages).arg(parseVer).arg(journData).arg(volData).arg(issData);
+
+    QSqlQuery query;
+    query.exec(querystring);
+
+       QSqlQuery selQuery;
+
+       selQuery.exec("SELECT MAX(id) from article");
+      selQuery.next();
+       int id=selQuery.value(0).toInt();
+
+       for(int i=0;i<vvqs.size();i++)
+       {
+           QString content = accumulate(i);
+         QString querystring = QString("INSERT INTO citation VALUES(NULL,'%1',%2,%3);").arg(content).arg(errCount[i]).arg(id);
+           query.exec(querystring);
+       }
+
+       int row = ui->tableView->model()->rowCount();
+       int col = ui->tableView->model()->columnCount();
+
+
+       for(int i=0;i<row;i++){
+           QModelIndex authqmi = ui->tableView->model()->index(i,0);
+           QModelIndex affilqmi = ui->tableView->model()->index(i,1);
+           QString author = ui->tableView->model()->data(authqmi).toString();
+           QString affiliation = ui->tableView->model()->data(affilqmi).toString();
+
+           QString insquery = QString("INSERT INTO author values(NULL,'%1','%2',%3)").arg(author).arg(affiliation).arg(id);
+
+           query.exec(insquery);
+        }
+
 }

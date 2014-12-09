@@ -13,22 +13,10 @@ ViewParsedReferences::ViewParsedReferences(QWidget *parent) :
     ui(new Ui::ViewParsedReferences)
 {
     ui->setupUi(this);
-    QSqlQueryModel *model = new QSqlQueryModel;
-
-      model->setQuery("SELECT id,name FROM reference");
-      model->setHeaderData(0,Qt::Horizontal,tr("ID"));
-       model->setHeaderData(1,Qt::Horizontal,tr("Identifier"));
-      ui->tableView->setModel(model);
 
 
-    ui->tableView->resizeColumnsToContents();
-    QHeaderView* header = ui->tableView->horizontalHeader();
 
-    header->setStretchLastSection(true);
 
-    ui->tableView->setHorizontalHeader(header);
-    ui->tableView->resizeRowsToContents();
-    ui->tableView->setColumnHidden(0,true);
   }
 
 ViewParsedReferences::~ViewParsedReferences()
@@ -42,10 +30,10 @@ void ViewParsedReferences::on_tableView_activated(const QModelIndex &index)
     QString data = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),0)).toString();
     qDebug()<<data.toInt();
     QSqlQuery qry;
-    qry.exec(QString("SELECT * from citation where reference_id='%1'").arg(data.toInt()));
-
+    qry.exec(QString("SELECT * from citation where article_id = %1").arg(data.toInt()));
+    qDebug()<<QString("SELECT * from citation where article_id = %1").arg(data.toInt());
     QWidget *central = new QWidget;
-
+    ui->scrollArea->layout()->deleteLater();
     QVBoxLayout *layout = new QVBoxLayout(central);
     ui->scrollArea->setWidget(central);
     ui->scrollArea->setWidgetResizable(true);
@@ -65,7 +53,7 @@ void ViewParsedReferences::on_tableView_activated(const QModelIndex &index)
 
         layout->addWidget(pb);
         contents.push_back(qry.value(1).toString());
-        errcount.push_back(qry.value(3).toInt());
+        errcount.push_back(qry.value(2).toInt());
         connect(pb,SIGNAL(clicked()),mapper,SLOT(map()));
         mapper->setMapping(pb,j++);
     }
@@ -95,4 +83,77 @@ void ViewParsedReferences::on_pushButton_clicked()
     for(int i=0;i<contents.size();i++)
         out<<contents[i]<<"\n****\n";
 
+}
+
+void ViewParsedReferences::on_lineEdit_textChanged(const QString &arg1)
+{
+    sqlmodel = new QSqlQueryModel;
+    QString wcard = ui->lineEdit->text();
+    QString queryString = QString("SELECT * FROM JOURNAL WHERE NAME LIKE '\%%1\%'").arg(wcard);
+    sqlmodel->setQuery(queryString);
+
+    sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Journal"));
+    ui->tableView_2->setModel(sqlmodel);
+
+    ui->tableView_2->resizeColumnsToContents();
+    QHeaderView* header2 = ui->tableView_2->horizontalHeader();
+
+    header2->setStretchLastSection(true);
+
+    ui->tableView_2->setHorizontalHeader(header2);
+    ui->tableView_2->resizeRowsToContents();
+    ui->tableView_2->setColumnHidden(0,true);
+}
+
+void ViewParsedReferences::on_tableView_2_clicked(const QModelIndex &index)
+{
+    QString journID = ui->tableView_2->model()->data(ui->tableView_2->model()->index(index.row(),0)).toString();
+    QString data2 = ui->tableView_2->model()->data(ui->tableView_2->model()->index(index.row(),1)).toString();
+    qDebug()<<data2;
+     curJournName = data2;
+     curJourn = journID;
+
+     QSqlQueryModel *vol = new QSqlQueryModel;
+     QString volquery = QString("SELECT volume FROM journal_volume where journal_id=%1").arg(journID);
+     vol->setQuery(volquery);
+     ui->comboBox->setModel(vol);
+}
+
+void ViewParsedReferences::on_comboBox_currentTextChanged(const QString &arg1)
+{
+    QString volData = ui->comboBox->currentText();
+    curVol = volData;
+    QSqlQueryModel *issue = new QSqlQueryModel;
+    QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2").arg(curJourn).arg(volData);
+    issue->setQuery(issuequery);
+    ui->comboBox_2->setModel(issue);
+    qDebug()<<issuequery;
+}
+
+void ViewParsedReferences::on_comboBox_2_currentTextChanged(const QString &arg1)
+{
+
+    curIssue = ui->comboBox_2->currentText();
+    sqlmodel = new QSqlQueryModel;
+    QString queryString = QString("SELECT * FROM article WHERE journal_id = %1 and volume_id = %2 and issue_id = %3").arg(curJourn).arg(curVol).arg(curIssue);
+    sqlmodel->setQuery(queryString);
+
+    sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Articles"));
+    ui->tableView->setModel(sqlmodel);
+
+    ui->tableView->resizeColumnsToContents();
+    QHeaderView* header3 = ui->tableView->horizontalHeader();
+
+    header3->setStretchLastSection(true);
+
+    ui->tableView->setHorizontalHeader(header3);
+    ui->tableView->resizeRowsToContents();
+    ui->tableView->setColumnHidden(0,true);
+    ui->tableView->setColumnHidden(2,true);
+    ui->tableView->setColumnHidden(3,true);
+    ui->tableView->setColumnHidden(4,true);
+    ui->tableView->setColumnHidden(5,true);
+    ui->tableView->setColumnHidden(6,true);
+
+    qDebug()<<queryString;
 }

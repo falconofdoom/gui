@@ -87,17 +87,10 @@
         </property>
        </spacer>
       </item>
-      <item row="1" column="2">
+      <item row="1" column="2" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
        <widget class="QToolButton" name="toolButton_5">
         <property name="text">
          <string>...</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>PushButton</string>
         </property>
        </widget>
       </item>

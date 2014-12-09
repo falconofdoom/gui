@@ -7,7 +7,6 @@
 #include "journal.h"
 #include "QWizardPage"
 #include "QWidget"
-#include "classwizard.h"
 #include "editreference.h"
 #include "QLabel"
 #include "viewparsedreferences.h"
@@ -76,10 +75,10 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_toolButton_2_clicked()
 {
-        ClassWizard *test=new ClassWizard;
-        test->exec();
+    parseWizard *pw = new parseWizard;
+    pw->exec();
 
-        connect(test,SIGNAL(destroyed()),test,SLOT(deleteLater()));
+    connect(pw,SIGNAL(destroyed()),pw,SLOT(deleteLater()));
 }
 
 void MainWindow::on_toolButton_clicked()
@@ -116,10 +115,4 @@ void MainWindow::on_toolButton_5_clicked()
     connect(j,SIGNAL(destroyed()),j,SLOT(deleteLater()));
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    parseWizard *pw = new parseWizard;
-    pw->exec();
 
-    connect(pw,SIGNAL(destroyed()),pw,SLOT(deleteLater()));
-}

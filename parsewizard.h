@@ -48,6 +48,8 @@ private slots:
     void addError();
     void commitError();
     void eraseError();
+    void on_parseWizard_accepted();
+
 private:
     Ui::parseWizard *ui;
     void authorAdded();
