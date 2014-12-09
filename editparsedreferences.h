@@ -2,6 +2,7 @@
 #define EDITPARSEDREFERENCES_H
 
 #include <QDialog>
+#include "QLayout"
 #include "QHBoxLayout"
 namespace Ui {
 class EditParsedReferences;
@@ -16,7 +17,7 @@ public:
     ~EditParsedReferences();
     void changeError(int count);
     QHBoxLayout* horLay();
-
+    void setScrollArea(QLayout *layout);
 private:
     Ui::EditParsedReferences *ui;
 };

@@ -299,7 +299,6 @@ void ConclusionPage::editPage()
     connect(editwidget,SIGNAL(rejected()),this,SLOT(eraseError()));
     viewPage(editIndex);
 
-
     if(!errCount.empty())
     editwidget->changeError(errCount[editIndex]);
 

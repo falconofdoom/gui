@@ -13,6 +13,10 @@ EditParsedReferences::~EditParsedReferences()
     delete ui;
 }
 
+void EditParsedReferences:: setScrollArea(QLayout *lay)
+{
+    ui->scrollArea->setLayout(lay);
+}
 
 void EditParsedReferences::changeError(int count)
 {
@@ -27,3 +31,5 @@ QHBoxLayout* EditParsedReferences::horLay()
     ref=ui->horizontalLayout;
     return ref;
 }
+
+

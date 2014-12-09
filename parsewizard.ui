@@ -10,6 +10,11 @@
     <height>442</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Wizard</string>
   </property>
@@ -168,7 +173,7 @@
         </property>
        </widget>
       </item>
-      <item alignment="Qt::AlignLeft">
+      <item>
        <widget class="QComboBox" name="comboBox"/>
       </item>
       <item>
@@ -184,7 +189,7 @@
         </property>
        </widget>
       </item>
-      <item alignment="Qt::AlignLeft">
+      <item>
        <widget class="QComboBox" name="comboBox_2"/>
       </item>
      </layout>
@@ -200,10 +205,157 @@
      </widget>
     </item>
    </layout>
-   <zorder>lineEdit_2</zorder>
-   <zorder>tableView_2</zorder>
-   <zorder>horizontalLayoutWidget_2</zorder>
-   <zorder>label_5</zorder>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage">
+   <layout class="QGridLayout" name="gridLayout_5">
+    <item row="3" column="0" colspan="5">
+     <widget class="QTextEdit" name="textEdit"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_10">
+      <property name="text">
+       <string>Parse Data:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="0">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Clear</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="4">
+     <widget class="QLineEdit" name="lineEdit_3">
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>16777215</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="3">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>File</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="2" alignment="Qt::AlignRight">
+     <widget class="QLabel" name="label_9">
+      <property name="text">
+       <string>or upload file</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+   <zorder>label_10</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>lineEdit_3</zorder>
+   <zorder>pushButton_2</zorder>
+   <zorder>label_9</zorder>
+   <zorder>textEdit</zorder>
+  </widget>
+  <widget class="QWizardPage" name="wizardPage_2">
+   <layout class="QGridLayout" name="gridLayout_6">
+    <item row="2" column="0">
+     <widget class="QPushButton" name="pushButton_4">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Edit Parsed Citation</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_11">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Reference:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>148</width>
+         <height>270</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QLabel" name="label_12">
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Data:</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_13">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>15</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Errors: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_14">
+        <property name="font">
+         <font>
+          <pointsize>13</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>0</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1" rowspan="3" colspan="4">
+     <widget class="QTextEdit" name="textEdit_2"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources>
