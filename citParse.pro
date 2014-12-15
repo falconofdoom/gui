@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     editparsedreferences.cpp \
     viewparsedreferences.cpp \
     deleteparsedreferences.cpp \
-    editreference.cpp \
     editrefindb.cpp \
     journal.cpp \
     addjournal.cpp \
@@ -30,7 +29,6 @@ HEADERS  += mainwindow.h \
     editparsedreferences.h \
     viewparsedreferences.h \
     deleteparsedreferences.h \
-    editreference.h \
     editrefindb.h \
     journal.h \
     addjournal.h \
@@ -43,7 +41,6 @@ FORMS    += mainwindow.ui \
     editparsedreferences.ui \
     viewparsedreferences.ui \
     deleteparsedreferences.ui \
-    editreference.ui \
     editrefindb.ui \
     journal.ui \
     addjournal.ui \

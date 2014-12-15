@@ -32,13 +32,17 @@
     </widget>
    </item>
    <item row="1" column="2">
-    <widget class="QSpinBox" name="spinBox"/>
+    <widget class="QSpinBox" name="spinBox">
+     <property name="minimum">
+      <number>1</number>
+     </property>
+    </widget>
    </item>
    <item row="0" column="2">
     <widget class="QLabel" name="label_2">
      <property name="font">
       <font>
-       <pointsize>18</pointsize>
+       <pointsize>16</pointsize>
       </font>
      </property>
      <property name="text">

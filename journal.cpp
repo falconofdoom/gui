@@ -41,7 +41,7 @@ void Journal::on_toolButton_3_clicked()
 
 
     QMessageBox::StandardButton reply;
-     reply = QMessageBox::question(this, "Delete Journal", "Are you sure you want to delete this journal?",
+     reply = QMessageBox::question(this, "Delete Journal", "Are you sure you want to delete this journal, this will delete associated volumes and issues?",
                                    QMessageBox::Yes|QMessageBox::No);
      if (reply == QMessageBox::Yes) {
 
@@ -49,6 +49,10 @@ void Journal::on_toolButton_3_clicked()
          index(index.row(),0)).toString();
          QSqlQuery delqry(QString("delete from journal where id = %1").arg(data));
          delqry.exec();
+         QSqlQuery delqry2(QString("delete from journal_volume where journal_id = %1").arg(data));
+         delqry2.exec();
+         QSqlQuery delqry3(QString("delete from journal_issue where journal_id = %1").arg(data));
+         delqry3.exec();
          setTableView();
 
      } else {
@@ -83,6 +87,24 @@ void Journal::setTableView(){
     ui->tableView->resizeRowsToContents();
 }
 
+void Journal::setTableView(QString arg){
+    QSqlQueryModel *model = new QSqlQueryModel;
+    QString qr = QString("SELECT id,name FROM JOURNAL WHERE NAME LIKE '\%%1\%'").arg(arg);
+      model->setQuery(qr);
+      model->setHeaderData(0,Qt::Horizontal,tr("ID"));
+       model->setHeaderData(1,Qt::Horizontal,tr("Journal Name"));
+      ui->tableView->setModel(model);
+      ui->tableView->verticalHeader()->setVisible(false);
+
+
+    ui->tableView->resizeColumnsToContents();
+    QHeaderView* header = ui->tableView->horizontalHeader();
+
+    header->setStretchLastSection(true);
+
+    ui->tableView->setHorizontalHeader(header);
+    ui->tableView->resizeRowsToContents();
+}
 void Journal::setVolumeView(QString index){
     QSqlQueryModel *model = new QSqlQueryModel;
 
@@ -201,7 +223,7 @@ void Journal::on_toolButton_4_clicked()
 
 
     QMessageBox::StandardButton reply;
-     reply = QMessageBox::question(this, "Delete Volume", "Are you sure you want to delete this volume?",
+     reply = QMessageBox::question(this, "Delete Volume", "Are you sure you want to delete this volume, this will also delete issues associated with it?",
                                    QMessageBox::Yes|QMessageBox::No);
      if (reply == QMessageBox::Yes) {
 
@@ -212,8 +234,14 @@ void Journal::on_toolButton_4_clicked()
          QSqlQuery delqry2(QString("delete from journal_issue where volume = %1").arg(data));
          delqry2.exec();
          setVolumeView(curJourn);
+         setIssueView("0");
 
      } else {
        qDebug() << "Yes was *not* clicked";
      }
+}
+
+void Journal::on_lineEdit_textChanged(const QString &arg1)
+{
+    setTableView(ui->lineEdit->text());
 }

@@ -14,7 +14,7 @@ ViewParsedReferences::ViewParsedReferences(QWidget *parent) :
 {
     ui->setupUi(this);
 
-
+    ui->lineEdit->textChanged("");
 
 
   }
@@ -85,10 +85,10 @@ void ViewParsedReferences::on_pushButton_clicked()
 
 }
 
-void ViewParsedReferences::on_lineEdit_textChanged(const QString &arg1)
+void ViewParsedReferences::journalSetup(QString entry)
 {
     sqlmodel = new QSqlQueryModel;
-    QString wcard = ui->lineEdit->text();
+    QString wcard = entry;
     QString queryString = QString("SELECT * FROM JOURNAL WHERE NAME LIKE '\%%1\%'").arg(wcard);
     sqlmodel->setQuery(queryString);
 
@@ -103,6 +103,11 @@ void ViewParsedReferences::on_lineEdit_textChanged(const QString &arg1)
     ui->tableView_2->setHorizontalHeader(header2);
     ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->setColumnHidden(0,true);
+}
+
+void ViewParsedReferences::on_lineEdit_textChanged(const QString &arg1)
+{
+   journalSetup( ui->lineEdit->text());
 }
 
 void ViewParsedReferences::on_tableView_2_clicked(const QModelIndex &index)

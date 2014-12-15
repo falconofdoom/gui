@@ -23,12 +23,11 @@ public:
     QString curJourn;
     QString curVol;
     QString curIssue;
-
+    void journalSetup(QString entry);
 private slots:
     void on_tableView_activated(const QModelIndex &index);
     void viewContent(int index);
     void on_pushButton_clicked();
-
     void on_lineEdit_textChanged(const QString &arg1);
 
     void on_tableView_2_clicked(const QModelIndex &index);

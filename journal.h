@@ -38,9 +38,12 @@ private slots:
 
     void on_toolButton_4_clicked();
 
+    void on_lineEdit_textChanged(const QString &arg1);
+
 private:
     Ui::Journal *ui;
     void setTableView();
+    void setTableView(QString arg);
     void setVolumeView(QString index);
     void setIssueView(QString index);
 };

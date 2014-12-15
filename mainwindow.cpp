@@ -7,7 +7,6 @@
 #include "journal.h"
 #include "QWizardPage"
 #include "QWidget"
-#include "editreference.h"
 #include "QLabel"
 #include "viewparsedreferences.h"
 #include "QLineEdit"
@@ -97,14 +96,6 @@ void MainWindow::on_toolButton_4_clicked()
     dpr->exec();
 
     connect(dpr,SIGNAL(destroyed()),dpr,SLOT(deleteLater()));
-}
-
-void MainWindow::on_toolButton_3_clicked()
-{
-    editreference *editwidget = new editreference;
-    editwidget->exec();
-
-    connect(editwidget,SIGNAL(destroyed()),editwidget,SLOT(deleteLater()));
 }
 
 void MainWindow::on_toolButton_5_clicked()
