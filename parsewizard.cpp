@@ -23,8 +23,6 @@ parseWizard::parseWizard(QWidget *parent) :
 {
 
     ui->setupUi(this);
-
-
     ui->tableView->alternatingRowColors();
     model = new QStandardItemModel(0,2);
     ui->tableView->setModel(model);

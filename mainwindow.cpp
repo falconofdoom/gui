@@ -3,11 +3,11 @@
 #include "QDesktopWidget"
 #include "QWizard"
 #include "parsewizard.h"
-#include "deleteparsedreferences.h"
 #include "journal.h"
 #include "QWizardPage"
 #include "QWidget"
 #include "QLabel"
+#include "articles.h"
 #include "viewparsedreferences.h"
 #include "QLineEdit"
 #include "QTextEdit"
@@ -32,8 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_4->setIcon(QIcon(QPixmap(":images/eraser.png")));
     ui->toolButton_4->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButton_4->setIconSize(QSize(175,175));
-    ui->toolButton_4->setText("Delete Parsed Reference");
-
+    ui->toolButton_4->setText("    Articles   ");
 
     /*     Setup for toolButton for parsing references         */
     ui->toolButton_2->setIcon(QIcon(QPixmap(":images/newicon.png")));
@@ -45,7 +44,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_3->setIcon(QIcon(QPixmap(":images/editicon.png")));
     ui->toolButton_3->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButton_3->setIconSize(QSize(175,175));
-    ui->toolButton_3->setText("     Edit Reference Text   ");
+    ui->toolButton_3->setText("     Parsers   ");
 
     ui->toolButton_5->setIcon(QIcon(QPixmap(":images/journal.png")));
     ui->toolButton_5->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -90,12 +89,12 @@ void MainWindow::on_toolButton_clicked()
 
 void MainWindow::on_toolButton_4_clicked()
 {
-    DeleteParsedReferences *dpr = new DeleteParsedReferences;
+    Articles *art = new Articles;
 
-   // dpr->setWindowTitle("Delete Parsed References");
-    dpr->exec();
+     art->exec();
 
-    connect(dpr,SIGNAL(destroyed()),dpr,SLOT(deleteLater()));
+     connect(art,SIGNAL(destroyed()),art,SLOT(deleteLater()));
+
 }
 
 void MainWindow::on_toolButton_5_clicked()
@@ -107,3 +106,8 @@ void MainWindow::on_toolButton_5_clicked()
 }
 
 
+
+void MainWindow::on_toolButton_3_clicked()
+{
+
+}

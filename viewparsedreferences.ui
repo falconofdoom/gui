@@ -16,9 +16,6 @@
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="1">
     <layout class="QGridLayout" name="gridLayout">
-     <item row="2" column="0" colspan="5">
-      <widget class="QLineEdit" name="lineEdit"/>
-     </item>
      <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="label">
        <property name="text">
@@ -43,12 +40,8 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="2" colspan="2">
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>Export As AGM</string>
-       </property>
-      </widget>
+     <item row="2" column="0" colspan="5">
+      <widget class="QLineEdit" name="lineEdit"/>
      </item>
      <item row="5" column="0">
       <widget class="QTableView" name="tableView">
@@ -60,26 +53,8 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_4">
-       <item>
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>Volume: </string>
-         </property>
-        </widget>
-       </item>
-       <item alignment="Qt::AlignLeft">
-        <widget class="QComboBox" name="comboBox">
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-      </layout>
+     <item row="5" column="1" rowspan="2" colspan="4">
+      <widget class="QTextBrowser" name="textBrowser"/>
      </item>
      <item row="7" column="0">
       <widget class="QLabel" name="label_3">
@@ -89,7 +64,7 @@
         </font>
        </property>
        <property name="text">
-        <string>No. Of Errors: 0</string>
+        <string>No. of Errors: 0</string>
        </property>
       </widget>
      </item>
@@ -116,12 +91,44 @@
        </widget>
       </widget>
      </item>
-     <item row="5" column="1" rowspan="2" colspan="4">
-      <widget class="QTextBrowser" name="textBrowser"/>
-     </item>
      <item row="4" column="1" colspan="4">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
+        <widget class="QLabel" name="label_6">
+         <property name="text">
+          <string>Month: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_7">
+         <property name="text">
+          <string>Year: </string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="4" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item alignment="Qt::AlignRight">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Volume: </string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignLeft">
+        <widget class="QComboBox" name="comboBox">
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignRight">
         <widget class="QLabel" name="label_5">
          <property name="sizePolicy">
           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -129,12 +136,15 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="midLineWidth">
+          <number>0</number>
+         </property>
          <property name="text">
           <string>Issue: </string>
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignLeft">
         <widget class="QComboBox" name="comboBox_2">
          <property name="maximumSize">
           <size>
@@ -145,6 +155,20 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="7" column="1">
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Edit Current Output</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="4">
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Export As AGM</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
