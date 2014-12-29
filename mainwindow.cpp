@@ -10,6 +10,7 @@
 #include "articles.h"
 #include "viewparsedreferences.h"
 #include "QLineEdit"
+#include "parsers.h"
 #include "QTextEdit"
 #include "QtWidgets"
 #include "QtGui"
@@ -108,6 +109,14 @@ void MainWindow::on_toolButton_5_clicked()
 
 
 void MainWindow::on_toolButton_3_clicked()
+{
+    parsers *p = new parsers;
+    p->exec();
+    qDebug()<<"Test";
+    connect(p,SIGNAL(destroyed()),p,SLOT(deleteLater()));
+}
+
+void MainWindow::on_toolButton_6_clicked()
 {
 
 }

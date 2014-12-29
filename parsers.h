@@ -2,7 +2,7 @@
 #define PARSERS_H
 
 #include <QDialog>
-
+#include "QSqlQueryModel"
 namespace Ui {
 class parsers;
 }
@@ -14,7 +14,10 @@ class parsers : public QDialog
 public:
     explicit parsers(QWidget *parent = 0);
     ~parsers();
-
+    QSqlQueryModel *sqlmodel;
+private slots:
+    void on_pushButton_clicked();
+    void setTableView();
 private:
     Ui::parsers *ui;
 };
