@@ -8,6 +8,10 @@
 #include "QSqlError"
 #include "QMessageBox"
 #include "QModelIndex"
+#include "addissue.h"
+#include "utility.h"
+#include "editissue.h"
+
 ViewJournal::ViewJournal(QString jID, QString jName, QString vID,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::viewJournal)
@@ -16,9 +20,12 @@ ViewJournal::ViewJournal(QString jID, QString jName, QString vID,QWidget *parent
     journID = jID;
     journName = jName;
     volID = vID;
+
     QString windowTitle = "Journal - " + journName + " Vol. " + volID;
     this->setWindowTitle(windowTitle);
+
     setIssueView();
+
 }
 
 void ViewJournal::setIssueView()
@@ -26,7 +33,8 @@ void ViewJournal::setIssueView()
         QSqlQueryModel *model = new QSqlQueryModel;
         //Mquery stands for model query
         QString mQuery = "SELECT issue FROM journal_issue where journal_id = "
-                          + journID + " and volume = " + volID;
+                          + journID + " and volume = " + volID
+                          + " ORDER BY issue DESC";
 
         model->setQuery(mQuery);
 
@@ -91,8 +99,66 @@ void ViewJournal::setLabels(){
     {
         //set text of labels to appropriate data
         ui->issueLabel->setText("Issue: " + qry.value(2).toString());
-        ui->monthLabel->setText("Month: " + qry.value(3).toString());
+        QString monthText = Utility::intToMonth(qry.value(3).toInt());
+        ui->monthLabel->setText("Month: " + monthText);
         ui->yearLabel->setText("Year: " + qry.value(4).toString());
     }
 
+}
+
+void ViewJournal::on_addIssueButton_clicked()
+{
+    AddIssue * ai = new AddIssue;
+    ai->setJournalDets(journID,journName,volID);
+    int retcode = ai->exec();
+
+    if(retcode==1){
+        setIssueView();
+        setLabels();
+
+    }
+    connect(ai,SIGNAL(destroyed()),ai,SLOT(deleteLater()));
+
+
+
+}
+
+void ViewJournal::on_deleteIssueButton_clicked()
+{
+    QModelIndex index = ui->issueTable->currentIndex();
+
+
+    QMessageBox::StandardButton reply;
+     reply = QMessageBox::question(this, "Delete Issue",
+                "Are you sure you want to delete this issue?",
+                 QMessageBox::Yes|QMessageBox::No);
+
+     if (reply == QMessageBox::Yes) {
+
+         QString data = ui->issueTable->model()->data(ui->issueTable->model()->
+         index(index.row(),0)).toString();
+
+         QString delQStr = "delete from journal_issue where issue = "
+                           + data + " and journal_id = " + journID +
+                            " and volume = " + volID;
+
+         QSqlQuery delQry(delQStr);
+         delQry.exec();
+         setIssueView();
+
+     } else {
+       qDebug() << "Yes was *not* clicked";
+     }
+}
+
+void ViewJournal::on_editIssueButton_clicked()
+{
+    EditIssue *ei = new EditIssue;
+    ei->setJournalDets(journID,journName,volID,issue);
+
+    int retcode = ei->exec();
+    if(retcode==1)
+        setIssueView();
+    connect(ei,SIGNAL(destroyed()),ei,SLOT(deleteLater()));
+    connect(ei,SIGNAL(rejected()),ei,SLOT(deleteLater()));
 }

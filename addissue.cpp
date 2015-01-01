@@ -4,27 +4,29 @@
 #include "QMessageBox"
 #include "QSqlError"
 #include "QSqlQuery"
-addIssue::addIssue(QWidget *parent) :
+AddIssue::AddIssue(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addIssue)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Add Issue");
 }
 
-addIssue::~addIssue()
+AddIssue::~AddIssue()
 {
     delete ui;
 }
-void addIssue::setJournalDets(QString jI,QString jN,QString vol)
+void AddIssue::setJournalDets(QString jI,QString jN,QString vol)
 {
     jName=jN;
     jIndex=jI;
     jVol = vol;
     qDebug()<<jName<<" "<<jIndex<<" "<<jVol;
-    ui->label_4->setText(jName);
+    ui->journalNameLabel->setText("Journal: " + jName);
+    ui->volumeLabel->setText("Volume: " + jVol);
 }
 
-void addIssue::on_buttonBox_accepted()
+void AddIssue::on_buttonBox_accepted()
 {
     QString issue = ui->spinBox->text();
     QMap <QString,QString> qm;
@@ -36,8 +38,9 @@ void addIssue::on_buttonBox_accepted()
      QString month = qm[ui->comboBox->currentText()];
      QString year = ui->spinBox_2->text();
 
-QString ins = QString("insert into journal_issue values(NULL,%1,%2,%3,%4,%5)")
-        .arg(jVol).arg(issue).arg(month).arg(year).arg(jIndex);
+     QString ins =
+         QString("insert into journal_issue values(NULL,%1,%2,%3,%4,%5)")
+             .arg(jVol).arg(issue).arg(month).arg(year).arg(jIndex);
 
     qDebug()<<ins;
 

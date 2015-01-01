@@ -21,6 +21,7 @@ Journal::Journal(QWidget *parent) :
     ui->setupUi(this);
     setTableView();
     setVolumeView("-999");
+    this->setWindowTitle("Journals");
 }
 
 Journal::~Journal()

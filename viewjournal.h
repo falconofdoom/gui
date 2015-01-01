@@ -22,11 +22,31 @@ public:
 private slots:
     void on_issueTable_clicked(const QModelIndex &index);
 
+    /**
+     * @brief on_addIssueButton_clicked creates an instance of
+     * addIssue and executes that widget
+     */
+    void on_addIssueButton_clicked();
+
+    /**
+     * @brief on_deleteIssueButton_clicked deletes the issue that
+     * is currently clicked
+     */
+    void on_deleteIssueButton_clicked();
+
+    void on_editIssueButton_clicked();
+
 private:
     Ui::viewJournal *ui;
+    /**
+     * @brief setIssueView sets the row values for issueTable
+     */
     void setIssueView();
-    void setLabels();
 
+    /**
+     * @brief setLabels sets issue information
+     */
+    void setLabels();
 };
 
 #endif // VIEWJOURNAL_H

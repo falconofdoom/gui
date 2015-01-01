@@ -7,17 +7,17 @@ namespace Ui {
 class addIssue;
 }
 
-class addIssue : public QDialog
+class AddIssue : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit addIssue(QWidget *parent = 0);
+    explicit AddIssue(QWidget *parent = 0);
     void setJournalDets(QString jI,QString jName,QString vol);
     QString jName;
     QString jIndex;
     QString jVol;
-    ~addIssue();
+    ~AddIssue();
 
 private slots:
     void on_buttonBox_accepted();
