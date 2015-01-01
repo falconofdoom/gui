@@ -7,5 +7,6 @@
         <file>images/assist.png</file>
         <file>images/journal.png</file>
         <file>images/eraser.png</file>
+        <file>button.qml</file>
     </qresource>
 </RCC>

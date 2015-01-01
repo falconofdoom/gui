@@ -61,41 +61,10 @@
    </item>
    <item row="2" column="3">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="1" column="1">
-      <widget class="QToolButton" name="toolButton_5">
-       <property name="text">
-        <string>Add Volume</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QToolButton" name="toolButton_7">
-       <property name="text">
-        <string>Delete Issue</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QToolButton" name="toolButton_6">
-       <property name="text">
-        <string>Add Issue</string>
-       </property>
-      </widget>
-     </item>
      <item row="1" column="2">
       <widget class="QToolButton" name="toolButton_4">
        <property name="text">
         <string>Delete Volume</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0" colspan="3">
-      <widget class="QTableView" name="tableView_3">
-       <property name="maximumSize">
-        <size>
-         <width>2000</width>
-         <height>300</height>
-        </size>
        </property>
       </widget>
      </item>
@@ -106,6 +75,13 @@
          <width>2000</width>
          <height>300</height>
         </size>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QToolButton" name="toolButton_5">
+       <property name="text">
+        <string>Add Volume</string>
        </property>
       </widget>
      </item>

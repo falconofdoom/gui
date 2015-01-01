@@ -32,9 +32,12 @@ void addParser::on_buttonBox_accepted()
     QString parsename = ui->lineEdit_3->text();
     QString filename = ui->lineEdit_2->text();
     QSqlQuery query1;
-    QString ins = QString("insert into parser values(NULL,'%1','%2')").arg(parsename).arg(filename);
+    QString ins = QString("insert into parser values(NULL,'%1','%2')")
+                  .arg(parsename).arg(filename);
 
-    query1.prepare(QString("Select count(*) from parser where path = '%1'").arg(filename));
+    query1.prepare(QString("Select count(*) from parser where path = '%1'")
+    .arg(filename));
+
     // Try to execute the query and position the result on the first and unique record
     if (!query1.exec() || !query1.first())
     {
