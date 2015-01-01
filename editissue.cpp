@@ -59,7 +59,7 @@ void EditIssue::on_buttonBox_accepted()
 
      QString upd =
         "UPDATE journal_issue SET issue = " + issue +
-        ", volume = " + jVol + ", month = " + month +
+        ", year = " + year + ", month = " + month +
         " WHERE id = " + issueID;
 
     qDebug()<<upd;
