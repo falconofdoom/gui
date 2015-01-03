@@ -14,58 +14,7 @@
    <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="9" column="0">
-    <widget class="QTableView" name="tableView_2"/>
-   </item>
-   <item row="11" column="0">
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>Edit Article</string>
-     </property>
-    </widget>
-   </item>
-   <item row="12" column="0">
-    <widget class="QPushButton" name="pushButton_2">
-     <property name="text">
-      <string>Delete Article</string>
-     </property>
-    </widget>
-   </item>
-   <item row="13" column="0">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0" colspan="2">
-    <widget class="QTableView" name="tableView">
-     <property name="maximumSize">
-      <size>
-       <width>16777215</width>
-       <height>200</height>
-      </size>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="0" rowspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
-     <item>
-      <widget class="QLabel" name="label_5">
-       <property name="text">
-        <string>Journal:</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLineEdit" name="lineEdit"/>
-     </item>
-    </layout>
-   </item>
-   <item row="7" column="0">
+   <item row="7" column="0" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">
@@ -103,12 +52,67 @@
      </item>
     </layout>
    </item>
-   <item row="10" column="0">
-    <widget class="QPushButton" name="pushButton_3">
-     <property name="text">
-      <string>View Article</string>
+   <item row="4" column="0" colspan="4">
+    <widget class="QTableView" name="tableView">
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>200</height>
+      </size>
      </property>
     </widget>
+   </item>
+   <item row="13" column="3">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="2" colspan="4">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Journal:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit"/>
+     </item>
+    </layout>
+   </item>
+   <item row="9" column="0" colspan="4">
+    <widget class="QTableView" name="tableView_2"/>
+   </item>
+   <item row="12" column="3">
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QPushButton" name="pushButton_3">
+       <property name="text">
+        <string>View Article</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton">
+       <property name="text">
+        <string>Edit Article</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_2">
+       <property name="text">
+        <string>Delete Article</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
   </layout>
  </widget>

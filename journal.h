@@ -13,6 +13,10 @@ class Journal : public QDialog
 
 public:
     explicit Journal(QWidget *parent = 0);
+    QString curJourn;
+    QString curIssue;
+    QString curJournName;
+    QString curVol;
     ~Journal();
 
 private slots:

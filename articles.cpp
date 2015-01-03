@@ -10,7 +10,7 @@ Articles::Articles(QWidget *parent) :
     ui(new Ui::Articles)
 {
     ui->setupUi(this);
-    ui->lineEdit->textChanged("*");
+    ui->lineEdit->textChanged("");
 }
 
 Articles::~Articles()
@@ -34,7 +34,6 @@ void Articles::journalSetup(QString entry)
     header2->setStretchLastSection(true);
 
     ui->tableView->setHorizontalHeader(header2);
-    ui->tableView->resizeRowsToContents();
     ui->tableView->setColumnHidden(0,true);
 }
 
@@ -108,7 +107,6 @@ void Articles::on_comboBox_2_currentTextChanged(const QString &arg1)
     header3->setStretchLastSection(true);
 
     ui->tableView_2->setHorizontalHeader(header3);
-    ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->setColumnHidden(0,true);
     ui->tableView_2->setColumnHidden(2,true);
     ui->tableView_2->setColumnHidden(3,true);
@@ -119,6 +117,11 @@ void Articles::on_comboBox_2_currentTextChanged(const QString &arg1)
 }
 
 void Articles::on_pushButton_clicked()
+{
+
+}
+
+void Articles::on_pushButton_3_clicked()
 {
 
 }

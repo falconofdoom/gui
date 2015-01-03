@@ -10,10 +10,7 @@
 #include "viewjournal.h"
 #include "addvolume.h"
 /* Current Journal Selected */
-QString curJourn;
-QString curIssue;
-QString curJournName;
-QString curVol;
+
 Journal::Journal(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Journal)
