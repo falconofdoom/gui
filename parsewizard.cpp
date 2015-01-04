@@ -13,6 +13,7 @@
 #include "QSignalMapper"
 #include "editparsedreferences.h"
 #include "QProcess"
+#include "utility.h"
 QString cJourn;
 
 typedef QList< QStandardItem* > StandardItemList;
@@ -69,22 +70,6 @@ void parseWizard::authorAdded()
     qDebug()<<"TEST AUTHOR ADDED";
 }
 
-QString parseWizard:: accumulate(int i)
-{
-    QString str="";
-    if(!vvqs.empty())
-    for(int j=0;j<vvqs[i].size();j++)
-    {
-        if(vvqs[i][j].trimmed()!="" && vvqs[i][j].trimmed()!="\n")
-        {
-            if(vvqs[i][j].indexOf("\n")==-1)
-           str= str.append(vvqs[i][j]).append("\n");
-             else
-                str = str.append(vvqs[i][j]);
-        }
-    }
-    return str;
-}
 
 
 void parseWizard::on_pushButton_clicked()
@@ -173,7 +158,7 @@ void parseWizard::on_pushButton_2_clicked()
 void parseWizard::viewPage(int index)
 {
     editIndex=index;
-    ui->textEdit_2->setText(accumulate(index));
+    ui->textEdit_2->setText(Utility::accumulate(index,vvqs));
     ui->label_14->setText(QString("%1").arg(errCount[editIndex]));
 }
 
@@ -272,6 +257,7 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
 
     }
 }
+
 void parseWizard::editPage()
 {
     editwidget=new EditParsedReferences;
@@ -378,7 +364,7 @@ void parseWizard::on_parseWizard_accepted()
 
        for(int i=0;i<vvqs.size();i++)
        {
-           QString content = accumulate(i);
+           QString content = Utility::accumulate(i,vvqs);
          QString querystring = QString("INSERT INTO citation VALUES(NULL,'%1',%2,%3);").arg(content).arg(errCount[i]).arg(id);
            query.exec(querystring);
        }

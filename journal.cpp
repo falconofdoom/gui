@@ -9,7 +9,6 @@
 #include "addissue.h"
 #include "viewjournal.h"
 #include "addvolume.h"
-/* Current Journal Selected */
 
 Journal::Journal(QWidget *parent) :
     QDialog(parent),
@@ -41,8 +40,12 @@ void Journal::on_toolButton_3_clicked()
 
 
     QMessageBox::StandardButton reply;
-     reply = QMessageBox::question(this, "Delete Journal", "Are you sure you want to delete this journal, this will delete associated volumes and issues?",
+     reply = QMessageBox::question(this, "Delete Journal",
+                                   "Are you sure you want to delete this journal," +
+                                   QString("this will delete associated") +
+                                   "volumes and issues?",
                                    QMessageBox::Yes|QMessageBox::No);
+
      if (reply == QMessageBox::Yes) {
 
          QString data = ui->tableView->model()->data(ui->tableView->model()->

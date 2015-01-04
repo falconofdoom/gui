@@ -455,6 +455,7 @@ void ViewParsedReferences::addRow(){
     vqle1.insert(vqle1.begin()+(curAddRow+incAddRow),qle1);
     vqle2.insert(vqle2.begin()+(curAddRow+incAddRow),qle2);
     vqtb.insert(vqtb.begin()+(curAddRow+incAddRow),vqtb);
+    
     qgrid->addWidget(qle1,(curAddRow + incAddRow),0);
     qgrid->addWidget(qle2,(curAddRow + incAddRow),1);
     qgrid->addWidget(qtb,(curAddRow + incAddRow),2);

@@ -56,7 +56,6 @@ private:
     QStandardItemModel *model;
     QSqlQueryModel *sqlmodel;
     int editIndex;
-    QString accumulate(int i);
 
 
 };

@@ -39,24 +39,30 @@ public:
     QVector < QVector < QString > > vvqs;
     QVector < QLineEdit* > vqle1;
     QVector < QLineEdit *> vqle2;
+    QVector < QToolButton *> vqtb;
     QSet < QLineEdit *> modifiedLine;
     QGridLayout *qgrid;
-    int erasedsofar = 0;
+    int incAddRow = 0;
+    int curAddRow = 0;
 private slots:
-    void on_tableView_activated(const QModelIndex &index);
-    void viewContent(int index);
-    void on_pushButton_clicked();
-    void on_lineEdit_textChanged(const QString &arg1);
 
-    void on_tableView_2_clicked(const QModelIndex &index);
-
-    void on_comboBox_currentTextChanged(const QString &arg1);
-
-    void on_comboBox_2_currentTextChanged(const QString &arg1);
-    void on_pushButton_2_clicked();
     void addError();
+    void addRow();
+    void addRowHelper();
+    void changeCurRow(int row);
+    void changeRowInc(bool flag);
     void commitError();
+
     void deleteRow(int row);
+    void on_comboBox_currentTextChanged(const QString &arg1);
+    void on_comboBox_2_currentTextChanged(const QString &arg1);
+    void on_lineEdit_textChanged(const QString &arg1);
+    void on_pushButton_clicked();
+    void on_pushButton_2_clicked();
+    void on_tableView_activated(const QModelIndex &index);
+    void on_tableView_2_clicked(const QModelIndex &index);
+    void viewContent(int index);
+
 private:
     Ui::ViewParsedReferences *ui;
 
