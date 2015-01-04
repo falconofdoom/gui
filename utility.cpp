@@ -49,3 +49,21 @@ QString Utility::intToMonth(int i)
             break;
     }
 }
+
+
+QString Utility::accumulate(int i, QVector < QVector < QString > > vvqs)
+{
+    QString str="";
+    if(!vvqs.empty())
+    for(int j=0;j<vvqs[i].size();j++)
+    {
+        if(vvqs[i][j].trimmed()!="" && vvqs[i][j].trimmed()!="\n")
+        {
+            if(vvqs[i][j].indexOf("\n")==-1)
+           str= str.append(vvqs[i][j]).append("\n");
+             else
+                str = str.append(vvqs[i][j]);
+        }
+    }
+    return str;
+}

@@ -8,5 +8,6 @@
         <file>images/journal.png</file>
         <file>images/eraser.png</file>
         <file>button.qml</file>
+        <file>images/minus.png</file>
     </qresource>
 </RCC>

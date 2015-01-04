@@ -64,7 +64,7 @@
         </font>
        </property>
        <property name="text">
-        <string>No. of Errors: 0</string>
+        <string>No. of Errors: (No output selected yet!)</string>
        </property>
       </widget>
      </item>

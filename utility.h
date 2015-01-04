@@ -1,6 +1,7 @@
 #ifndef UTILITY_H
 #define UTILITY_H
 #include "QString"
+#include "QVector"
 
 
 /**
@@ -19,6 +20,9 @@ public:
      */
 
     static QString intToMonth(int i);
+
+    static QString accumulate(int i,QVector < QVector < QString > > vvqs);
+
 };
 
 #endif // UTILITY_H

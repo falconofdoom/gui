@@ -9,6 +9,8 @@
 #include "QDebug"
 #include "QHeaderView"
 #include "QSqlError"
+#include "utility.h"
+#include "QToolButton"
 ViewParsedReferences::ViewParsedReferences(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ViewParsedReferences)
@@ -93,6 +95,7 @@ void ViewParsedReferences::viewContent(int index)
     edIndex=index;
     ui->label_3->setText(QString("No. of Errors: %1").arg(errcount[index]));
 
+
  }
 
 void ViewParsedReferences::on_pushButton_clicked()
@@ -125,7 +128,6 @@ void ViewParsedReferences::journalSetup(QString entry)
     header2->setStretchLastSection(true);
 
     ui->tableView_2->setHorizontalHeader(header2);
-    ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->setColumnHidden(0,true);
 }
 
@@ -215,63 +217,60 @@ void ViewParsedReferences::on_pushButton_2_clicked()
     editContent(edIndex);
 }
 
-QString ViewParsedReferences::accumulate(int i)
-{
-    QString str="";
-    if(!vvqs.empty())
-    for(int j=0;j<vvqs[i].size();j++)
-    {
-        if(vvqs[i][j].trimmed()!="" && vvqs[i][j].trimmed()!="\n")
-        {
-            if(vvqs[i][j].indexOf("\n")==-1)
-           str= str.append(vvqs[i][j]).append("\n");
-             else
-                str = str.append(vvqs[i][j]);
-        }
-    }
-    return str;
-}
+
 
 void ViewParsedReferences::editContent(int ind){
 
     editref = new EditRefInDB;
     edIndex=ind;
     proxtotal=errcount[edIndex];
-    qDebug()<<errcount[ind];
 
-    QGridLayout *qgrid = new QGridLayout;
-
-
+    qgrid = new QGridLayout;
 
     vqle1.clear();
     vqle2.clear();
+
     errorlabel = new QLabel;
     errorlabel->setFixedHeight(15);
     errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
 
     qgrid->addWidget(errorlabel,0,0);
+    QSignalMapper *mapper = new QSignalMapper(this);
+
     for(int i=0;i<vvqs[ind].size();i++)
     {
-         QLineEdit *qle1=new QLineEdit;
+        QLineEdit *qle1=new QLineEdit;
         QLineEdit *qle2=new QLineEdit;
 
-       QString line =  vvqs[ind][i];
+        QToolButton *qtb = new QToolButton;
+        qtb->setIcon(QIcon(QPixmap(":images/minus.png")));
+        qtb->setIconSize(QSize(24,24));
+
+
+        QString line =  vvqs[ind][i];
         int g = line.indexOf(":");
-       QString before = line.left(g);
-       QString after = line.mid(g+1);
-           qle1->setText(before.trimmed());
-               qle2->setText(after.trimmed());
-    qle1->setFixedWidth(150);
+        QString before = line.left(g);
+        QString after = line.mid(g+1);
+
+        qle1->setText(before.trimmed());
+        qle2->setText(after.trimmed());
+        qle1->setFixedWidth(150);
 
         vqle1.push_back(qle1);
         vqle2.push_back(qle2);
 
         qgrid->addWidget(qle1,i+1,0);
         qgrid->addWidget(qle2,i+1,1);
+        qgrid->addWidget(qtb,i+1,2);
+
+
         connect(qle1,SIGNAL(editingFinished()),this,SLOT(addError()));
         connect(qle2,SIGNAL(editingFinished()),this,SLOT(addError()));
+        connect(qtb,SIGNAL(clicked()),mapper,SLOT(map()));
+        mapper->setMapping(qtb,i+1);
 
     }
+    connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
 
 
     QPushButton *ok = new QPushButton;
@@ -312,20 +311,53 @@ void ViewParsedReferences::addError()
  }
 
 void ViewParsedReferences::commitError(){
+    vvqs[edIndex].clear();
     for(int i=0;i<vqle1.size();i++)
-          {
-              QString str1 = vqle1[i]->text();
-              QString str2= vqle2[i]->text();
-              vvqs[edIndex][i] = str1.trimmed().append(" : ").append(str2).trimmed();
-          }
-       QString accum=accumulate(edIndex);
+    {
+        if( vqle1[i]->text() != "-1" ){
+            QString str1 = vqle1[i]->text();
+            QString str2= vqle2[i]->text();
+            vvqs[edIndex].push_back(str1.trimmed().append(" : ").append(str2).trimmed());
+        }
+    }
 
-      QString querystring = QString("UPDATE citation set content='%1',errors = %2 where id=%3").arg(accum).arg(proxtotal).arg(vid[edIndex]);
+       QString accum=Utility::accumulate(edIndex,vvqs);
+
+       for(int i=0; i < contents.size();i++)
+       {
+           contents[i] = Utility::accumulate(i,vvqs);
+       }
+
+      QString querystring =
+              QString("UPDATE citation set content='%1',errors = %2 where id=%3")
+                .arg(accum).arg(proxtotal).arg(vid[edIndex]);
     qDebug()<<querystring;
       QSqlQuery query;
       query.exec(querystring);
       errcount[edIndex]=proxtotal;
       proxtotal=0;
 
+      ui->label_3->setText(QString("No. of Errors: (No output selected yet!)"));
+
       ui->textBrowser->clear();
+}
+
+
+void ViewParsedReferences::deleteRow(int row){
+    proxtotal++;
+    errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
+
+    QLayoutItem *item = qgrid->itemAtPosition(row,0);
+    item->widget()->hide();
+    item = qgrid->itemAtPosition(row,1);
+    item->widget()->hide();
+    item = qgrid->itemAtPosition(row,2);
+    item->widget()->hide();
+
+    vqle1[row-1]->setText("-1");
+    vqle2[row-1]->setText("-1");
+
+    erasedsofar++;
+
+
 }

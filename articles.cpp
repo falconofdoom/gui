@@ -45,8 +45,10 @@ void Articles::on_lineEdit_textChanged(const QString &arg1)
 void Articles::on_tableView_clicked(const QModelIndex &index)
 {
 
-    QString journID = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),0)).toString();
-    QString data2 = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),1)).toString();
+    QString journID = ui->tableView->model()->
+            data(ui->tableView->model()->index(index.row(),0)).toString();
+    QString data2 = ui->tableView->model()->
+            data(ui->tableView->model()->index(index.row(),1)).toString();
     qDebug()<<data2;
      curJournName = data2;
      curJourn = journID;

@@ -129,7 +129,6 @@ void Journal::setVolumeView(QString index){
     ui->tableView_2->setHorizontalHeader(header);
     ui->tableView_2->resizeRowsToContents();
 
-
 }
 
 //void Journal::setIssueView(QString index){
@@ -177,12 +176,23 @@ void Journal::on_tableView_2_activated(const QModelIndex &index)
 
 void Journal::on_toolButton_5_clicked()
 {
-    addVolume *av = new addVolume;
-    av->setJournalDets(curJourn,curJournName);
-   int retCode= av->exec();
-    //if accepted then reset view for volume of current journal
-    if(retCode==1) setVolumeView(curJourn);
-    connect(av,SIGNAL(destroyed()),av,SLOT(deleteLater()));
+
+    if(curJourn!=""){
+        addVolume *av = new addVolume;
+        av->setJournalDets(curJourn,curJournName);
+        int retCode= av->exec();
+        //if accepted then reset view for volume of current journal
+        if(retCode==1) setVolumeView(curJourn);
+        connect(av,SIGNAL(destroyed()),av,SLOT(deleteLater()));
+    }
+    else
+    {
+        QMessageBox warning;
+        warning.setText("Please click first on a journal of your choosing!");
+        warning.setWindowTitle("No Journal Selected");
+        warning.setWindowTitle("");
+
+    }
 }
 
 //void Journal::on_toolButton_6_clicked()

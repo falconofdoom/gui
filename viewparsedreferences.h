@@ -8,6 +8,7 @@
 #include "QLineEdit"
 #include "QLabel"
 #include "QSet"
+#include "QGridLayout"
 namespace Ui {
 class ViewParsedReferences;
 }
@@ -36,10 +37,11 @@ public:
     void editContent(int ind);
     QLabel *errorlabel;
     QVector < QVector < QString > > vvqs;
-    QString accumulate(int i);
     QVector < QLineEdit* > vqle1;
     QVector < QLineEdit *> vqle2;
     QSet < QLineEdit *> modifiedLine;
+    QGridLayout *qgrid;
+    int erasedsofar = 0;
 private slots:
     void on_tableView_activated(const QModelIndex &index);
     void viewContent(int index);
@@ -54,6 +56,7 @@ private slots:
     void on_pushButton_2_clicked();
     void addError();
     void commitError();
+    void deleteRow(int row);
 private:
     Ui::ViewParsedReferences *ui;
 
