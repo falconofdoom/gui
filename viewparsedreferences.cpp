@@ -401,8 +401,6 @@ void ViewParsedReferences::addRowHelper()
     }
 
     qhbtop->addWidget(qcb);
-    qhbtop->addWidget(before);
-    qhbtop->addWidget(after);
     qhbbottom->addWidget(confirm);
     qhbbottom->addWidget(cancel);
 
@@ -444,7 +442,7 @@ void ViewParsedReferences::changeRowInc(bool flag)
 }
 
 void ViewParsedReferences::addRow(){
-
+    proxtotal++;
     QLineEdit *qle1 = new QLineEdit;
     QLineEdit *qle2 = new QLineEdit;
     qle1->setFixedWidth(150);
@@ -453,46 +451,35 @@ void ViewParsedReferences::addRow(){
     qtb->setIcon(QIcon(QPixmap(":images/minus.png")));
     qtb->setIconSize(QSize(24,24));
 
-    vqle1.insert(vqle1.begin()+(curAddRow+incAddRow),qle1);
-    vqle2.insert(vqle2.begin()+(curAddRow+incAddRow),qle2);
-    vqtb.insert(vqtb.begin()+(curAddRow+incAddRow),qtb);
+    vqle1.push_back(qle1);
+    vqle2.push_back(qle2);
+    vqtb.push_back(qtb);
 
 
-//    qgrid->addWidget(qle1,(curAddRow + incAddRow),0);
-//    qgrid->addWidget(qle2,(curAddRow + incAddRow),1);
-//    qgrid->addWidget(qtb,(curAddRow + incAddRow),2);
-    QLayoutItem *item;
-    while( (item = qgrid->takeAt(0)) != NULL)
-    {
-        delete item;
-    }
+    qgrid->addWidget(qle1,vqle1.size(),0);
+    qgrid->addWidget(qle2,vqle2.size(),1);
+    qgrid->addWidget(qtb,vqtb.size(),2);
 
+
+//    delete qgrid;
 
     errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
 
-    qgrid->addWidget(errorlabel,0,0);
+//    qgrid = new QGridLayout;
+//    qgrid->addWidget(errorlabel,0,0);
 
-    QSignalMapper *mapper = new QSignalMapper(this);
-
-    for(int i=0;i<vqle1.size();i++)
-    {
-
-            mapper->removeMappings(vqle1[i]);
-            mapper->removeMappings(vqle2[i]);
-            mapper->removeMappings(vqtb[i]);
-
-            qgrid->addWidget(qle1,i+1,0);
-            qgrid->addWidget(qle2,i+1,1);
-            qgrid->addWidget(qtb,i+1,2);
+      QSignalMapper *mapper = new QSignalMapper(this);
 
 
-            connect(vqle1[i],SIGNAL(editingFinished()),this,SLOT(addError()));
-            connect(vqle2[i],SIGNAL(editingFinished()),this,SLOT(addError()));
-            connect(vqtb[i],SIGNAL(clicked()),mapper,SLOT(map()));
-            mapper->setMapping(vqtb[i],i+1);
+//            connect(vqle1[i],SIGNAL(editingFinished()),this,SLOT(addError()));
+//            connect(vqle2[i],SIGNAL(editingFinished()),this,SLOT(addError()));
+//            connect(vqtb[i],SIGNAL(clicked()),mapper,SLOT(map()));
+//            mapper->setMapping(vqtb[i],i+1);
 
-        }
-        connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
+
+
+
+    connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
 
 }
 

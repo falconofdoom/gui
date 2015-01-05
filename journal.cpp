@@ -93,7 +93,7 @@ void Journal::setTableView(){
     QHeaderView* header = ui->tableView->horizontalHeader();
 
     header->setStretchLastSection(true);
-
+    ui->tableView->setColumnHidden(0,true);
     ui->tableView->setHorizontalHeader(header);
 }
 
@@ -112,6 +112,7 @@ void Journal::setTableView(QString arg){
 
     header->setStretchLastSection(true);
 
+    ui->tableView->setColumnHidden(0,true);
     ui->tableView->setHorizontalHeader(header);
     ui->tableView->resizeRowsToContents();
 }
@@ -134,25 +135,6 @@ void Journal::setVolumeView(QString index){
 
 }
 
-//void Journal::setIssueView(QString index){
-//    QSqlQueryModel *model = new QSqlQueryModel;
-
-//      model->setQuery(QString("SELECT issue,month,year FROM journal_issue where journal_id = %1 and volume = %2").arg(curJourn).arg(index));
-//       //model->setHeaderData(0,Qt::Horizontal,tr("Volume"));
-//      ui->tableView_3->setModel(model);
-//      ui->tableView_3->verticalHeader()->setVisible(false);
-
-
-//    ui->tableView_3->resizeColumnsToContents();
-//    QHeaderView* header = ui->tableView_3->horizontalHeader();
-
-//    header->setStretchLastSection(true);
-
-//    ui->tableView_3->setHorizontalHeader(header);
-//    ui->tableView_3->resizeRowsToContents();
-
-
-//}
 
 void Journal::on_tableView_2_activated(const QModelIndex &index)
 {
@@ -162,20 +144,6 @@ void Journal::on_tableView_2_activated(const QModelIndex &index)
 
     vj->exec();
 }
-
-//void Journal::on_tableView_3_clicked(const QModelIndex &index)
-//{
-//    ui->tableView_3->selectRow(index.row());
-//}
-
-//void Journal::on_tableView_3_activated(const QModelIndex &index)
-//{
-//    QString data = ui->tableView_3->model()->data(ui->tableView_3->model()->index(index.row(),0)).toString();
-//    curIssue = data;
-
-
-
-//}
 
 void Journal::on_toolButton_5_clicked()
 {
