@@ -9,6 +9,7 @@ addVolume::addVolume(QWidget *parent) :
     ui(new Ui::addVolume)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Add Volume");
 }
 
 void addVolume::setJournalDets(QString jI,QString jN)

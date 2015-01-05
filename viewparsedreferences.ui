@@ -157,7 +157,7 @@
       </layout>
      </item>
      <item row="7" column="1">
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="editButton">
        <property name="text">
         <string>Edit Current Output</string>
        </property>

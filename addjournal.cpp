@@ -7,6 +7,7 @@ AddJournal::AddJournal(QWidget *parent) :
     ui(new Ui::AddJournal)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Add Journal");
 }
 
 AddJournal::~AddJournal()

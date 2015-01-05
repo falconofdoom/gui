@@ -32,7 +32,7 @@ ViewParsedReferences::~ViewParsedReferences()
 
 }
 
-void ViewParsedReferences::on_tableView_activated(const QModelIndex &index)
+void ViewParsedReferences::on_tableView_clicked(const QModelIndex &index)
 {
     QString data = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),0)).toString();
     qDebug()<<data.toInt();
@@ -220,10 +220,6 @@ void ViewParsedReferences::on_comboBox_2_currentTextChanged(const QString &arg1)
     ui->textBrowser->clear();
 }
 
-void ViewParsedReferences::on_pushButton_2_clicked()
-{
-    editContent(edIndex);
-}
 
 
 
@@ -238,7 +234,7 @@ void ViewParsedReferences::editContent(int ind){
     vqle1.clear();
     vqle2.clear();
     vqtb.clear();
-
+    vAddedRow.clear();
     errorlabel = new QLabel;
     errorlabel->setFixedHeight(15);
     errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
@@ -268,6 +264,7 @@ void ViewParsedReferences::editContent(int ind){
         vqle1.push_back(qle1);
         vqle2.push_back(qle2);
         vqtb.push_back(qtb);
+        vAddedRow.push_back(false);
 
         qgrid->addWidget(qle1,i+1,0);
         qgrid->addWidget(qle2,i+1,1);
@@ -283,12 +280,12 @@ void ViewParsedReferences::editContent(int ind){
     connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
 
 
-    QPushButton *ok = new QPushButton;
+    ok = new QPushButton;
     ok->setText("Save Changes");
-    QPushButton *cancel = new QPushButton;
+    cancel = new QPushButton;
     cancel->setText("Ignore Changes");
 
-    QPushButton *addrow = new QPushButton;
+    addrow = new QPushButton;
     addrow->setText("Add Row");
 
     ok->setFixedWidth(125);
@@ -303,7 +300,7 @@ void ViewParsedReferences::editContent(int ind){
 
     connect(ok,SIGNAL(clicked()),editref,SLOT(accept()));
     connect(cancel,SIGNAL(clicked()),editref,SLOT(reject()));
-    connect(addrow,SIGNAL(clicked()),this,SLOT(addRowHelper()));
+    connect(addrow,SIGNAL(clicked()),this,SLOT(addRow()));
 
     connect(editref,SIGNAL(accepted()),this,SLOT(commitError()));
 
@@ -327,7 +324,8 @@ void ViewParsedReferences::commitError(){
     vvqs[edIndex].clear();
     for(int i=0;i<vqle1.size();i++)
     {
-        if( vqle1[i]->text() != "-1" ){
+        if( vqle1[i]->text() != "-1" && vqle1[i]->text().trimmed().length() > 0
+                && vqle2[i]->text().trimmed().length() > 0 ){
             QString str1 = vqle1[i]->text();
             QString str2= vqle2[i]->text();
             vvqs[edIndex].push_back(str1.trimmed().append(" : ").append(str2).trimmed());
@@ -348,15 +346,17 @@ void ViewParsedReferences::commitError(){
       QSqlQuery query;
       query.exec(querystring);
       errcount[edIndex]=proxtotal;
+
+     // ui->label_3->setText(QString("No. of Errors: (No output selected yet!)"));
+      ui->label_3->setText(QString("No. of Errors: %1").arg(proxtotal));
       proxtotal=0;
 
-      ui->label_3->setText(QString("No. of Errors: (No output selected yet!)"));
-
-      ui->textBrowser->clear();
+     //  ui->textBrowser->clear();
 }
 
 
 void ViewParsedReferences::deleteRow(int row){
+    if(vAddedRow[row-1] == false)
     proxtotal++;
     errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
 
@@ -369,77 +369,9 @@ void ViewParsedReferences::deleteRow(int row){
 
     vqle1[row-1]->setText("-1");
     vqle2[row-1]->setText("-1");
-
 }
 
-void ViewParsedReferences::addRowHelper()
-{
-    QDialog *addRowWindow = new QDialog;
 
-    QVBoxLayout *qvb = new QVBoxLayout;
-    QHBoxLayout *qhbtop = new QHBoxLayout;
-    QHBoxLayout *qhbbottom = new QHBoxLayout;
-
-    QPushButton *confirm = new QPushButton;
-    QPushButton *cancel = new QPushButton;
-    QRadioButton *before = new QRadioButton;
-    QRadioButton *after = new QRadioButton;
-    QComboBox *qcb = new QComboBox;
-
-    QSignalMapper *mapper = new QSignalMapper(this);
-
-    confirm->setText("AddRow");
-    cancel->setText("Cancel");
-
-    before->setText("Before");
-    before->setChecked(true);
-    after->setText("After");
-
-    for(int i=0;i<vqle1.size();i++)
-    {
-        qcb->addItem(vqle1[i]->text());
-    }
-
-    qhbtop->addWidget(qcb);
-    qhbbottom->addWidget(confirm);
-    qhbbottom->addWidget(cancel);
-
-    qvb->addLayout(qhbtop);
-    qvb->addLayout(qhbbottom);
-
-    addRowWindow->setLayout(qvb);
-
-    /* For sure kill deallocation of memory */
-
-
-    connect(confirm,SIGNAL(clicked()),this,SLOT(addRow()));
-    connect(qcb,SIGNAL(currentIndexChanged(int)),this,SLOT(changeCurRow(int)));
-    connect(before,SIGNAL(clicked(bool)),this,SLOT(changeRowInc(bool)));
-    connect(after,SIGNAL(clicked(bool)),this,SLOT(changeRowInc(bool)));
-    connect(addRowWindow,SIGNAL(accepted()),addRowWindow,SLOT(deleteLater()));
-    connect(addRowWindow,SIGNAL(rejected()),addRowWindow,SLOT(deleteLater()));
-    connect(addRowWindow,SIGNAL(destroyed()),addRowWindow,SLOT(deleteLater()));
-    connect(cancel,SIGNAL(clicked()),addRowWindow,SLOT(reject()));
-    connect(confirm,SIGNAL(clicked()),addRowWindow,SLOT(accept()));
-
-    addRowWindow->exec();
-
-
-}
-
-void ViewParsedReferences::changeCurRow(int row)
-{
-    curAddRow = row;
-    qDebug()<<row;
-}
-
-void ViewParsedReferences::changeRowInc(bool flag)
-{
-    QRadioButton *qrb = dynamic_cast<QRadioButton*>(sender());
-
-    incAddRow = (qrb->text() == "After") ? 1 : 0;
-    qDebug()<<incAddRow;
-}
 
 void ViewParsedReferences::addRow(){
     proxtotal++;
@@ -454,13 +386,15 @@ void ViewParsedReferences::addRow(){
     vqle1.push_back(qle1);
     vqle2.push_back(qle2);
     vqtb.push_back(qtb);
-
+    vAddedRow.push_back(true);
 
     qgrid->addWidget(qle1,vqle1.size(),0);
     qgrid->addWidget(qle2,vqle2.size(),1);
     qgrid->addWidget(qtb,vqtb.size(),2);
-
-
+    qgrid->removeWidget(addrow);
+    qgrid->addWidget(ok);
+    qgrid->addWidget(cancel);
+    qgrid->addWidget(addrow);
 //    delete qgrid;
 
     errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
@@ -471,10 +405,8 @@ void ViewParsedReferences::addRow(){
       QSignalMapper *mapper = new QSignalMapper(this);
 
 
-//            connect(vqle1[i],SIGNAL(editingFinished()),this,SLOT(addError()));
-//            connect(vqle2[i],SIGNAL(editingFinished()),this,SLOT(addError()));
-//            connect(vqtb[i],SIGNAL(clicked()),mapper,SLOT(map()));
-//            mapper->setMapping(vqtb[i],i+1);
+      connect(qtb,SIGNAL(clicked()),mapper,SLOT(map()));
+      mapper->setMapping(qtb,vqtb.size());
 
 
 
@@ -483,3 +415,15 @@ void ViewParsedReferences::addRow(){
 
 }
 
+
+void ViewParsedReferences::on_editButton_clicked()
+{
+    if(errcount.size() > 0 || vvqs.size() > 0)
+        editContent(edIndex);
+    else{
+        QMessageBox *qmsg = new QMessageBox;
+        qmsg->setText("No parsed citation selected!");
+        qmsg->setWindowTitle("Error!");
+        qmsg->exec();
+    }
+}
