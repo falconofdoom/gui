@@ -447,6 +447,7 @@ void ViewParsedReferences::addRow(){
 
     QLineEdit *qle1 = new QLineEdit;
     QLineEdit *qle2 = new QLineEdit;
+    qle1->setFixedWidth(150);
 
     QToolButton *qtb = new QToolButton;
     qtb->setIcon(QIcon(QPixmap(":images/minus.png")));
@@ -454,11 +455,44 @@ void ViewParsedReferences::addRow(){
 
     vqle1.insert(vqle1.begin()+(curAddRow+incAddRow),qle1);
     vqle2.insert(vqle2.begin()+(curAddRow+incAddRow),qle2);
-    vqtb.insert(vqtb.begin()+(curAddRow+incAddRow),vqtb);
-    qgrid->addWidget(qle1,(curAddRow + incAddRow),0);
-    qgrid->addWidget(qle2,(curAddRow + incAddRow),1);
-    qgrid->addWidget(qtb,(curAddRow + incAddRow),2);
+    vqtb.insert(vqtb.begin()+(curAddRow+incAddRow),qtb);
 
+
+//    qgrid->addWidget(qle1,(curAddRow + incAddRow),0);
+//    qgrid->addWidget(qle2,(curAddRow + incAddRow),1);
+//    qgrid->addWidget(qtb,(curAddRow + incAddRow),2);
+    QLayoutItem *item;
+    while( (item = qgrid->takeAt(0)) != NULL)
+    {
+        delete item;
+    }
+
+
+    errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
+
+    qgrid->addWidget(errorlabel,0,0);
+
+    QSignalMapper *mapper = new QSignalMapper(this);
+
+    for(int i=0;i<vqle1.size();i++)
+    {
+
+            mapper->removeMappings(vqle1[i]);
+            mapper->removeMappings(vqle2[i]);
+            mapper->removeMappings(vqtb[i]);
+
+            qgrid->addWidget(qle1,i+1,0);
+            qgrid->addWidget(qle2,i+1,1);
+            qgrid->addWidget(qtb,i+1,2);
+
+
+            connect(vqle1[i],SIGNAL(editingFinished()),this,SLOT(addError()));
+            connect(vqle2[i],SIGNAL(editingFinished()),this,SLOT(addError()));
+            connect(vqtb[i],SIGNAL(clicked()),mapper,SLOT(map()));
+            mapper->setMapping(vqtb[i],i+1);
+
+        }
+        connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
 
 }
 

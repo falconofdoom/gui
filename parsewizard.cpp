@@ -14,6 +14,8 @@
 #include "editparsedreferences.h"
 #include "QProcess"
 #include "utility.h"
+#include "QToolButton"
+
 QString cJourn;
 
 typedef QList< QStandardItem* > StandardItemList;
@@ -127,7 +129,6 @@ void parseWizard::on_comboBox_currentTextChanged(const QString &arg1)
     QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2").arg(cJourn).arg(volData);
     issue->setQuery(issuequery);
     ui->comboBox_2->setModel(issue);
-    qDebug()<<issuequery;
 }
 
 void parseWizard::on_pushButton_3_clicked()
@@ -246,8 +247,7 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
 
             mapper->setMapping(qpb[i],i);
         }
-        ui->scrollArea->setLayout(layout
-                                  );
+        ui->scrollArea->setLayout(layout);
         connect(mapper,SIGNAL(mapped(int)),this,SLOT(viewPage(int)));
         connect(ui->pushButton_4,SIGNAL(clicked()),this,SLOT(editPage()));
 
@@ -262,38 +262,52 @@ void parseWizard::editPage()
 {
     editwidget=new EditParsedReferences;
     editwidget->setWindowTitle("Edit Parsed References");
-    QGridLayout *layout=new QGridLayout;
-    int r=0;
+
+    qgrid = new QGridLayout;
+
     vqle1.clear();
     vqle2.clear();
-    QSignalMapper *mapping = new QSignalMapper(this);
+    vqtb.clear();
+
+    QSignalMapper *mapper = new QSignalMapper(this);
 
     if(!vvqs.empty())
+
     for(int i=0;i<vvqs[editIndex].size();i++)
     {
         QString line = vvqs[editIndex][i];
         int g = line.indexOf(':');
-         QLineEdit *qle = new QLineEdit;
-      QLineEdit *lll = new QLineEdit;
+
+        QLineEdit *qle = new QLineEdit;
+        QLineEdit *lll = new QLineEdit;
         lll->setFixedWidth(150);
 
         QString before = line.left(g);
         QString after = line.mid(g+1);
-            lll->setText(before.trimmed());
-                qle->setText(after.trimmed());
+        lll->setText(before.trimmed());
+        qle->setText(after.trimmed());
 
-                vqle1.push_back(lll);
-                vqle2.push_back(qle);
-          layout->addWidget(lll,r,0);
-         layout->addWidget(qle,r,1);
-    connect(lll,SIGNAL(editingFinished()),this,SLOT(addError()));
-    connect(qle,SIGNAL(editingFinished()),this,SLOT(addError()));
+        QToolButton *qtb = new QToolButton;
+        qtb->setIcon(QIcon(QPixmap(":images/minus.png")));
+        qtb->setIconSize(QSize(24,24));
 
-         r++;
+
+        vqle1.push_back(lll);
+        vqle2.push_back(qle);
+        vqtb.push_back(qtb);
+
+        qgrid->addWidget(lll,i,0);
+        qgrid->addWidget(qle,i,1);
+        qgrid->addWidget(qtb,i,2);
+        connect(lll,SIGNAL(editingFinished()),this,SLOT(addError()));
+        connect(qle,SIGNAL(editingFinished()),this,SLOT(addError()));
+        connect(qtb,SIGNAL(clicked()),mapper,SLOT(map()));
+        mapper->setMapping(qtb,i);
+
     }
+    connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
 
-
-   editwidget->setScrollArea(layout);
+   editwidget->setScrollArea(qgrid);
     connect(editwidget,SIGNAL(accepted()),this,SLOT(commitError()));
     connect(editwidget,SIGNAL(rejected()),this,SLOT(eraseError()));
     viewPage(editIndex);
@@ -309,19 +323,16 @@ void parseWizard::editPage()
 void parseWizard::commitError()
 {
     errCount[editIndex]+=proxtotal;
-    qDebug()<<errCount[editIndex];
     proxtotal=0;
-    qDebug()<<" errorCount "<<errCount[editIndex]<<" errorIndex: "<<editIndex;
-    qDebug()<<"vvqs_size: "<<vvqs.size();
-    for(int i=0;i<vvqs.size();i++)
-    qDebug()<<QString("VVQS_[%1]_size: %2").arg(i).arg(vvqs[i].size());
-    qDebug()<<"VQLE1_SIZE "<<vqle1.size();
-    qDebug()<<"VQLE2_SIZE "<<vqle2.size();
+    vvqs[editIndex].clear();
     for(int i=0;i<vqle1.size();i++)
     {
-        QString str1 = vqle1[i]->text();
-        QString str2= vqle2[i]->text();
-        vvqs[editIndex][i] = str1.trimmed().append(" : ").append(str2).trimmed();
+        if(vqle1[i]->text() != "-1"){
+            QString str1 = vqle1[i]->text();
+            QString str2= vqle2[i]->text();
+            vvqs[editIndex].push_back(str1.trimmed().append(" : ")
+                                .append(str2).trimmed());
+        }
     }
     viewPage(editIndex);
 }
@@ -351,7 +362,11 @@ void parseWizard::on_parseWizard_accepted()
     QString issData = ui->comboBox_2->currentText();
     QString parseVer = "Parser 2";
     QString pages = "1-2";
-    QString querystring = QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);").arg(articleName).arg(pages).arg(parseVer).arg(journData).arg(volData).arg(issData);
+
+    QString querystring =
+          QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);")
+         .arg(articleName).arg(pages).arg(parseVer).arg(journData).arg(volData)
+            .arg(issData);
 
     QSqlQuery query;
     query.exec(querystring);
@@ -384,4 +399,19 @@ void parseWizard::on_parseWizard_accepted()
            query.exec(insquery);
         }
 
+}
+
+void parseWizard::deleteRow(int row){
+    proxtotal++;
+    editwidget->changeError(proxtotal);
+
+    QLayoutItem *item = qgrid->itemAtPosition(row,0);
+    item->widget()->hide();
+    item = qgrid->itemAtPosition(row,1);
+    item->widget()->hide();
+    item = qgrid->itemAtPosition(row,2);
+    item->widget()->hide();
+
+    vqle1[row]->setText("-1");
+    vqle2[row]->setText("-1");
 }

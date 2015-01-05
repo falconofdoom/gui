@@ -25,6 +25,8 @@ public:
 
     QVector < QLineEdit* > vqle1;
     QVector < QLineEdit *> vqle2;
+    QVector < QToolButton *> vqtb;
+    QGridLayout *qgrid;
     EditParsedReferences *editwidget;
     int proxtotal=0;
     QSet < QLineEdit * > modifiedLine;
@@ -49,7 +51,7 @@ private slots:
     void commitError();
     void eraseError();
     void on_parseWizard_accepted();
-
+    void deleteRow(int row);
 private:
     Ui::parseWizard *ui;
     void authorAdded();
