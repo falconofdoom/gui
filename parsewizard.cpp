@@ -55,6 +55,22 @@ parseWizard::parseWizard(QWidget *parent) :
   ui->scrollArea->setWidget(central);
   ui->scrollArea->setWidgetResizable(true);
 
+
+  QSqlQueryModel *parseModel = new QSqlQueryModel;
+  QString pQuery =
+          QString("SELECT name,path FROM parser");
+
+  parseModel->setQuery(pQuery);
+
+  ui->parserCombo->setModel(parseModel);
+
+  parseMap.clear();
+  for(int i = 0; i < parseModel->rowCount(); i++)
+  {
+      parseMap[parseModel->data(parseModel->index(i,0)).toString()] =
+                        parseModel->data(parseModel->index(i,1)).toString();
+  }
+
 }
 
 parseWizard::~parseWizard()
@@ -175,7 +191,7 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
        out<<finishText;
        file.close();
 
-       QString program = QApplication::applicationDirPath().append("/parser/parserV2");
+       QString program = parseMap[ui->parserCombo->currentText()];
        QStringList arguments;
 
        arguments << QString(QApplication::applicationDirPath().append("/temp.txt"));

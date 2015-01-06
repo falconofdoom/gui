@@ -11,47 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Articles</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="7" column="0" colspan="4">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Volume:</string>
-       </property>
-      </widget>
-     </item>
-     <item alignment="Qt::AlignLeft">
-      <widget class="QComboBox" name="comboBox"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>Issue:</string>
-       </property>
-      </widget>
-     </item>
-     <item alignment="Qt::AlignLeft">
-      <widget class="QComboBox" name="comboBox_2"/>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_3">
-       <property name="text">
-        <string>Month: </string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_4">
-       <property name="text">
-        <string>Year: </string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
    <item row="4" column="0" colspan="4">
     <widget class="QTableView" name="tableView">
      <property name="maximumSize">
@@ -62,15 +24,43 @@
      </property>
     </widget>
    </item>
-   <item row="13" column="3">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
-    </widget>
+   <item row="7" column="0" colspan="4">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="volume">
+       <property name="text">
+        <string>Volume:</string>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignLeft">
+      <widget class="QComboBox" name="vComboBox"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="issue">
+       <property name="text">
+        <string>Issue:</string>
+       </property>
+      </widget>
+     </item>
+     <item alignment="Qt::AlignLeft">
+      <widget class="QComboBox" name="iComboBox"/>
+     </item>
+     <item>
+      <widget class="QLabel" name="month">
+       <property name="text">
+        <string>Month: </string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="year">
+       <property name="text">
+        <string>Year: </string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item row="0" column="0" rowspan="2" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -89,24 +79,24 @@
    <item row="9" column="0" colspan="4">
     <widget class="QTableView" name="tableView_2"/>
    </item>
-   <item row="12" column="3">
+   <item row="10" column="0" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <widget class="QPushButton" name="pushButton_3">
+      <widget class="QPushButton" name="viewArticleButton">
        <property name="text">
         <string>View Article</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="editArticleButton">
        <property name="text">
         <string>Edit Article</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton_2">
+      <widget class="QPushButton" name="delArticleButton">
        <property name="text">
         <string>Delete Article</string>
        </property>
@@ -117,38 +107,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>Articles</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>247</x>
-     <y>444</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>Articles</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>315</x>
-     <y>444</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

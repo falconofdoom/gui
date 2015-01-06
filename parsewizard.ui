@@ -16,7 +16,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>Wizard</string>
+   <string>Parsing Wizard</string>
   </property>
   <widget class="QWizardPage" name="wizardPage1">
    <layout class="QGridLayout" name="gridLayout">
@@ -208,7 +208,7 @@
   </widget>
   <widget class="QWizardPage" name="wizardPage">
    <layout class="QGridLayout" name="gridLayout_5">
-    <item row="3" column="0" colspan="5">
+    <item row="3" column="0" colspan="4">
      <widget class="QTextEdit" name="textEdit"/>
     </item>
     <item row="2" column="0">
@@ -225,7 +225,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="4">
+    <item row="2" column="3">
      <widget class="QLineEdit" name="lineEdit_3">
       <property name="maximumSize">
        <size>
@@ -235,19 +235,33 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="3">
+    <item row="2" column="2">
      <widget class="QPushButton" name="pushButton_2">
       <property name="text">
        <string>File</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="2" alignment="Qt::AlignRight">
+    <item row="2" column="1" alignment="Qt::AlignRight">
      <widget class="QLabel" name="label_9">
       <property name="text">
        <string>or upload file</string>
       </property>
      </widget>
+    </item>
+    <item row="7" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Parser: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="parserCombo"/>
+      </item>
+     </layout>
     </item>
    </layout>
    <zorder>label_10</zorder>
@@ -256,6 +270,7 @@
    <zorder>pushButton_2</zorder>
    <zorder>label_9</zorder>
    <zorder>textEdit</zorder>
+   <zorder>horizontalLayoutWidget</zorder>
   </widget>
   <widget class="QWizardPage" name="wizardPage_2">
    <layout class="QGridLayout" name="gridLayout_6">

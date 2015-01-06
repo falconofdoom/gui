@@ -56,25 +56,25 @@ void Articles::on_tableView_clicked(const QModelIndex &index)
      QSqlQueryModel *vol = new QSqlQueryModel;
      QString volquery = QString("SELECT volume FROM journal_volume where journal_id=%1").arg(journID);
      vol->setQuery(volquery);
-     ui->comboBox->setModel(vol);
+     ui->vComboBox->setModel(vol);
 
 }
 
-void Articles::on_comboBox_currentTextChanged(const QString &arg1)
+
+void Articles::on_vComboBox_currentTextChanged(const QString &arg1)
 {
 
-    QString volData = ui->comboBox->currentText();
+    QString volData = ui->vComboBox->currentText();
     curVol = volData;
     QSqlQueryModel *issue = new QSqlQueryModel;
     QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2").arg(curJourn).arg(volData);
     issue->setQuery(issuequery);
-    ui->comboBox_2->setModel(issue);
-
+    ui->iComboBox->setModel(issue);
 }
 
-void Articles::on_comboBox_2_currentTextChanged(const QString &arg1)
+void Articles::on_iComboBox_currentTextChanged(const QString &arg1)
 {
-    curIssue = ui->comboBox_2->currentText();
+    curIssue = ui->iComboBox->currentText();
 
     QString queryString2 = QString("SELECT month,year FROM journal_issue WHERE journal_id = %1 and volume = %2 and issue = %3").arg(curJourn).arg(curVol).arg(curIssue);
     QSqlQuery qry;
@@ -83,16 +83,16 @@ void Articles::on_comboBox_2_currentTextChanged(const QString &arg1)
     if (!qry.exec() || !qry.first())
     {
        qDebug() << qry.lastError().text();
-       ui->label_3->setText("Month: ");
-       ui->label_4->setText("Year: ");
+       ui->month->setText("Month: ");
+       ui->year->setText("Year: ");
     }
     else
     {
          int month = qry.value(0).toInt();
          int year = qry.value(1).toInt();
 
-         ui->label_3->setText(QString("Month: %1").arg(month));
-         ui->label_4->setText(QString("Year: %1").arg(year));
+         ui->month->setText(QString("Month: %1").arg(month));
+         ui->year->setText(QString("Year: %1").arg(year));
 
     }
 
@@ -118,12 +118,7 @@ void Articles::on_comboBox_2_currentTextChanged(const QString &arg1)
 
 }
 
-void Articles::on_pushButton_clicked()
-{
-
-}
-
-void Articles::on_pushButton_3_clicked()
+void Articles::on_viewArticleButton_clicked()
 {
 
 }

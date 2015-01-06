@@ -22,7 +22,7 @@ public:
     QVector <int> errCount;
     QVector < QPushButton * > qpb;
     QVector < QVector < QString > > vvqs;
-
+    QMap < QString, QString > parseMap;
     QVector < QLineEdit* > vqle1;
     QVector < QLineEdit *> vqle2;
     QVector < QToolButton *> vqtb;

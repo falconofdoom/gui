@@ -26,13 +26,11 @@ private slots:
 
     void on_tableView_clicked(const QModelIndex &index);
 
-    void on_comboBox_currentTextChanged(const QString &arg1);
+    void on_vComboBox_currentTextChanged(const QString &arg1);
 
-    void on_comboBox_2_currentTextChanged(const QString &arg1);
+    void on_iComboBox_currentTextChanged(const QString &arg1);
 
-    void on_pushButton_clicked();
-
-    void on_pushButton_3_clicked();
+    void on_viewArticleButton_clicked();
 
 private:
     Ui::Articles *ui;

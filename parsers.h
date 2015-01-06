@@ -18,6 +18,12 @@ public:
 private slots:
     void on_pushButton_clicked();
     void setTableView();
+    void on_addParser_clicked();
+
+    void on_delParser_clicked();
+
+    void on_tableView_clicked(const QModelIndex &index);
+
 private:
     Ui::parsers *ui;
 };

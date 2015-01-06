@@ -11,38 +11,21 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Parsers</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="1" alignment="Qt::AlignRight">
-    <widget class="QPushButton" name="pushButton_3">
+   <item row="1" column="0">
+    <widget class="QPushButton" name="addParser">
      <property name="text">
-      <string>Set Default Parser</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="3">
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      <string>Add Parser</string>
      </property>
     </widget>
    </item>
    <item row="0" column="0" colspan="4">
     <widget class="QTableView" name="tableView"/>
    </item>
-   <item row="1" column="0">
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>Add Parser</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="2" alignment="Qt::AlignRight">
-    <widget class="QPushButton" name="pushButton_2">
+   <item row="1" column="1">
+    <widget class="QPushButton" name="delParser">
      <property name="text">
       <string>Delete Parser</string>
      </property>
@@ -51,38 +34,5 @@
   </layout>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>parsers</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>parsers</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>
