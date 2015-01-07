@@ -1,18 +1,19 @@
 #ifndef VIEWARTICLE_H
 #define VIEWARTICLE_H
 
-#include <QWidget>
+#include <QDialog>
 
 namespace Ui {
 class ViewArticle;
 }
 
-class ViewArticle : public QWidget
+class ViewArticle : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit ViewArticle(QWidget *parent = 0);
+    explicit ViewArticle(QString artID,QWidget *parent = 0);
+    QString id;
     ~ViewArticle();
 
 private:

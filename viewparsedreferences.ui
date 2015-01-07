@@ -24,7 +24,7 @@
      <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Journal:</string>
+        <string>Search:</string>
        </property>
       </widget>
      </item>
@@ -46,7 +46,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Parsed References:</string>
+        <string>Parsed References</string>
        </property>
       </widget>
      </item>

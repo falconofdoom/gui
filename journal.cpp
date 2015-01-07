@@ -39,29 +39,43 @@ void Journal::on_toolButton_3_clicked()
     QModelIndex index = ui->tableView->currentIndex();
 
 
-    QMessageBox::StandardButton reply;
-     reply = QMessageBox::question(this, "Delete Journal",
-                                   "Are you sure you want to delete this journal," +
-                                   QString("this will delete associated") +
-                                   "volumes and issues?",
-                                   QMessageBox::Yes|QMessageBox::No);
 
-     if (reply == QMessageBox::Yes) {
+      if(curJourn != ""){
+         QMessageBox::StandardButton reply;
+         reply =
+           QMessageBox::question(this, "Delete Journal",
+                           "Are you sure you want to delete this journal," +
+                           QString("this will delete associated") +
+                           "volumes and issues?",
+                           QMessageBox::Yes|QMessageBox::No);
+         if (reply == QMessageBox::Yes) {
 
-         QString data = ui->tableView->model()->data(ui->tableView->model()->
-         index(index.row(),0)).toString();
-         QSqlQuery delqry(QString("delete from journal where id = %1").arg(data));
-         delqry.exec();
-         QSqlQuery delqry2(QString("delete from journal_volume where journal_id = %1").arg(data));
-         delqry2.exec();
-         QSqlQuery delqry3(QString("delete from journal_issue where journal_id = %1").arg(data));
-         delqry3.exec();
-         setTableView();
+             QString data = ui->tableView->model()->data(ui->tableView->model()->
+             index(index.row(),0)).toString();
+             QSqlQuery delqry(QString("delete from journal where id = %1")
+                              .arg(data));
+             delqry.exec();
+             QSqlQuery delqry2(
+                         QString("delete from journal_volume where journal_id = %1")
+                               .arg(data));
+             delqry2.exec();
+             QSqlQuery delqry3(
+                         QString("delete from journal_issue where journal_id = %1")
+                               .arg(data));
+             delqry3.exec();
+             setTableView();
 
-     } else {
-       qDebug() << "Yes was *not* clicked";
-     }
-
+         } else {
+           qDebug() << "Yes was *not* clicked";
+         }
+    }
+    else
+    {
+          QMessageBox warning;
+          warning.setText("Please click first on a journal of your choosing!");
+          warning.setWindowTitle("No Journal Selected");
+          warning.exec();
+    }
 
 
 }
@@ -161,64 +175,42 @@ void Journal::on_toolButton_5_clicked()
         QMessageBox warning;
         warning.setText("Please click first on a journal of your choosing!");
         warning.setWindowTitle("No Journal Selected");
-        warning.setWindowTitle("");
-
+        warning.exec();
     }
 }
-
-//void Journal::on_toolButton_6_clicked()
-//{
-//    addIssue *ai = new addIssue;
-//    ai->setJournalDets(curJourn,curJournName,curVol);
-//    int retCode=ai->exec();
-//    if(retCode==1) setIssueView(curVol);
-//    connect(ai,SIGNAL(destroyed()),ai,SLOT(deleteLater()));
-//}
-
-//void Journal::on_toolButton_7_clicked()
-//{
-//    QModelIndex index = ui->tableView_3->currentIndex();
-
-
-//    QMessageBox::StandardButton reply;
-//     reply = QMessageBox::question(this, "Delete Issue", "Are you sure you want to delete this issue?",
-//                                   QMessageBox::Yes|QMessageBox::No);
-//     if (reply == QMessageBox::Yes) {
-
-//         QString data = ui->tableView_3->model()->data(ui->tableView_3->model()->
-//         index(index.row(),0)).toString();
-//         QSqlQuery delqry(QString("delete from journal_issue where issue = %1").arg(data));
-//         delqry.exec();
-//         setIssueView(curVol);
-
-//     } else {
-//       qDebug() << "Yes was *not* clicked";
-//     }
-//}
-
 void Journal::on_toolButton_4_clicked()
 {
     QModelIndex index = ui->tableView_2->currentIndex();
 
+    if(curVol!=""){
+        QMessageBox::StandardButton reply;
+        reply = QMessageBox::question(this, "Delete Volume",
+                "Are you sure you want to delete this volume, " +
+                 QString("this will also delete issues associated with it?"),
+                 QMessageBox::Yes|QMessageBox::No);
 
-    QMessageBox::StandardButton reply;
-     reply = QMessageBox::question(this, "Delete Volume", "Are you sure you want to delete this volume, this will also delete issues associated with it?",
-                                   QMessageBox::Yes|QMessageBox::No);
-     if (reply == QMessageBox::Yes) {
+         if (reply == QMessageBox::Yes) {
 
-         QString data = ui->tableView_2->model()->data(ui->tableView_2->
-                        model()->index(index.row(),0)).toString();
+             QString data = ui->tableView_2->model()->data(ui->tableView_2->
+                            model()->index(index.row(),0)).toString();
 
-         QSqlQuery delqry(QString("delete from journal_volume where volume = %1").arg(data));
-         delqry.exec();
-         QSqlQuery delqry2(QString("delete from journal_issue where volume = %1").arg(data));
-         delqry2.exec();
-         setVolumeView(curJourn);
-         //setIssueView("0");
+             QSqlQuery delqry(QString("delete from journal_volume where volume = %1").arg(data));
+             delqry.exec();
+             QSqlQuery delqry2(QString("delete from journal_issue where volume = %1").arg(data));
+             delqry2.exec();
+             setVolumeView(curJourn);
+             //setIssueView("0");
 
-     } else {
-       qDebug() << "Yes was *not* clicked";
-     }
+         } else {
+           qDebug() << "Yes was *not* clicked";
+         }
+    }
+    else{
+        QMessageBox warning;
+        warning.setText("Please click first on a volume of your choosing!");
+        warning.setWindowTitle("No Volume Selected");
+        warning.exec();
+    }
 }
 
 void Journal::on_lineEdit_textChanged(const QString &arg1)

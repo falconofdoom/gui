@@ -116,7 +116,3 @@ void MainWindow::on_toolButton_3_clicked()
     connect(p,SIGNAL(destroyed()),p,SLOT(deleteLater()));
 }
 
-void MainWindow::on_toolButton_6_clicked()
-{
-
-}

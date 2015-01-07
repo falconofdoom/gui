@@ -33,7 +33,7 @@ parseWizard::parseWizard(QWidget *parent) :
     model->setHeaderData(0,Qt::Horizontal,tr("Author"));
      model->setHeaderData(1,Qt::Horizontal,tr("Affiliation"));
     ui->tableView->setModel(model);
-
+    on_lineEdit_2_textChanged("");
 
   ui->tableView->resizeColumnsToContents();
   QHeaderView* header = ui->tableView->horizontalHeader();
@@ -100,7 +100,7 @@ void parseWizard::on_pushButton_clicked()
        QStandardItem *affil = new QStandardItem(QString(aA->affiliation));
        model->appendRow( StandardItemList() << auth << affil );
 
-     }\
+     }
 
 
     connect(aA,SIGNAL(destroyed()),aA,SLOT(deleteLater()));
@@ -122,7 +122,6 @@ void parseWizard::on_lineEdit_2_textChanged(const QString &arg1)
     header->setStretchLastSection(true);
 
     ui->tableView_2->setHorizontalHeader(header);
-    ui->tableView_2->resizeRowsToContents();
     ui->tableView_2->setColumnHidden(0,true);
 
 
@@ -206,10 +205,10 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
            qmsg.setText("PARSING DIDN'T START");
        else if(!process->waitForFinished())
            qmsg.setText("PARSING DIDN'T FINISH");
-       else
+       else{
            qmsg.setText("PARSING COMPLETE!YOU MAY NOW VIEW OUTPUT!");
-
-
+            flagDone=true;
+        }
 
        qmsg.exec();
        QString output(process->readAllStandardOutput());
@@ -372,49 +371,58 @@ void parseWizard::eraseError()
 
 void parseWizard::on_parseWizard_accepted()
 {
-    QString articleName = ui->lineEdit->text();
-    QString journData = cJourn;
-    QString volData = ui->comboBox->currentText();
-    QString issData = ui->comboBox_2->currentText();
-    QString parseVer = "Parser 2";
-    QString pages = "1-2";
+    if(flagDone){
+        QString articleName = ui->lineEdit->text();
+        QString journData = cJourn;
+        QString volData = ui->comboBox->currentText();
+        QString issData = ui->comboBox_2->currentText();
+        QString parseVer = ui->parserCombo->currentText();
+        QString pages = "1-2";
 
-    QString querystring =
-          QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);")
-         .arg(articleName).arg(pages).arg(parseVer).arg(journData).arg(volData)
-            .arg(issData);
+        QString querystring =
+              QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);")
+             .arg(articleName).arg(pages).arg(parseVer).arg(journData).arg(volData)
+                .arg(issData);
 
-    QSqlQuery query;
-    query.exec(querystring);
+        QSqlQuery query;
+        query.exec(querystring);
 
-       QSqlQuery selQuery;
+           QSqlQuery selQuery;
 
-       selQuery.exec("SELECT MAX(id) from article");
-      selQuery.next();
-       int id=selQuery.value(0).toInt();
+           selQuery.exec("SELECT MAX(id) from article");
+          selQuery.next();
+           int id=selQuery.value(0).toInt();
 
-       for(int i=0;i<vvqs.size();i++)
-       {
-           QString content = Utility::accumulate(i,vvqs);
-         QString querystring = QString("INSERT INTO citation VALUES(NULL,'%1',%2,%3);").arg(content).arg(errCount[i]).arg(id);
-           query.exec(querystring);
+           for(int i=0;i<vvqs.size();i++)
+           {
+               QString content = Utility::accumulate(i,vvqs);
+             QString querystring =
+                     QString("INSERT INTO citation VALUES(NULL,'%1',%2,%3);")
+                     .arg(content).arg(errCount[i]).arg(id);
+               query.exec(querystring);
+           }
+
+           int row = ui->tableView->model()->rowCount();
+           int col = ui->tableView->model()->columnCount();
+
+
+           for(int i=0;i<row;i++){
+               QModelIndex authqmi = ui->tableView->model()->index(i,0);
+               QModelIndex affilqmi = ui->tableView->model()->index(i,1);
+               QString author = ui->tableView->model()->data(authqmi)
+                                .toString();
+
+               QString affiliation = ui->tableView->model()->data(affilqmi)
+                                    .toString();
+               QString insquery =
+                       QString("INSERT INTO author values(NULL,'%1','%2',%3)")
+                       .arg(author).arg(affiliation).arg(id);
+
+               query.exec(insquery);
+            }
+
        }
-
-       int row = ui->tableView->model()->rowCount();
-       int col = ui->tableView->model()->columnCount();
-
-
-       for(int i=0;i<row;i++){
-           QModelIndex authqmi = ui->tableView->model()->index(i,0);
-           QModelIndex affilqmi = ui->tableView->model()->index(i,1);
-           QString author = ui->tableView->model()->data(authqmi).toString();
-           QString affiliation = ui->tableView->model()->data(affilqmi).toString();
-
-           QString insquery = QString("INSERT INTO author values(NULL,'%1','%2',%3)").arg(author).arg(affiliation).arg(id);
-
-           query.exec(insquery);
-        }
-
+    flagDone=false;
 }
 
 void parseWizard::deleteRow(int row){

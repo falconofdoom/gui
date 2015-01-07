@@ -7,13 +7,13 @@ namespace Ui {
 class editarticle;
 }
 
-class editarticle : public QDialog
+class EditArticle : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit editarticle(QWidget *parent = 0);
-    ~editarticle();
+    explicit EditArticle(QString artID, QWidget *parent = 0);
+    ~EditArticle();
 
 private:
     Ui::editarticle *ui;

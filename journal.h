@@ -27,17 +27,14 @@ private slots:
     void on_tableView_clicked(const QModelIndex &index);
 
 
+    /**
+     * @brief shows ISSUE information
+     * @param index
+     */
     void on_tableView_2_activated(const QModelIndex &index);
-
-    void on_tableView_3_clicked(const QModelIndex &index);
-
-    void on_tableView_3_activated(const QModelIndex &index);
 
     void on_toolButton_5_clicked();
 
-    void on_toolButton_6_clicked();
-
-    void on_toolButton_7_clicked();
 
     void on_toolButton_4_clicked();
 

@@ -5,6 +5,9 @@
 #include "QModelIndex"
 #include "QSqlQuery"
 #include "QSqlError"
+#include "editarticle.h"
+#include "QMessageBox"
+#include "viewarticle.h"
 Articles::Articles(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Articles)
@@ -58,6 +61,9 @@ void Articles::on_tableView_clicked(const QModelIndex &index)
      vol->setQuery(volquery);
      ui->vComboBox->setModel(vol);
 
+     setArticleTable();
+     curArt="-1";
+
 }
 
 
@@ -70,6 +76,10 @@ void Articles::on_vComboBox_currentTextChanged(const QString &arg1)
     QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2").arg(curJourn).arg(volData);
     issue->setQuery(issuequery);
     ui->iComboBox->setModel(issue);
+
+    setArticleTable();
+    curArt="-1";
+
 }
 
 void Articles::on_iComboBox_currentTextChanged(const QString &arg1)
@@ -96,6 +106,59 @@ void Articles::on_iComboBox_currentTextChanged(const QString &arg1)
 
     }
 
+    setArticleTable();
+}
+
+void Articles::on_viewArticleButton_clicked()
+{
+    if(curArt != "-1"){
+        ViewArticle *vA = new ViewArticle(curArt);
+        vA->exec();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.critical(0,"Error","No article selected, please select and try again");
+        msgBox.setFixedSize(500,200);
+    }
+}
+
+void Articles::on_tableView_2_clicked(const QModelIndex &index)
+{
+   curArt = sqlmodel->data(sqlmodel->index(index.row(),0)).toString();
+}
+
+void Articles::on_delArticleButton_clicked()
+{
+    if(curArt != "-1"){
+        QMessageBox::StandardButton reply;
+         reply = QMessageBox::question(this, "Delete Issue",
+                             "Are you sure you want to delete this article?" +
+                             QString(
+                             "This will delete associated parsed citations"),
+                              QMessageBox::Yes|QMessageBox::No);
+        if (reply == QMessageBox::Yes) {
+
+            QString delArticle = "DELETE from article where id = " + curArt;
+            QString delCitation = "DELETE from citation where article_id = " +
+                                  curArt;
+            QSqlQuery delQuery1;
+            delQuery1.exec(delArticle);
+            delQuery1.exec(delCitation);
+            setArticleTable();
+        }
+
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.critical(0,"Error","No article selected, please select and try again");
+        msgBox.setFixedSize(500,200);
+    }
+}
+
+void Articles::setArticleTable()
+{
     sqlmodel = new QSqlQueryModel;
     QString queryString = QString("SELECT * FROM article WHERE journal_id = %1 and volume_id = %2 and issue_id = %3").arg(curJourn).arg(curVol).arg(curIssue);
     sqlmodel->setQuery(queryString);
@@ -116,9 +179,19 @@ void Articles::on_iComboBox_currentTextChanged(const QString &arg1)
     ui->tableView_2->setColumnHidden(5,true);
     ui->tableView_2->setColumnHidden(6,true);
 
+    curArt="-1";
 }
 
-void Articles::on_viewArticleButton_clicked()
+void Articles::on_editArticleButton_clicked()
 {
-
+    if(curArt != "-1"){
+        EditArticle *eA = new EditArticle(curArt);
+        eA->exec();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.critical(0,"Error","No article selected, please select and try again");
+        msgBox.setFixedSize(500,200);
+    }
 }

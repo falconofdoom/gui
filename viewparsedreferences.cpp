@@ -41,7 +41,8 @@ void ViewParsedReferences::on_tableView_clicked(const QModelIndex &index)
     qDebug()<<QString("SELECT * from citation where article_id = %1").arg(data.toInt());
     QWidget *central = new QWidget;
     ui->scrollArea->layout()->deleteLater();
-    QVBoxLayout *layout = new QVBoxLayout(central);
+
+    layout = new QVBoxLayout(central);
     ui->scrollArea->setWidget(central);
     ui->scrollArea->setWidgetResizable(true);
     int j=0;
@@ -158,7 +159,12 @@ void ViewParsedReferences::on_tableView_2_clicked(const QModelIndex &index)
      vol->setQuery(volquery);
      ui->comboBox->setModel(vol);
 
-     ui->textBrowser->clear();
+     QWidget *central = new QWidget;
+     ui->scrollArea->layout()->deleteLater();
+
+     layout = new QVBoxLayout(central);
+     ui->scrollArea->setWidget(central);
+     ui->scrollArea->setWidgetResizable(true);
 }
 
 void ViewParsedReferences::on_comboBox_currentTextChanged(const QString &arg1)
@@ -178,7 +184,18 @@ void ViewParsedReferences::on_comboBox_2_currentTextChanged(const QString &arg1)
 
     curIssue = ui->comboBox_2->currentText();
     sqlmodel = new QSqlQueryModel;
-    QString queryString = QString("SELECT * FROM article WHERE journal_id = %1 and volume_id = %2 and issue_id = %3").arg(curJourn).arg(curVol).arg(curIssue);
+    qDebug()<<"issue "+ui->comboBox_2->currentText();
+
+    QString queryString;
+
+    if(curIssue != ""){
+       queryString =
+       QString("SELECT * FROM article WHERE journal_id = %1 and volume_id = %2 and issue_id = %3")
+       .arg(curJourn).arg(curVol).arg(curIssue);
+    }
+    else
+      queryString = "SELECT * from article where journal_id = -999";
+
     sqlmodel->setQuery(queryString);
 
     sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Articles"));
@@ -418,7 +435,8 @@ void ViewParsedReferences::addRow(){
 
 void ViewParsedReferences::on_editButton_clicked()
 {
-    if(errcount.size() > 0 || vvqs.size() > 0)
+    qDebug()<<edIndex;
+    if( (errcount.size() > 0 || vvqs.size() > 0) && edIndex < errcount.size())
         editContent(edIndex);
     else{
         QMessageBox *qmsg = new QMessageBox;

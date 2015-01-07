@@ -9,6 +9,7 @@
 #include "QLabel"
 #include "QSet"
 #include "QGridLayout"
+#include "QVBoxLayout"
 namespace Ui {
 class ViewParsedReferences;
 }
@@ -42,7 +43,7 @@ public:
     QVector < QToolButton *> vqtb;
     QSet < QLineEdit *> modifiedLine;
     QGridLayout *qgrid;
-
+    QVBoxLayout *layout;
     QPushButton *ok;
     QPushButton *cancel;
     QPushButton *addrow;

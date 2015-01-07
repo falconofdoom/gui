@@ -54,24 +54,30 @@ void parsers::on_delParser_clicked()
 {
     QModelIndex index = ui->tableView->currentIndex();
 
-    QMessageBox::StandardButton reply;
-     reply = QMessageBox::question(this, "Remove Parser",
-                                "Are you sure you want to remove this parser" +
-                                 QString(" from the program?")
-                                ,QMessageBox::Yes|QMessageBox::No);
 
+    if(index.row() != -1){
 
-     if(reply == QMessageBox::Yes){
-         QString data = ui->tableView->model()->data(ui->tableView->model()->
-         index(index.row(),0)).toString();
+        QMessageBox::StandardButton reply;
+         reply = QMessageBox::question(this, "Remove Parser",
+                              "Are you sure you want to remove this parser" +
+                              QString(" from the program?")
+                               ,QMessageBox::Yes|QMessageBox::No);
+         if(reply == QMessageBox::Yes){
+             QString data = ui->tableView->model()->data(ui->tableView->model()->
+             index(index.row(),0)).toString();
+             QSqlQuery delqry(QString("delete from parser where id = %1").arg(data));
+             delqry.exec();
 
-         QSqlQuery delqry(QString("delete from parser where id = %1").arg(data));
-         delqry.exec();
-
-         setTableView();
-     }
-
-
+             setTableView();
+         }
+    }
+    else
+    {
+        QMessageBox warning;
+        warning.setText("Please select the parser that you'd like to delete!");
+        warning.setWindowTitle("No Parser Selected");
+        warning.exec();
+    }
 
 }
 
