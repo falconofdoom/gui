@@ -251,8 +251,12 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
         errCount.clear();
         qpb.resize(vvqs.size());
         errCount.resize(vvqs.size());
-        QVBoxLayout *layout = new QVBoxLayout;
         QSignalMapper *mapper = new QSignalMapper(this);
+        QWidget *central = new QWidget;
+
+        QVBoxLayout *layout = new QVBoxLayout(central);
+
+
         for(int i=0;i< qpb.size();i++)
         {
             qpb[i]=new QPushButton;
@@ -262,7 +266,9 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
 
             mapper->setMapping(qpb[i],i);
         }
-        ui->scrollArea->setLayout(layout);
+
+        ui->scrollArea->setWidget(central);
+        ui->scrollArea->setWidgetResizable(true);
         connect(mapper,SIGNAL(mapped(int)),this,SLOT(viewPage(int)));
         connect(ui->pushButton_4,SIGNAL(clicked()),this,SLOT(editPage()));
 

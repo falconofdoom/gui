@@ -127,38 +127,56 @@ void ViewJournal::on_deleteIssueButton_clicked()
 {
     QModelIndex index = ui->issueTable->currentIndex();
 
+    if(index.row() != -1){
+         QMessageBox::StandardButton reply;
+         reply = QMessageBox::question(this, "Delete Issue",
+                    "Are you sure you want to delete this issue?",
+                     QMessageBox::Yes|QMessageBox::No);
 
-    QMessageBox::StandardButton reply;
-     reply = QMessageBox::question(this, "Delete Issue",
-                "Are you sure you want to delete this issue?",
-                 QMessageBox::Yes|QMessageBox::No);
+         if (reply == QMessageBox::Yes) {
 
-     if (reply == QMessageBox::Yes) {
+             QString data = ui->issueTable->model()->data(ui->issueTable->model()->
+             index(index.row(),0)).toString();
 
-         QString data = ui->issueTable->model()->data(ui->issueTable->model()->
-         index(index.row(),0)).toString();
+             QString delQStr = "delete from journal_issue where issue = "
+                               + data + " and journal_id = " + journID +
+                                " and volume = " + volID;
 
-         QString delQStr = "delete from journal_issue where issue = "
-                           + data + " and journal_id = " + journID +
-                            " and volume = " + volID;
+             QSqlQuery delQry(delQStr);
+             delQry.exec();
+             setIssueView();
 
-         QSqlQuery delQry(delQStr);
-         delQry.exec();
-         setIssueView();
-
-     } else {
-       qDebug() << "Yes was *not* clicked";
-     }
+         } else {
+           qDebug() << "Yes was *not* clicked";
+         }
+    }
+    else
+    {
+        QMessageBox warning;
+        warning.setText("Please click first on an issue of you'd like to delete!");
+        warning.setWindowTitle("No Issue Selected");
+        warning.exec();
+    }
 }
 
 void ViewJournal::on_editIssueButton_clicked()
 {
-    EditIssue *ei = new EditIssue;
-    ei->setJournalDets(journID,journName,volID,issue);
+    QModelIndex index = ui->issueTable->currentIndex();
+    if(index.row() != -1){
+        EditIssue *ei = new EditIssue;
+        ei->setJournalDets(journID,journName,volID,issue);
 
-    int retcode = ei->exec();
-    if(retcode==1)
-        setIssueView();
-    connect(ei,SIGNAL(destroyed()),ei,SLOT(deleteLater()));
-    connect(ei,SIGNAL(rejected()),ei,SLOT(deleteLater()));
-}
+        int retcode = ei->exec();
+        if(retcode==1)
+            setIssueView();
+        connect(ei,SIGNAL(destroyed()),ei,SLOT(deleteLater()));
+        connect(ei,SIGNAL(rejected()),ei,SLOT(deleteLater()));
+    }
+    else
+    {
+        QMessageBox warning;
+        warning.setText("Please click first on an issue of you'd like to edit!");
+        warning.setWindowTitle("No Issue Selected");
+        warning.exec();
+    }
+ }
