@@ -200,27 +200,35 @@ void EditArticle::on_pushButton_clicked()
     QSqlQuery delquery,query;
     delquery.exec(delAuthors);
 
-    int row = model->rowCount();
-    for(int i=0;i<row;i++){
-        QModelIndex authqmi = model->index(i,0);
-        QModelIndex affilqmi = model->index(i,1);
-        QString author = model->data(authqmi)
-                         .toString();
-
-        QString affiliation = model->data(affilqmi)
+    if(articleName.trimmed() != "" && volume != "" && issue != ""){
+        int row = model->rowCount();
+        for(int i=0;i<row;i++){
+            QModelIndex authqmi = model->index(i,0);
+            QModelIndex affilqmi = model->index(i,1);
+            QString author = model->data(authqmi)
                              .toString();
-        QString insquery =
-                QString("INSERT INTO author values(NULL,'%1','%2',%3)")
-                .arg(author).arg(affiliation).arg(curArt);
 
-        query.exec(insquery);
+            QString affiliation = model->data(affilqmi)
+                                 .toString();
+            QString insquery =
+                    QString("INSERT INTO author values(NULL,'%1','%2',%3)")
+                    .arg(author).arg(affiliation).arg(curArt);
+
+            query.exec(insquery);
+         }
+        QString updquery = "UPDATE article set name = '" + articleName +
+                           "', journal_id = " + curJourn + ", volume_id = " +
+                            volume + ", issue_id =  " + issue +
+                            " where id = " + curArt;
+        query.exec(updquery);
      }
-    QString updquery = "UPDATE article set name = '" + articleName +
-                       "', journal_id = " + curJourn + ", volume_id = " +
-                        volume + ", issue_id =  " + issue +
-                        " where id = " + curArt;
-    query.exec(updquery);
-
+    else
+    {
+        QMessageBox warning;
+        warning.setText("One of the fields were left blank! Please try again! This transaction will not be saved!");
+        warning.setWindowTitle("Empty Fields");
+        warning.exec();
+    }
 
 }
 
