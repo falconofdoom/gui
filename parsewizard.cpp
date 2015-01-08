@@ -166,10 +166,58 @@ void parseWizard::viewPage(int index)
 
 void parseWizard::on_parseWizard_currentIdChanged(int id)
 {
-    if(id==4)
+    if(id == 2 && ui->lineEdit->text().trimmed() == ""){
+        QMessageBox warning;
+        warning.setText("Cannot proceed without filling in Article Name!");
+        warning.setWindowTitle("Blank Article Name!");
+        warning.exec();
+        this->back();
+
+    }
+
+    bool flag = true;
+
+    if(id == 3 && cJourn == ""){
+
+        QMessageBox warning;
+        warning.setText("Cannot proceed without journal,volume and issue selected!");
+        warning.setWindowTitle("No Journal, Volume, or Issue Data selected!");
+        warning.exec();
+        this->back();
+        flag = false;
+    }
+    if(id == 3 &&
+         (ui->comboBox->currentText() == "" ||
+          ui->comboBox_2->currentText()== "") &&
+          flag == true){
+
+        QMessageBox warning;
+        warning.setText("Cannot proceed without journal,volume and issue selected!");
+        warning.setWindowTitle("No Journal, Volume, or Issue Data selected!");
+        warning.exec();
+        this->back();
+    }
+
+    bool parseFlag = true;
+
+    if(id == 4)
     {
-      delete ui->scrollArea->layout();
-      QString finishText = ui->textEdit->toPlainText();
+        if(ui->textEdit->toPlainText().trimmed() == ""){
+            parseFlag=false;
+            this->back();
+            QMessageBox warning;
+            warning.setText("Cannot proceed without reference data to parse!");
+            warning.setWindowTitle("Blank Reference Text!");
+            warning.exec();
+
+        }
+
+    }
+
+    if(id == 4 && parseFlag)
+    {
+       delete ui->scrollArea->layout();
+       QString finishText = ui->textEdit->toPlainText();
        QFile file("temp.txt");
        file.open(QIODevice::ReadWrite|QIODevice::Truncate|QIODevice::Text);
        QTextStream out(&file);
@@ -263,36 +311,7 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
 
 
     }
-    if(id == 2 && ui->lineEdit->text().trimmed() == ""){
-        QMessageBox warning;
-        warning.setText("Cannot proceed without filling in Article Name!");
-        warning.setWindowTitle("Blank Article Name!");
-        warning.exec();
-        this->back();
 
-    }
-
-    bool flag = true;
-    if(id == 3 && cJourn == ""){
-
-        QMessageBox warning;
-        warning.setText("Cannot proceed without journal,volume and issue selected!");
-        warning.setWindowTitle("No Journal, Volume, or Issue Data selected!");
-        warning.exec();
-        this->back();
-        flag = false;
-    }
-    if(id == 3 &&
-         (ui->comboBox->currentText() == "" ||
-          ui->comboBox_2->currentText()== "") &&
-          flag == true){
-
-        QMessageBox warning;
-        warning.setText("Cannot proceed without journal,volume and issue selected!");
-        warning.setWindowTitle("No Journal, Volume, or Issue Data selected!");
-        warning.exec();
-        this->back();
-    }
  }
 
 void parseWizard::editPage()
@@ -301,14 +320,21 @@ void parseWizard::editPage()
     editwidget->setWindowTitle("Edit Parsed References");
 
     qgrid = new QGridLayout;
-
+    qDebug() << editIndex;
     vqle1.clear();
     vqle2.clear();
     vqtb.clear();
 
     QSignalMapper *mapper = new QSignalMapper(this);
 
-    if(!vvqs.empty())
+    if(vvqs.empty())
+    {
+       QMessageBox warning;
+       warning.setText("No Output Selected!");
+       warning.setWindowTitle("No Output Selected!");
+       warning.exec();
+       return;
+    }
 
     for(int i=0;i<vvqs[editIndex].size();i++)
     {
@@ -393,57 +419,66 @@ void parseWizard::eraseError()
 
 void parseWizard::on_parseWizard_accepted()
 {
-    if(flagDone){
-        QString articleName = ui->lineEdit->text();
-        QString journData = cJourn;
-        QString volData = ui->comboBox->currentText();
-        QString issData = ui->comboBox_2->currentText();
-        QString parseVer = ui->parserCombo->currentText();
-        QString pages = "1-2";
+    if(vvqs.empty())
+    {
+        QMessageBox warning;
+        warning.setText("No citations were parsed! This transaction will not be saved!");
+        warning.setWindowTitle("No citations parsed!");
+        warning.exec();
+    }
+    else{
+        if(flagDone){
+            QString articleName = ui->lineEdit->text();
+            QString journData = cJourn;
+            QString volData = ui->comboBox->currentText();
+            QString issData = ui->comboBox_2->currentText();
+            QString parseVer = ui->parserCombo->currentText();
+            QString pages = "1-2";
 
-        QString querystring =
-              QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);")
-             .arg(articleName).arg(pages).arg(parseVer).arg(journData).arg(volData)
-                .arg(issData);
+            QString querystring =
+                  QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);")
+                 .arg(articleName).arg(pages).arg(parseVer).arg(journData).arg(volData)
+                    .arg(issData);
 
-        QSqlQuery query;
-        query.exec(querystring);
+            QSqlQuery query;
+            query.exec(querystring);
 
-           QSqlQuery selQuery;
+               QSqlQuery selQuery;
 
-           selQuery.exec("SELECT MAX(id) from article");
-          selQuery.next();
-           int id=selQuery.value(0).toInt();
+               selQuery.exec("SELECT MAX(id) from article");
+              selQuery.next();
+               int id=selQuery.value(0).toInt();
 
-           for(int i=0;i<vvqs.size();i++)
-           {
-               QString content = Utility::accumulate(i,vvqs);
-             QString querystring =
-                     QString("INSERT INTO citation VALUES(NULL,'%1',%2,%3);")
-                     .arg(content).arg(errCount[i]).arg(id);
-               query.exec(querystring);
-           }
+               for(int i=0;i<vvqs.size();i++)
+               {
+                   QString content = Utility::accumulate(i,vvqs);
+                 QString querystring =
+                         QString("INSERT INTO citation VALUES(NULL,'%1',%2,%3);")
+                         .arg(content).arg(errCount[i]).arg(id);
+                   query.exec(querystring);
+               }
 
-           int row = ui->tableView->model()->rowCount();
-           int col = ui->tableView->model()->columnCount();
+               int row = ui->tableView->model()->rowCount();
+               int col = ui->tableView->model()->columnCount();
 
 
-           for(int i=0;i<row;i++){
-               QModelIndex authqmi = ui->tableView->model()->index(i,0);
-               QModelIndex affilqmi = ui->tableView->model()->index(i,1);
-               QString author = ui->tableView->model()->data(authqmi)
-                                .toString();
-
-               QString affiliation = ui->tableView->model()->data(affilqmi)
+               for(int i=0;i<row;i++){
+                   QModelIndex authqmi = ui->tableView->model()->index(i,0);
+                   QModelIndex affilqmi = ui->tableView->model()->index(i,1);
+                   QString author = ui->tableView->model()->data(authqmi)
                                     .toString();
-               QString insquery =
-                       QString("INSERT INTO author values(NULL,'%1','%2',%3)")
-                       .arg(author).arg(affiliation).arg(id);
 
-               query.exec(insquery);
-            }
+                   QString affiliation = ui->tableView->model()->data(affilqmi)
+                                        .toString();
+                   QString insquery =
+                           QString("INSERT INTO author values(NULL,'%1','%2',%3)")
+                           .arg(author).arg(affiliation).arg(id);
 
-       }
+                   query.exec(insquery);
+                }
+
+           }
+    }
     flagDone=false;
 }
 

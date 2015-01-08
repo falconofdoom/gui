@@ -56,6 +56,7 @@ private slots:
 
     void on_deleteAuthor_clicked();
 
+
 private:
     Ui::parseWizard *ui;
     void authorAdded();

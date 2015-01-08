@@ -1,10 +1,15 @@
 #include "editarticle.h"
 #include "ui_editarticle.h"
 #include "QSqlQuery"
-#include "QSqlQueryModel"
 #include "QMessageBox"
 #include "QDebug"
+#include "addauthor.h"
 #include "utility.h"
+#include "QStandardItem"
+
+typedef QList< QStandardItem* > StandardItemList;
+
+
 EditArticle::EditArticle(QString artID,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::editarticle)
@@ -18,19 +23,28 @@ EditArticle::EditArticle(QString artID,QWidget *parent) :
     qry.prepare(articleQuery);
 
     //fill in tableview items for authors
-    QSqlQueryModel *model = new QSqlQueryModel;
-    model->setQuery(authorsQuery);
-    model->setHeaderData(1,Qt::Horizontal,tr("Author"));
-    model->setHeaderData(2,Qt::Horizontal,tr("Affiliation"));
+
+    model = new QStandardItemModel(0,2);
     ui->tableView->setModel(model);
+
+    QSqlQueryModel *sqlmodel = new QSqlQueryModel;
+    sqlmodel->setQuery(authorsQuery);
+    model->setHeaderData(0,Qt::Horizontal,tr("Author"));
+    model->setHeaderData(1,Qt::Horizontal,tr("Affiliation"));
+    for(int i=0; i < sqlmodel->rowCount();i++)
+    {
+        QString authstr = sqlmodel->data(sqlmodel->index(i,1)).toString();
+        QString affilstr = sqlmodel->data(sqlmodel->index(i,2)).toString();
+        QStandardItem *auth = new QStandardItem(authstr);
+        QStandardItem *affil = new QStandardItem(affilstr);
+        model->appendRow( StandardItemList() << auth << affil );
+    }
+
     ui->tableView->setModel(model);
-    ui->tableView->verticalHeader()->setVisible(false);
-    ui->tableView->resizeColumnsToContents();
     QHeaderView* header = ui->tableView->horizontalHeader();
+
     header->setSectionResizeMode(QHeaderView::Stretch);
-    ui->tableView->setColumnHidden(0,true);
-    ui->tableView->setColumnHidden(3,true);
-    ui->tableView->setHorizontalHeader(header);
+
     ui->tableView->resizeColumnsToContents();
 
 
@@ -81,4 +95,41 @@ EditArticle::EditArticle(QString artID,QWidget *parent) :
 EditArticle::~EditArticle()
 {
     delete ui;
+}
+
+void EditArticle::on_addAuthor_clicked()
+{
+    addAuthor *aA = new addAuthor;
+     int retcode = aA->exec();
+
+     if(retcode==1){
+
+           QStandardItem *auth = new QStandardItem(QString(aA->author));
+           QStandardItem *affil = new QStandardItem(QString(aA->affiliation));
+
+         if(aA->author.trimmed() != "" && aA->affiliation.trimmed() != "")
+               model->appendRow( StandardItemList() << auth << affil );
+         else
+         {
+             QMessageBox warning;
+             warning.setText("One of the fields were left blank! Please try again! This transaction will not be saved!");
+             warning.setWindowTitle("No Journal Selected");
+             warning.exec();
+         }
+    }
+}
+
+void EditArticle::on_removeAuthor_clicked()
+{
+    QModelIndex index = ui->tableView->currentIndex();
+
+    if(index.row() != -1)
+        model->removeRow(index.row());
+    else
+    {
+        QMessageBox warning;
+        warning.setText("No author selected to be removed! Please select an author then try again!");
+        warning.setWindowTitle("No Author Selected");
+        warning.exec();
+    }
 }

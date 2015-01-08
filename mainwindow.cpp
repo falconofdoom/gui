@@ -39,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_2->setIcon(QIcon(QPixmap(":images/newicon.png")));
     ui->toolButton_2->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButton_2->setIconSize(QSize(175,175));
-    ui->toolButton_2->setText("    Parse Reference Text   ");
+    ui->toolButton_2->setText("Parse References from Article");
 
     /*     Setup for toolButton for Exporting references         */
     ui->toolButton_3->setIcon(QIcon(QPixmap(":images/editicon.png")));
