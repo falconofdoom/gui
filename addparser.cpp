@@ -35,28 +35,38 @@ void addParser::on_buttonBox_accepted()
     QString ins = QString("insert into parser values(NULL,'%1','%2')")
                   .arg(parsename).arg(filename);
 
-    query1.prepare(QString("Select count(*) from parser where path = '%1'")
-    .arg(filename));
+    if(parsename.trimmed() !="" && filename.trimmed() != ""){
+        query1.prepare(QString("Select count(*) from parser where path = '%1'")
+        .arg(filename));
 
-    // Try to execute the query and position the result on the first and unique record
-    if (!query1.exec() || !query1.first())
-    {
-       // SQL error (for example, if the table doesn't exist)
-       qDebug() << query1.lastError().text();
-    }
-    // value(0) of first record will contain the "count(*)" value
-    else if (query1.value(0) == 0)
-    {
-        QSqlQuery insqry;
-        insqry.exec(ins);
-        qDebug()<<"Tessqt";
-        qDebug() << query1.lastError().text();
 
+        // Try to execute the query and position the result on the first and unique record
+        if (!query1.exec() || !query1.first())
+        {
+           // SQL error (for example, if the table doesn't exist)
+           qDebug() << query1.lastError().text();
+        }
+        // value(0) of first record will contain the "count(*)" value
+        else if (query1.value(0) == 0)
+        {
+            QSqlQuery insqry;
+            insqry.exec(ins);
+            qDebug()<<"Tessqt";
+            qDebug() << query1.lastError().text();
+
+        }
+        else
+        {
+             QMessageBox msgBox;
+             msgBox.critical(0,"Error","Parser already exists in the database!");
+             msgBox.setFixedSize(500,200);
+        }
     }
     else
     {
-         QMessageBox msgBox;
-         msgBox.critical(0,"Error","Parser already exists in the database!");
-         msgBox.setFixedSize(500,200);
+        QMessageBox warning;
+        warning.setText("One of the fields were left blank! Make sure all fields are filled and try again!");
+        warning.setWindowTitle("Blank Input");
+        warning.exec();
     }
 }

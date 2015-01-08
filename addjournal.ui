@@ -7,13 +7,16 @@
     <x>0</x>
     <y>0</y>
     <width>676</width>
-    <height>356</height>
+    <height>180</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Add Journal</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="verticalSpacing">
+    <number>1</number>
+   </property>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">

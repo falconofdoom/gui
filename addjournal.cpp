@@ -30,7 +30,7 @@ void AddJournal::on_buttonBox_accepted()
     else
     {
        QMessageBox warning;
-       warning.setText("Journal name is blank! This transaction will not be saved");
+       warning.setText("Journal name is blank, please fill in the information and try again! This transaction will not be saved!");
        warning.setWindowTitle("No Journal Name");
        warning.exec();
     }

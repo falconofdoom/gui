@@ -90,21 +90,7 @@ void parseWizard::authorAdded()
 
 
 
-void parseWizard::on_pushButton_clicked()
-{
-    addAuthor *aA = new addAuthor;
-     int retcode = aA->exec();
 
-     if(retcode==1){
-       QStandardItem *auth = new QStandardItem(QString(aA->author));
-       QStandardItem *affil = new QStandardItem(QString(aA->affiliation));
-       model->appendRow( StandardItemList() << auth << affil );
-
-     }
-
-
-    connect(aA,SIGNAL(destroyed()),aA,SLOT(deleteLater()));
-}
 
 void parseWizard::on_lineEdit_2_textChanged(const QString &arg1)
 {
@@ -277,7 +263,37 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
 
 
     }
-}
+    if(id == 2 && ui->lineEdit->text().trimmed() == ""){
+        QMessageBox warning;
+        warning.setText("Cannot proceed without filling in Article Name!");
+        warning.setWindowTitle("Blank Article Name!");
+        warning.exec();
+        this->back();
+
+    }
+
+    bool flag = true;
+    if(id == 3 && cJourn == ""){
+
+        QMessageBox warning;
+        warning.setText("Cannot proceed without journal,volume and issue selected!");
+        warning.setWindowTitle("No Journal, Volume, or Issue Data selected!");
+        warning.exec();
+        this->back();
+        flag = false;
+    }
+    if(id == 3 &&
+         (ui->comboBox->currentText() == "" ||
+          ui->comboBox_2->currentText()== "") &&
+          flag == true){
+
+        QMessageBox warning;
+        warning.setText("Cannot proceed without journal,volume and issue selected!");
+        warning.setWindowTitle("No Journal, Volume, or Issue Data selected!");
+        warning.exec();
+        this->back();
+    }
+ }
 
 void parseWizard::editPage()
 {
@@ -444,4 +460,45 @@ void parseWizard::deleteRow(int row){
 
     vqle1[row]->setText("-1");
     vqle2[row]->setText("-1");
+}
+
+void parseWizard::on_addAuthor_clicked()
+{
+
+    addAuthor *aA = new addAuthor;
+     int retcode = aA->exec();
+
+     if(retcode==1){
+
+           QStandardItem *auth = new QStandardItem(QString(aA->author));
+           QStandardItem *affil = new QStandardItem(QString(aA->affiliation));
+
+         if(aA->author.trimmed() != "" && aA->affiliation.trimmed() != "")
+               model->appendRow( StandardItemList() << auth << affil );
+         else
+         {
+             QMessageBox warning;
+             warning.setText("One of the fields were left blank! Please try again! This transaction will not be saved!");
+             warning.setWindowTitle("No Journal Selected");
+             warning.exec();
+         }
+     }
+
+
+    connect(aA,SIGNAL(destroyed()),aA,SLOT(deleteLater()));
+}
+
+void parseWizard::on_deleteAuthor_clicked()
+{
+    QModelIndex index = ui->tableView->currentIndex();
+
+    if(index.row() != -1)
+        model->removeRow(index.row());
+    else
+    {
+        QMessageBox warning;
+        warning.setText("No author selected to be removed! Please select an author then try again!");
+        warning.setWindowTitle("No Author Selected");
+        warning.exec();
+    }
 }

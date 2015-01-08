@@ -33,7 +33,6 @@ public:
     bool flagDone = false;
 private slots:
     void on_label_2_linkActivated(const QString &link);
-    void on_pushButton_clicked();
 
     void on_lineEdit_2_textChanged(const QString &arg1);
 
@@ -52,6 +51,10 @@ private slots:
     void eraseError();
     void on_parseWizard_accepted();
     void deleteRow(int row);
+
+    void on_addAuthor_clicked();
+
+    void on_deleteAuthor_clicked();
 
 private:
     Ui::parseWizard *ui;
