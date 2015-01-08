@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>editarticle</class>
+ <widget class="QDialog" name="editarticle">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>574</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="pushButton">
+     <property name="text">
+      <string>Save Changes</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0" colspan="2">
+    <layout class="QGridLayout" name="gridLayout_2">
+     <item row="0" column="1" colspan="3">
+      <widget class="QLineEdit" name="lineEdit"/>
+     </item>
+     <item row="8" column="0" colspan="3">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QLabel" name="issueLabel">
+         <property name="font">
+          <font>
+           <family>Trebuchet MS</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Issue: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox"/>
+       </item>
+       <item>
+        <widget class="QLabel" name="volumeLabel">
+         <property name="font">
+          <font>
+           <family>Trebuchet MS</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Volume: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_2"/>
+       </item>
+      </layout>
+     </item>
+     <item row="9" column="0" colspan="3">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="monthLabel">
+         <property name="font">
+          <font>
+           <family>Trebuchet MS</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Month:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="yearLabel">
+         <property name="font">
+          <font>
+           <family>Trebuchet MS</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Year:</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="16" column="0" colspan="3">
+      <widget class="Line" name="line_3">
+       <property name="font">
+        <font>
+         <family>Trebuchet MS</family>
+        </font>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="journalLabel">
+       <property name="font">
+        <font>
+         <family>Trebuchet MS</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>Journal:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="articleLabel">
+       <property name="font">
+        <font>
+         <family>Trebuchet MS</family>
+         <pointsize>13</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Article:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="0">
+      <widget class="QLabel" name="label">
+       <property name="font">
+        <font>
+         <family>Trebuchet MS</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>Authors:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="0" colspan="3">
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <item alignment="Qt::AlignLeft">
+        <widget class="QLabel" name="parserLabel">
+         <property name="font">
+          <font>
+           <family>Trebuchet MS</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Parser used: </string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboBox_3"/>
+       </item>
+      </layout>
+     </item>
+     <item row="13" column="0" colspan="4">
+      <widget class="QTableView" name="tableView">
+       <attribute name="horizontalHeaderCascadingSectionResizes">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="horizontalHeaderStretchLastSection">
+        <bool>false</bool>
+       </attribute>
+      </widget>
+     </item>
+     <item row="4" column="0" colspan="4">
+      <widget class="QTableView" name="tableView_2"/>
+     </item>
+     <item row="10" column="0" colspan="4">
+      <widget class="Line" name="line_2">
+       <property name="font">
+        <font>
+         <family>Trebuchet MS</family>
+        </font>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0" colspan="4">
+      <widget class="Line" name="line">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <family>Trebuchet MS</family>
+        </font>
+       </property>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>editarticle</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>162</x>
+     <y>551</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>286</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>editarticle</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>59</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>319</x>
+     <y>286</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

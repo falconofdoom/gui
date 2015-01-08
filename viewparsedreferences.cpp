@@ -39,6 +39,7 @@ void ViewParsedReferences::on_tableView_clicked(const QModelIndex &index)
     QSqlQuery qry;
     qry.exec(QString("SELECT * from citation where article_id = %1").arg(data.toInt()));
     qDebug()<<QString("SELECT * from citation where article_id = %1").arg(data.toInt());
+    curart = data.toInt();
     QWidget *central = new QWidget;
     ui->scrollArea->layout()->deleteLater();
 
@@ -85,8 +86,9 @@ void ViewParsedReferences::on_tableView_clicked(const QModelIndex &index)
     }
 
     connect(mapper,SIGNAL(mapped(int)),this,SLOT(editContent(int)));
-
-
+    edIndex = 999999;
+    ui->label_3->
+        setText(QString("No. of Errors: (No output selected yet!)"));
 
 
 }
@@ -105,15 +107,24 @@ void ViewParsedReferences::viewContent(int index)
 
 void ViewParsedReferences::on_pushButton_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName(this,"Export AGM",".","A Good Markup File (*.agm)");
-    QFile file(filename.append(".agm"));
+    qDebug()<<edIndex;
+    if( (errcount.size() > 0 || vvqs.size() > 0) && curart > 0){
+        QString filename = QFileDialog::getSaveFileName(this,"Export AGM",".","A Good Markup File (*.agm)");
+        QFile file(filename.append(".agm"));
 
-    file.open(QIODevice::WriteOnly|QIODevice::Text);
+        file.open(QIODevice::WriteOnly|QIODevice::Text);
 
-    QTextStream out(&file);
+        QTextStream out(&file);
 
-    for(int i=0;i<contents.size();i++)
-        out<<contents[i]<<"\n****\n";
+        for(int i=0;i<contents.size();i++)
+            out<<contents[i]<<"\n****\n";
+    }
+    else{
+        QMessageBox *qmsg = new QMessageBox;
+        qmsg->setText("No article selected to export!");
+        qmsg->setWindowTitle("Error!");
+        qmsg->exec();
+    }
 
 }
 
@@ -134,6 +145,7 @@ void ViewParsedReferences::journalSetup(QString entry)
 
     ui->tableView_2->setHorizontalHeader(header2);
     ui->tableView_2->setColumnHidden(0,true);
+
 }
 
 void ViewParsedReferences::on_lineEdit_textChanged(const QString &arg1)
@@ -153,7 +165,7 @@ void ViewParsedReferences::on_tableView_2_clicked(const QModelIndex &index)
 
      QSqlQueryModel *vol = new QSqlQueryModel;
      QString volquery =
-             QString("SELECT volume FROM journal_volume where journal_id=%1")
+             QString("SELECT volume FROM journal_volume where journal_id=%1 order by volume DESC")
              .arg(journID);
 
      vol->setQuery(volquery);
@@ -165,6 +177,10 @@ void ViewParsedReferences::on_tableView_2_clicked(const QModelIndex &index)
      layout = new QVBoxLayout(central);
      ui->scrollArea->setWidget(central);
      ui->scrollArea->setWidgetResizable(true);
+     edIndex = 999999;
+     ui->label_3->setText(
+                 QString("No. of Errors: (No output selected yet!)"));
+     curart = -1;
 }
 
 void ViewParsedReferences::on_comboBox_currentTextChanged(const QString &arg1)
@@ -172,7 +188,7 @@ void ViewParsedReferences::on_comboBox_currentTextChanged(const QString &arg1)
     QString volData = ui->comboBox->currentText();
     curVol = volData;
     QSqlQueryModel *issue = new QSqlQueryModel;
-    QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2").arg(curJourn).arg(volData);
+    QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2 order by issue DESC").arg(curJourn).arg(volData);
     issue->setQuery(issuequery);
     ui->comboBox_2->setModel(issue);
     qDebug()<<issuequery;
@@ -184,7 +200,6 @@ void ViewParsedReferences::on_comboBox_2_currentTextChanged(const QString &arg1)
 
     curIssue = ui->comboBox_2->currentText();
     sqlmodel = new QSqlQueryModel;
-    qDebug()<<"issue "+ui->comboBox_2->currentText();
 
     QString queryString;
 
@@ -234,6 +249,12 @@ void ViewParsedReferences::on_comboBox_2_currentTextChanged(const QString &arg1)
 
     }
 
+    QWidget *central = new QWidget;
+    ui->scrollArea->layout()->deleteLater();
+
+    layout = new QVBoxLayout(central);
+    ui->scrollArea->setWidget(central);
+    ui->scrollArea->setWidgetResizable(true);
     ui->textBrowser->clear();
 }
 

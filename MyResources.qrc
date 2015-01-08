@@ -9,5 +9,6 @@
         <file>images/eraser.png</file>
         <file>button.qml</file>
         <file>images/minus.png</file>
+        <file>images/appicon.png</file>
     </qresource>
 </RCC>
