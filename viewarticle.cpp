@@ -57,7 +57,6 @@ ViewArticle::ViewArticle(QString artID, QWidget *parent) :
                     journalID + " and volume = " + volume + " and issue = "
                     + issue;
         QSqlQuery yMquery,jQuery;
-        qDebug()<<yM;
         yMquery.exec(yM);
         yMquery.next();
 

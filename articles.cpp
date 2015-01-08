@@ -57,7 +57,8 @@ void Articles::on_tableView_clicked(const QModelIndex &index)
      curJourn = journID;
 
      QSqlQueryModel *vol = new QSqlQueryModel;
-     QString volquery = QString("SELECT volume FROM journal_volume where journal_id=%1").arg(journID);
+     QString volquery = QString("SELECT volume FROM journal_volume where journal_id=%1 order by volume DESC")
+                        .arg(journID);
      vol->setQuery(volquery);
      ui->vComboBox->setModel(vol);
 
@@ -73,7 +74,8 @@ void Articles::on_vComboBox_currentTextChanged(const QString &arg1)
     QString volData = ui->vComboBox->currentText();
     curVol = volData;
     QSqlQueryModel *issue = new QSqlQueryModel;
-    QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2").arg(curJourn).arg(volData);
+    QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2 order by issue DESC")
+                        .arg(curJourn).arg(volData);
     issue->setQuery(issuequery);
     ui->iComboBox->setModel(issue);
 
@@ -160,7 +162,8 @@ void Articles::on_delArticleButton_clicked()
 void Articles::setArticleTable()
 {
     sqlmodel = new QSqlQueryModel;
-    QString queryString = QString("SELECT * FROM article WHERE journal_id = %1 and volume_id = %2 and issue_id = %3").arg(curJourn).arg(curVol).arg(curIssue);
+    QString queryString = QString("SELECT * FROM article WHERE journal_id = %1 and volume_id = %2 and issue_id = %3")
+                          .arg(curJourn).arg(curVol).arg(curIssue);
     sqlmodel->setQuery(queryString);
 
     sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Articles"));

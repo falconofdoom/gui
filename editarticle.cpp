@@ -18,7 +18,7 @@ EditArticle::EditArticle(QString artID,QWidget *parent) :
 
     QString articleQuery = "SELECT * FROM article where id = " + artID;
     QString authorsQuery = "SELECT * from author where article_id = " + artID;
-
+    curArt = artID;
     QSqlQuery qry;
     qry.prepare(articleQuery);
 
@@ -80,16 +80,16 @@ EditArticle::EditArticle(QString artID,QWidget *parent) :
         QString month = Utility::intToMonth(yMquery.value(0).toInt());
         QString year = yMquery.value(1).toString();
 
-        ui->articleLabel->setText("Article Title: " + article);
+        ui->lineEdit->setText(article);
         this->setWindowTitle("Article - " + article);
         ui->journalLabel->setText("Journal: " + journal);
         ui->volumeLabel->setText("Volume: " + volume);
         ui->issueLabel->setText("Issue: " + issue);
         ui->monthLabel->setText("Month: " + month);
         ui->yearLabel->setText("Year: " + year);
-        ui->parserLabel->setText("Parser used: " + parser);
     }
 
+    journalSetup("");
 }
 
 EditArticle::~EditArticle()
@@ -132,4 +132,120 @@ void EditArticle::on_removeAuthor_clicked()
         warning.setWindowTitle("No Author Selected");
         warning.exec();
     }
+}
+
+
+
+void EditArticle::journalSetup(QString entry)
+{
+    QSqlQueryModel *sqlmodel = new QSqlQueryModel;
+    QString wcard = entry;
+    QString queryString = QString("SELECT * FROM JOURNAL WHERE NAME LIKE '\%%1\%'").arg(wcard);
+    sqlmodel->setQuery(queryString);
+
+    sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Journal"));
+    ui->tableView_2->setModel(sqlmodel);
+
+    ui->tableView_2->resizeColumnsToContents();
+    QHeaderView* header2 = ui->tableView_2->horizontalHeader();
+
+    header2->setStretchLastSection(true);
+
+    ui->tableView_2->setHorizontalHeader(header2);
+    ui->tableView_2->setColumnHidden(0,true);
+
+}
+
+void EditArticle::on_searchjournal_textChanged(const QString &arg1)
+{
+    journalSetup(ui->searchjournal->text());
+}
+
+void EditArticle::on_tableView_2_clicked(const QModelIndex &index)
+{
+    QString journID = ui->tableView_2->model()->data(ui->tableView_2->
+                      model()->index(index.row(),0)).toString();
+    QString data2 = ui->tableView_2->model()->data(ui->tableView_2->
+                    model()->index(index.row(),1)).toString();
+    curJourn = journID;
+
+    QSqlQueryModel *vol = new QSqlQueryModel;
+    QString volquery =
+             QString("SELECT volume FROM journal_volume where journal_id=%1 order by volume DESC")
+             .arg(journID);
+
+    vol->setQuery(volquery);
+    ui->comboBox->setModel(vol);
+}
+
+void EditArticle::on_comboBox_currentTextChanged(const QString &arg1)
+{
+    QString volData = ui->comboBox->currentText();
+    QSqlQueryModel *issue = new QSqlQueryModel;
+    QString issuequery = QString("SELECT issue FROM journal_issue where journal_id=%1 and volume=%2 order by issue DESC").arg(curJourn).arg(volData);
+    issue->setQuery(issuequery);
+    ui->comboBox_2->setModel(issue);
+
+
+}
+
+void EditArticle::on_pushButton_clicked()
+{
+    QString articleName = ui->lineEdit->text();
+    QString volume = ui->comboBox->currentText();
+    QString issue = ui->comboBox_2->currentText();
+
+    QString delAuthors = "DELETE from author where article_id = " + curArt;
+
+    QSqlQuery delquery,query;
+    delquery.exec(delAuthors);
+
+    int row = model->rowCount();
+    for(int i=0;i<row;i++){
+        QModelIndex authqmi = model->index(i,0);
+        QModelIndex affilqmi = model->index(i,1);
+        QString author = model->data(authqmi)
+                         .toString();
+
+        QString affiliation = model->data(affilqmi)
+                             .toString();
+        QString insquery =
+                QString("INSERT INTO author values(NULL,'%1','%2',%3)")
+                .arg(author).arg(affiliation).arg(curArt);
+
+        query.exec(insquery);
+     }
+    QString updquery = "UPDATE article set name = '" + articleName +
+                       "', journal_id = " + curJourn + ", volume_id = " +
+                        volume + ", issue_id =  " + issue +
+                        " where id = " + curArt;
+    query.exec(updquery);
+
+
+}
+
+void EditArticle::on_comboBox_2_currentTextChanged(const QString &arg1)
+{
+    QString volData = ui->comboBox->currentText();
+    QString issue = ui->comboBox_2->currentText();
+    QString yM= "SELECT month,year from journal_issue where journal_id = " +
+                curJourn + " and volume = " + volData + " and issue = "
+                + issue;
+    QSqlQuery yMquery;
+    yMquery.exec(yM);
+    yMquery.next();
+
+    QString month = Utility::intToMonth(yMquery.value(0).toInt());
+    QString year = yMquery.value(1).toString();
+
+    if(month != "Invalid Integer! Cannot convert!"){
+        ui->monthLabel->setText("Month: " + month);
+        ui->yearLabel->setText("Year: " + year);
+    }
+    else
+    {
+        ui->monthLabel->setText("Month: No issue for this volume");
+        ui->yearLabel->setText("Year: No issue for this volume");
+    }
+
 }
