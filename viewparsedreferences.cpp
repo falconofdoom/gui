@@ -308,7 +308,6 @@ void ViewParsedReferences::editContent(int ind){
         qgrid->addWidget(qle2,i+1,1);
         qgrid->addWidget(qtb,i+1,2);
 
-
         connect(vqle1[i],SIGNAL(editingFinished()),this,SLOT(addError()));
         connect(vqle2[i],SIGNAL(editingFinished()),this,SLOT(addError()));
         connect(vqtb[i],SIGNAL(clicked()),mapper,SLOT(map()));
@@ -394,16 +393,32 @@ void ViewParsedReferences::commitError(){
 
 
 void ViewParsedReferences::deleteRow(int row){
-    if(vAddedRow[row-1] == false)
-    proxtotal++;
-    errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
+
 
     QLayoutItem *item = qgrid->itemAtPosition(row,0);
+    QLineEdit *lineedit = dynamic_cast<QLineEdit*> (item->widget());
+
+    if(vAddedRow[row-1] == false)
+        proxtotal++;
+    else
+        proxtotal--;
+
+    if(modifiedLine.find(lineedit) != modifiedLine.end())
+        proxtotal--;
+
     item->widget()->hide();
     item = qgrid->itemAtPosition(row,1);
+
+    lineedit = dynamic_cast<QLineEdit*> (item->widget());
+
+    if(modifiedLine.find(lineedit) != modifiedLine.end())
+        proxtotal--;
+
     item->widget()->hide();
     item = qgrid->itemAtPosition(row,2);
     item->widget()->hide();
+
+    errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
 
     vqle1[row-1]->setText("-1");
     vqle2[row-1]->setText("-1");
@@ -433,12 +448,9 @@ void ViewParsedReferences::addRow(){
     qgrid->addWidget(ok);
     qgrid->addWidget(cancel);
     qgrid->addWidget(addrow);
-//    delete qgrid;
 
     errorlabel->setText(QString("<b>Errors: %1</b>").arg(proxtotal));
 
-//    qgrid = new QGridLayout;
-//    qgrid->addWidget(errorlabel,0,0);
 
       QSignalMapper *mapper = new QSignalMapper(this);
 

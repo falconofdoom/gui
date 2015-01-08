@@ -40,6 +40,8 @@ public:
     QVector < QVector < QString > > vvqs;
     QVector < QLineEdit* > vqle1;
     QVector < QLineEdit *> vqle2;
+    QVector <QString> vqle1copy;
+    QVector <QString> vqle2copy;
     QVector < QToolButton *> vqtb;
     QSet < QLineEdit *> modifiedLine;
     QGridLayout *qgrid;
@@ -48,6 +50,7 @@ public:
     QPushButton *cancel;
     QPushButton *addrow;
     QVector <bool> vAddedRow;
+
 private slots:
 
     void addError();
