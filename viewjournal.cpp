@@ -21,7 +21,7 @@ ViewJournal::ViewJournal(QString jID, QString jName, QString vID,QWidget *parent
     journName = jName;
     volID = vID;
 
-    QString windowTitle = "Journal - " + journName + " Vol. " + volID;
+    QString windowTitle = "Issue Management: Journal - " + journName + " Vol. " + volID;
     this->setWindowTitle(windowTitle);
 
     setIssueView();

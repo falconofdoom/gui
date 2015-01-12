@@ -50,7 +50,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_5->setIcon(QIcon(QPixmap(":images/journal.png")));
     ui->toolButton_5->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButton_5->setIconSize(QSize(175,175));
-    ui->toolButton_5->setText("     Journals   ");
+    ui->toolButton_5->setText("   Journal Management   ");
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     QString dbpath = QCoreApplication::applicationDirPath().append("/db/refdb.db");

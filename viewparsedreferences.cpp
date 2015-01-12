@@ -244,7 +244,7 @@ void ViewParsedReferences::on_comboBox_2_currentTextChanged(const QString &arg1)
          int month = qry.value(0).toInt();
          int year = qry.value(1).toInt();
 
-         ui->label_6->setText(QString("Month: %1").arg(month));
+         ui->label_6->setText(QString("Month: %1").arg(Utility::intToMonth(month)));
          ui->label_7->setText(QString("Year: %1").arg(year));
 
     }

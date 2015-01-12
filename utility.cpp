@@ -3,8 +3,6 @@
 Utility::Utility()
 {}
 
-
-
 QString Utility::intToMonth(int i)
 {
     switch (i) {
@@ -50,7 +48,6 @@ QString Utility::intToMonth(int i)
     }
 }
 
-
 QString Utility::accumulate(int i, QVector < QVector < QString > > vvqs)
 {
     QString str="";
@@ -66,4 +63,13 @@ QString Utility::accumulate(int i, QVector < QVector < QString > > vvqs)
         }
     }
     return str;
+}
+
+int Utility::sumOverErrors(QVector<int> vI)
+{
+    int total = 0;
+
+    for(int i = 0;i < vI.size();i++) total+= vI[i];
+
+    return total;
 }

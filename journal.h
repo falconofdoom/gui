@@ -40,6 +40,8 @@ private slots:
 
     void on_lineEdit_textChanged(const QString &arg1);
 
+    void on_tableView_2_clicked(const QModelIndex &index);
+
 private:
     Ui::Journal *ui;
     void setTableView();

@@ -22,7 +22,7 @@ public:
     static QString intToMonth(int i);
 
     static QString accumulate(int i,QVector < QVector < QString > > vvqs);
-
+    static int sumOverErrors(QVector <int> vI);
 };
 
 #endif // UTILITY_H

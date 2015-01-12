@@ -30,6 +30,10 @@ public:
     EditParsedReferences *editwidget;
     int proxtotal=0;
     QSet < QLineEdit * > modifiedLine;
+    QVector <bool> vAddedRow;
+    QPushButton *ok;
+    QPushButton *cancel;
+    QPushButton *addrow;
     bool flagDone = false;
 private slots:
     void on_label_2_linkActivated(const QString &link);
@@ -55,7 +59,7 @@ private slots:
     void on_addAuthor_clicked();
 
     void on_deleteAuthor_clicked();
-
+    void addRow();
 
 private:
     Ui::parseWizard *ui;

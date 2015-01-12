@@ -161,7 +161,8 @@ void parseWizard::viewPage(int index)
 {
     editIndex=index;
     ui->textEdit_2->setText(Utility::accumulate(index,vvqs));
-    ui->label_14->setText(QString("%1").arg(errCount[editIndex]));
+    ui->label_14->setText(QString("Errors for current output: %1")
+    .arg(errCount[editIndex]));
 }
 
 void parseWizard::on_parseWizard_currentIdChanged(int id)
@@ -324,6 +325,7 @@ void parseWizard::editPage()
     vqle1.clear();
     vqle2.clear();
     vqtb.clear();
+    vAddedRow.clear();
 
     QSignalMapper *mapper = new QSignalMapper(this);
 
@@ -358,19 +360,41 @@ void parseWizard::editPage()
         vqle1.push_back(lll);
         vqle2.push_back(qle);
         vqtb.push_back(qtb);
-
-        qgrid->addWidget(lll,i,0);
-        qgrid->addWidget(qle,i,1);
-        qgrid->addWidget(qtb,i,2);
+        vAddedRow.push_back(false);
+        qgrid->addWidget(lll,i+1,0);
+        qgrid->addWidget(qle,i+1,1);
+        qgrid->addWidget(qtb,i+1,2);
         connect(lll,SIGNAL(editingFinished()),this,SLOT(addError()));
         connect(qle,SIGNAL(editingFinished()),this,SLOT(addError()));
         connect(qtb,SIGNAL(clicked()),mapper,SLOT(map()));
-        mapper->setMapping(qtb,i);
+        mapper->setMapping(qtb,i+1);
 
     }
     connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
 
-   editwidget->setScrollArea(qgrid);
+    ok = new QPushButton;
+    ok->setText("Save Changes");
+    cancel = new QPushButton;
+    cancel->setText("Ignore Changes");
+
+    addrow = new QPushButton;
+    addrow->setText("Add Row");
+
+    ok->setFixedWidth(125);
+    cancel->setFixedWidth(125);
+    addrow->setFixedWidth(125);
+
+    qgrid->addWidget(ok);
+    qgrid->addWidget(cancel);
+    qgrid->addWidget(addrow);
+
+
+    editwidget->setScrollArea(qgrid);
+
+    connect(ok,SIGNAL(clicked()),editwidget,SLOT(accept()));
+    connect(cancel,SIGNAL(clicked()),editwidget,SLOT(reject()));
+    connect(addrow,SIGNAL(clicked()),this,SLOT(addRow()));
+
     connect(editwidget,SIGNAL(accepted()),this,SLOT(commitError()));
     connect(editwidget,SIGNAL(rejected()),this,SLOT(eraseError()));
     viewPage(editIndex);
@@ -397,6 +421,9 @@ void parseWizard::commitError()
                                 .append(str2).trimmed());
         }
     }
+    int totError = Utility::sumOverErrors(errCount);
+    QString totErrorString = QString("%1").arg(totError);
+    ui->label_17->setText("Total Errors: " + totErrorString);
     viewPage(editIndex);
 }
 
@@ -433,7 +460,7 @@ void parseWizard::on_parseWizard_accepted()
             QString volData = ui->comboBox->currentText();
             QString issData = ui->comboBox_2->currentText();
             QString parseVer = ui->parserCombo->currentText();
-            QString pages = "1-2";
+            QString pages = ui->lineEdit_4->text();
 
             QString querystring =
                   QString("INSERT INTO article VALUES(NULL,'%1','%2','%3',%4,%5,%6);")
@@ -483,18 +510,33 @@ void parseWizard::on_parseWizard_accepted()
 }
 
 void parseWizard::deleteRow(int row){
-    proxtotal++;
-    editwidget->changeError(proxtotal);
-
     QLayoutItem *item = qgrid->itemAtPosition(row,0);
+    QLineEdit *lineedit = dynamic_cast<QLineEdit*> (item->widget());
+
+    if(vAddedRow[row-1] == false)
+        proxtotal++;
+    else
+        proxtotal--;
+
+    if(modifiedLine.find(lineedit) != modifiedLine.end())
+        proxtotal--;
+
     item->widget()->hide();
     item = qgrid->itemAtPosition(row,1);
+
+    lineedit = dynamic_cast<QLineEdit*> (item->widget());
+
+    if(modifiedLine.find(lineedit) != modifiedLine.end())
+        proxtotal--;
+
     item->widget()->hide();
     item = qgrid->itemAtPosition(row,2);
     item->widget()->hide();
 
-    vqle1[row]->setText("-1");
-    vqle2[row]->setText("-1");
+    editwidget->changeError(proxtotal);
+
+    vqle1[row-1]->setText("-1");
+    vqle2[row-1]->setText("-1");
 }
 
 void parseWizard::on_addAuthor_clicked()
@@ -536,4 +578,43 @@ void parseWizard::on_deleteAuthor_clicked()
         warning.setWindowTitle("No Author Selected");
         warning.exec();
     }
+}
+
+
+void parseWizard::addRow(){
+    proxtotal++;
+    QLineEdit *qle1 = new QLineEdit;
+    QLineEdit *qle2 = new QLineEdit;
+    qle1->setFixedWidth(150);
+
+    QToolButton *qtb = new QToolButton;
+    qtb->setIcon(QIcon(QPixmap(":images/minus.png")));
+    qtb->setIconSize(QSize(24,24));
+
+    vqle1.push_back(qle1);
+    vqle2.push_back(qle2);
+    vqtb.push_back(qtb);
+    vAddedRow.push_back(true);
+
+    qgrid->addWidget(qle1,vqle1.size(),0);
+    qgrid->addWidget(qle2,vqle2.size(),1);
+    qgrid->addWidget(qtb,vqtb.size(),2);
+    qgrid->removeWidget(addrow);
+    qgrid->addWidget(ok);
+    qgrid->addWidget(cancel);
+    qgrid->addWidget(addrow);
+
+    editwidget->changeError(proxtotal);
+
+      QSignalMapper *mapper = new QSignalMapper(this);
+
+
+      connect(qtb,SIGNAL(clicked()),mapper,SLOT(map()));
+      mapper->setMapping(qtb,vqtb.size());
+
+
+
+
+    connect(mapper,SIGNAL(mapped(int)),this,SLOT(deleteRow(int)));
+
 }

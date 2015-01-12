@@ -1,6 +1,7 @@
 #include "articles.h"
 #include "ui_articles.h"
 #include "QDebug"
+#include "utility.h"
 #include "QHeaderView"
 #include "QModelIndex"
 #include "QSqlQuery"
@@ -103,7 +104,7 @@ void Articles::on_iComboBox_currentTextChanged(const QString &arg1)
          int month = qry.value(0).toInt();
          int year = qry.value(1).toInt();
 
-         ui->month->setText(QString("Month: %1").arg(month));
+         ui->month->setText(QString("Month: %1").arg( Utility::intToMonth(month)));
          ui->year->setText(QString("Year: %1").arg(year));
 
     }
