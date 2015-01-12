@@ -36,7 +36,7 @@ void Journal::on_toolButton_clicked()
 
 void Journal::on_toolButton_3_clicked()
 {
-    QModelIndex index = ui->tableView->currentIndex();
+    QModelIndex index = ui->journalTable->currentIndex();
 
 
 
@@ -50,19 +50,23 @@ void Journal::on_toolButton_3_clicked()
                            QMessageBox::Yes|QMessageBox::No);
          if (reply == QMessageBox::Yes) {
 
-             QString data = ui->tableView->model()->data(ui->tableView->model()->
+             QString data = ui->journalTable->model()->data(ui->journalTable->model()->
              index(index.row(),0)).toString();
-             QSqlQuery delqry(QString("delete from journal where id = %1")
+             QSqlQuery delJournal(QString("delete from journal where id = %1")
                               .arg(data));
-             delqry.exec();
-             QSqlQuery delqry2(
+             delJournal.exec();
+             QSqlQuery delVol(
                          QString("delete from journal_volume where journal_id = %1")
                                .arg(data));
-             delqry2.exec();
-             QSqlQuery delqry3(
+             delVol.exec();
+             QSqlQuery delIss(
                          QString("delete from journal_issue where journal_id = %1")
                                .arg(data));
-             delqry3.exec();
+             delIss.exec();
+             QSqlQuery delArt(
+                         QString("delete from article where journal_id = %1")
+                               .arg(data));
+             delArt.exec();
              setTableView();
 
          } else {
@@ -80,13 +84,13 @@ void Journal::on_toolButton_3_clicked()
 
 }
 
-void Journal::on_tableView_clicked(const QModelIndex &index)
+void Journal::on_journalTable_clicked(const QModelIndex &index)
 {
-    ui->tableView->selectRow(index.row());
-    QString data = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),0)).toString();
+    ui->journalTable->selectRow(index.row());
+    QString data = ui->journalTable->model()->data(ui->journalTable->model()->index(index.row(),0)).toString();
     qDebug()<<data.toInt();
     curJourn = data;
-    QString data2 = ui->tableView->model()->data(ui->tableView->model()->index(index.row(),1)).toString();
+    QString data2 = ui->journalTable->model()->data(ui->journalTable->model()->index(index.row(),1)).toString();
     qDebug()<<data2;
      curJournName = data2;
 
@@ -99,16 +103,16 @@ void Journal::setTableView(){
       model->setQuery("SELECT id,name FROM journal");
       model->setHeaderData(0,Qt::Horizontal,tr("ID"));
       model->setHeaderData(1,Qt::Horizontal,tr("Journal Name"));
-      ui->tableView->setModel(model);
-      ui->tableView->verticalHeader()->setVisible(false);
+      ui->journalTable->setModel(model);
+      ui->journalTable->verticalHeader()->setVisible(false);
 
 
-    ui->tableView->resizeColumnsToContents();
-    QHeaderView* header = ui->tableView->horizontalHeader();
+    ui->journalTable->resizeColumnsToContents();
+    QHeaderView* header = ui->journalTable->horizontalHeader();
 
     header->setStretchLastSection(true);
-    ui->tableView->setColumnHidden(0,true);
-    ui->tableView->setHorizontalHeader(header);
+    ui->journalTable->setColumnHidden(0,true);
+    ui->journalTable->setHorizontalHeader(header);
 }
 
 void Journal::setTableView(QString arg){
@@ -117,18 +121,18 @@ void Journal::setTableView(QString arg){
       model->setQuery(qr);
       model->setHeaderData(0,Qt::Horizontal,tr("ID"));
        model->setHeaderData(1,Qt::Horizontal,tr("Journal Name"));
-      ui->tableView->setModel(model);
-      ui->tableView->verticalHeader()->setVisible(false);
+      ui->journalTable->setModel(model);
+      ui->journalTable->verticalHeader()->setVisible(false);
 
 
-    ui->tableView->resizeColumnsToContents();
-    QHeaderView* header = ui->tableView->horizontalHeader();
+    ui->journalTable->resizeColumnsToContents();
+    QHeaderView* header = ui->journalTable->horizontalHeader();
 
     header->setStretchLastSection(true);
 
-    ui->tableView->setColumnHidden(0,true);
-    ui->tableView->setHorizontalHeader(header);
-    ui->tableView->resizeRowsToContents();
+    ui->journalTable->setColumnHidden(0,true);
+    ui->journalTable->setHorizontalHeader(header);
+    ui->journalTable->resizeRowsToContents();
 }
 void Journal::setVolumeView(QString index){
     QSqlQueryModel *model = new QSqlQueryModel;
@@ -137,35 +141,25 @@ void Journal::setVolumeView(QString index){
                 .arg(index);
     model->setQuery(q);
     model->setHeaderData(0,Qt::Horizontal,tr("Volume"));
-    ui->tableView_2->setModel(model);
-    ui->tableView_2->verticalHeader()->setVisible(false);
+    ui->volumeTable->setModel(model);
+    ui->volumeTable->verticalHeader()->setVisible(false);
 
 
-    ui->tableView_2->resizeColumnsToContents();
-    QHeaderView* header = ui->tableView_2->horizontalHeader();
+    ui->volumeTable->resizeColumnsToContents();
+    QHeaderView* header = ui->volumeTable->horizontalHeader();
 
     header->setStretchLastSection(true);
 
-    ui->tableView_2->setHorizontalHeader(header);
-    ui->tableView_2->resizeRowsToContents();
+    ui->volumeTable->setHorizontalHeader(header);
+    ui->volumeTable->resizeRowsToContents();
 
-}
-
-
-void Journal::on_tableView_2_activated(const QModelIndex &index)
-{
-    QString data = ui->tableView_2->model()->data(ui->tableView_2->model()->index(index.row(),0)).toString();
-    curVol=data;
-    ViewJournal *vj = new ViewJournal(curJourn,curJournName,curVol);
-
-    vj->exec();
 }
 
 void Journal::on_toolButton_5_clicked()
 {
 
     if(curJourn!=""){
-        addVolume *av = new addVolume;
+        AddVolume *av = new AddVolume;
         av->setJournalDets(curJourn,curJournName);
         int retCode= av->exec();
         //if accepted then reset view for volume of current journal
@@ -182,10 +176,10 @@ void Journal::on_toolButton_5_clicked()
 }
 void Journal::on_toolButton_4_clicked()
 {
-    QModelIndex index = ui->tableView_2->currentIndex();
+    QModelIndex index = ui->volumeTable->currentIndex();
 
     if(curVol!=""){
-        QString data = ui->tableView_2->model()->data(ui->tableView_2->
+        QString data = ui->volumeTable->model()->data(ui->volumeTable->
                        model()->index(index.row(),0)).toString();
 
         QMessageBox::StandardButton reply;
@@ -197,10 +191,22 @@ void Journal::on_toolButton_4_clicked()
 
          if (reply == QMessageBox::Yes) {
 
-             QSqlQuery delqry(QString("delete from journal_volume where volume = %1").arg(data));
-             delqry.exec();
-             QSqlQuery delqry2(QString("delete from journal_issue where volume = %1").arg(data));
-             delqry2.exec();
+             QString dvol = QString("delete from journal_volume where volume = %1")
+                            .arg(data) + " and journal_id = " + curJourn;
+             QSqlQuery delVol(dvol);
+
+             delVol.exec();
+             QString diss = QString("delete from journal_issue where volume = %1")
+                            .arg(data) + " and journal_id = " + curJourn;
+             QSqlQuery delIss(diss);
+
+             delIss.exec();
+
+             QMessageBox success;
+             success.setText("The volume has been deleted!");
+             success.setWindowTitle("Volume has been deleted");
+             success.exec();
+
              setVolumeView(curJourn);
 
          } else {
@@ -220,8 +226,19 @@ void Journal::on_lineEdit_textChanged(const QString &arg1)
     setTableView(ui->lineEdit->text());
 }
 
-void Journal::on_tableView_2_clicked(const QModelIndex &index)
+
+
+void Journal::on_volumeTable_clicked(const QModelIndex &index)
 {
-    QString data = ui->tableView_2->model()->data(ui->tableView_2->model()->index(index.row(),0)).toString();
+    QString data = ui->volumeTable->model()->data(ui->volumeTable->model()->index(index.row(),0)).toString();
     curVol=data;
+}
+
+void Journal::on_volumeTable_activated(const QModelIndex &index)
+{
+    QString data = ui->volumeTable->model()->data(ui->volumeTable->model()->index(index.row(),0)).toString();
+    curVol=data;
+    ViewJournal *vj = new ViewJournal(curJourn,curJournName,curVol);
+
+    vj->exec();
 }

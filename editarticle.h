@@ -8,6 +8,10 @@ namespace Ui {
 class editarticle;
 }
 
+/**
+ * @brief The EditArticle class is a container used in editing
+ * the article of a journal
+ */
 class EditArticle : public QDialog
 {
     Q_OBJECT

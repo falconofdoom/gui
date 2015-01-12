@@ -24,7 +24,8 @@ parseWizard::parseWizard(QWidget *parent) :
     QWizard(parent),
     ui(new Ui::parseWizard)
 {
-
+    proxtotal = 0;
+    flagDone = false;
     ui->setupUi(this);
     ui->tableView->alternatingRowColors();
     model = new QStandardItemModel(0,2);
@@ -77,19 +78,6 @@ parseWizard::~parseWizard()
 {
     delete ui;
 }
-
-void parseWizard::on_label_2_linkActivated(const QString &link)
-{
-
-}
-
-void parseWizard::authorAdded()
-{
-    qDebug()<<"TEST AUTHOR ADDED";
-}
-
-
-
 
 
 void parseWizard::on_lineEdit_2_textChanged(const QString &arg1)
@@ -542,7 +530,7 @@ void parseWizard::deleteRow(int row){
 void parseWizard::on_addAuthor_clicked()
 {
 
-    addAuthor *aA = new addAuthor;
+    AddAuthor *aA = new AddAuthor;
      int retcode = aA->exec();
 
      if(retcode==1){

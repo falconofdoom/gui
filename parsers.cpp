@@ -41,7 +41,7 @@ void parsers::setTableView(){
 
 void parsers::on_addParser_clicked()
 {
-    addParser *ap = new addParser;
+    AddParser *ap = new AddParser;
 
     int retcode = ap->exec();
 

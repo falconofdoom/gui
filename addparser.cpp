@@ -5,19 +5,19 @@
 #include "QDebug"
 #include "QSqlError"
 #include "QMessageBox"
-addParser::addParser(QWidget *parent) :
+AddParser::AddParser(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addParser)
 {
     ui->setupUi(this);
 }
 
-addParser::~addParser()
+AddParser::~AddParser()
 {
     delete ui;
 }
 
-void addParser::on_pushButton_clicked()
+void AddParser::on_pushButton_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this,"Path to parser daemon");
     if( filename.isEmpty())
@@ -27,7 +27,7 @@ void addParser::on_pushButton_clicked()
 
 }
 
-void addParser::on_buttonBox_accepted()
+void AddParser::on_buttonBox_accepted()
 {
     QString parsename = ui->lineEdit_3->text();
     QString filename = ui->lineEdit_2->text();

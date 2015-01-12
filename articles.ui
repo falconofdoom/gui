@@ -20,7 +20,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="4" column="0" colspan="4">
-    <widget class="QTableView" name="tableView">
+    <widget class="QTableView" name="journalTable">
      <property name="maximumSize">
       <size>
        <width>16777215</width>
@@ -82,7 +82,7 @@
     </layout>
    </item>
    <item row="9" column="0" colspan="4">
-    <widget class="QTableView" name="tableView_2"/>
+    <widget class="QTableView" name="articleTable"/>
    </item>
    <item row="10" column="0" colspan="4">
     <layout class="QHBoxLayout" name="horizontalLayout_3">

@@ -28,15 +28,14 @@ public:
     QVector < QToolButton *> vqtb;
     QGridLayout *qgrid;
     EditParsedReferences *editwidget;
-    int proxtotal=0;
+    int proxtotal;
     QSet < QLineEdit * > modifiedLine;
     QVector <bool> vAddedRow;
     QPushButton *ok;
     QPushButton *cancel;
     QPushButton *addrow;
-    bool flagDone = false;
+    bool flagDone;
 private slots:
-    void on_label_2_linkActivated(const QString &link);
 
     void on_lineEdit_2_textChanged(const QString &arg1);
 
@@ -63,8 +62,7 @@ private slots:
 
 private:
     Ui::parseWizard *ui;
-    void authorAdded();
-    QStandardItemModel *model;
+    QStandardItemModel *model; // model container for authors
     QSqlQueryModel *sqlmodel;
     int editIndex;
 

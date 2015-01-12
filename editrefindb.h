@@ -7,6 +7,10 @@ namespace Ui {
 class EditRefInDB;
 }
 
+/**
+ * @brief The EditRefInDB class is a class used to edit
+ * bibliographic data already inside the database
+ */
 class EditRefInDB : public QDialog
 {
     Q_OBJECT

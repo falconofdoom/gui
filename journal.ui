@@ -31,7 +31,7 @@
       </widget>
      </item>
      <item row="0" column="0" colspan="3">
-      <widget class="QTableView" name="tableView_2">
+      <widget class="QTableView" name="volumeTable">
        <property name="maximumSize">
         <size>
          <width>2000</width>
@@ -55,7 +55,7 @@
    <item row="1" column="0" colspan="3">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTableView" name="tableView"/>
+      <widget class="QTableView" name="journalTable"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout">

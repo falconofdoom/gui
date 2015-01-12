@@ -7,6 +7,9 @@ namespace Ui {
 class AddJournal;
 }
 
+/**
+ * @brief The AddJournal class is a container used for adding new journals to the database
+ */
 class AddJournal : public QDialog
 {
     Q_OBJECT
@@ -17,6 +20,9 @@ public:
     ~AddJournal();
 
 private slots:
+    /**
+     * @brief on_buttonBox_accepted saves the journal
+     */
     void on_buttonBox_accepted();
 
 private:

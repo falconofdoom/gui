@@ -24,14 +24,8 @@ private slots:
 
     void on_toolButton_3_clicked();
 
-    void on_tableView_clicked(const QModelIndex &index);
+    void on_journalTable_clicked(const QModelIndex &index);
 
-
-    /**
-     * @brief shows ISSUE information
-     * @param index
-     */
-    void on_tableView_2_activated(const QModelIndex &index);
 
     void on_toolButton_5_clicked();
 
@@ -40,7 +34,10 @@ private slots:
 
     void on_lineEdit_textChanged(const QString &arg1);
 
-    void on_tableView_2_clicked(const QModelIndex &index);
+
+    void on_volumeTable_clicked(const QModelIndex &index);
+
+    void on_volumeTable_activated(const QModelIndex &index);
 
 private:
     Ui::Journal *ui;

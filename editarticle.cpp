@@ -99,7 +99,7 @@ EditArticle::~EditArticle()
 
 void EditArticle::on_addAuthor_clicked()
 {
-    addAuthor *aA = new addAuthor;
+    AddAuthor *aA = new AddAuthor;
      int retcode = aA->exec();
 
      if(retcode==1){

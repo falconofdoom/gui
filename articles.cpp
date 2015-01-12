@@ -15,6 +15,7 @@ Articles::Articles(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->lineEdit->textChanged("");
+    curArt="-1";
 }
 
 Articles::~Articles()
@@ -30,15 +31,15 @@ void Articles::journalSetup(QString entry)
     sqlmodel->setQuery(queryString);
 
     sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Journal"));
-    ui->tableView->setModel(sqlmodel);
+    ui->journalTable->setModel(sqlmodel);
 
-    ui->tableView->resizeColumnsToContents();
-    QHeaderView* header2 = ui->tableView->horizontalHeader();
+    ui->journalTable->resizeColumnsToContents();
+    QHeaderView* header2 = ui->journalTable->horizontalHeader();
 
     header2->setStretchLastSection(true);
 
-    ui->tableView->setHorizontalHeader(header2);
-    ui->tableView->setColumnHidden(0,true);
+    ui->journalTable->setHorizontalHeader(header2);
+    ui->journalTable->setColumnHidden(0,true);
 }
 
 void Articles::on_lineEdit_textChanged(const QString &arg1)
@@ -46,20 +47,21 @@ void Articles::on_lineEdit_textChanged(const QString &arg1)
     journalSetup(ui->lineEdit->text());
 }
 
-void Articles::on_tableView_clicked(const QModelIndex &index)
+void Articles::on_journalTable_clicked(const QModelIndex &index)
 {
 
-    QString journID = ui->tableView->model()->
-            data(ui->tableView->model()->index(index.row(),0)).toString();
-    QString data2 = ui->tableView->model()->
-            data(ui->tableView->model()->index(index.row(),1)).toString();
-    qDebug()<<data2;
+    QString journID = ui->journalTable->model()->
+            data(ui->journalTable->model()->index(index.row(),0)).toString();
+    QString data2 = ui->journalTable->model()->
+            data(ui->journalTable->model()->index(index.row(),1)).toString();
      curJournName = data2;
      curJourn = journID;
 
      QSqlQueryModel *vol = new QSqlQueryModel;
-     QString volquery = QString("SELECT volume FROM journal_volume where journal_id=%1 order by volume DESC")
-                        .arg(journID);
+     QString volquery =
+                    "SELECT volume FROM journal_volume"+
+                    QString(" where journal_id=%1 order by volume DESC")
+                    .arg(journID);
      vol->setQuery(volquery);
      ui->vComboBox->setModel(vol);
 
@@ -126,7 +128,7 @@ void Articles::on_viewArticleButton_clicked()
     }
 }
 
-void Articles::on_tableView_2_clicked(const QModelIndex &index)
+void Articles::on_articleTable_clicked(const QModelIndex &index)
 {
    curArt = sqlmodel->data(sqlmodel->index(index.row(),0)).toString();
 }
@@ -168,20 +170,20 @@ void Articles::setArticleTable()
     sqlmodel->setQuery(queryString);
 
     sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Articles"));
-    ui->tableView_2->setModel(sqlmodel);
+    ui->articleTable->setModel(sqlmodel);
 
-    ui->tableView_2->resizeColumnsToContents();
-    QHeaderView* header3 = ui->tableView_2->horizontalHeader();
+    ui->articleTable->resizeColumnsToContents();
+    QHeaderView* header3 = ui->articleTable->horizontalHeader();
 
     header3->setStretchLastSection(true);
 
-    ui->tableView_2->setHorizontalHeader(header3);
-    ui->tableView_2->setColumnHidden(0,true);
-    ui->tableView_2->setColumnHidden(2,true);
-    ui->tableView_2->setColumnHidden(3,true);
-    ui->tableView_2->setColumnHidden(4,true);
-    ui->tableView_2->setColumnHidden(5,true);
-    ui->tableView_2->setColumnHidden(6,true);
+    ui->articleTable->setHorizontalHeader(header3);
+    ui->articleTable->setColumnHidden(0,true);
+    ui->articleTable->setColumnHidden(2,true);
+    ui->articleTable->setColumnHidden(3,true);
+    ui->articleTable->setColumnHidden(4,true);
+    ui->articleTable->setColumnHidden(5,true);
+    ui->articleTable->setColumnHidden(6,true);
 
     curArt="-1";
 }
@@ -191,6 +193,20 @@ void Articles::on_editArticleButton_clicked()
     if(curArt != "-1"){
         EditArticle *eA = new EditArticle(curArt);
         eA->exec();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.critical(0,"Error","No article selected, please select and try again");
+        msgBox.setFixedSize(500,200);
+    }
+}
+
+void Articles::on_articleTable_activated(const QModelIndex &index)
+{
+    if(curArt != "-1"){
+        ViewArticle *vA = new ViewArticle(curArt);
+        vA->exec();
     }
     else
     {

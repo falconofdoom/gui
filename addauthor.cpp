@@ -1,21 +1,21 @@
 #include "addauthor.h"
 #include "ui_addauthor.h"
 
-addAuthor::addAuthor(QWidget *parent) :
+AddAuthor::AddAuthor(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addAuthor)
 {
     ui->setupUi(this);
 }
 
-addAuthor::~addAuthor()
+AddAuthor::~AddAuthor()
 {
     delete ui;
 }
 
 
 
-void addAuthor::on_buttonBox_accepted()
+void AddAuthor::on_buttonBox_accepted()
 {
     author=ui->lineEdit->text();
     affiliation=ui->lineEdit_2->text();

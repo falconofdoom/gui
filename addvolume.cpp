@@ -4,7 +4,7 @@
 #include "QSqlQuery"
 #include "QSqlError"
 #include "QMessageBox"
-addVolume::addVolume(QWidget *parent) :
+AddVolume::AddVolume(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::addVolume)
 {
@@ -12,7 +12,7 @@ addVolume::addVolume(QWidget *parent) :
     this->setWindowTitle("Add Volume");
 }
 
-void addVolume::setJournalDets(QString jI,QString jN)
+void AddVolume::setJournalDets(QString jI,QString jN)
 {
     jName=jN;
     jIndex=jI;
@@ -21,12 +21,12 @@ void addVolume::setJournalDets(QString jI,QString jN)
 }
 
 
-addVolume::~addVolume()
+AddVolume::~AddVolume()
 {
     delete ui;
 }
 
-void addVolume::on_buttonBox_accepted()
+void AddVolume::on_buttonBox_accepted()
 {
     QString issue = ui->spinBox->text();
    QString ins = QString("insert into journal_volume values(NULL,%1,%2)").arg(issue).arg(jIndex);

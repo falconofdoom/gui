@@ -7,24 +7,40 @@ namespace Ui {
 class addVolume;
 }
 
-
-class addVolume : public QDialog
+/**
+ * @brief The AddVolume class is a container which is used in
+ * adding volumes to a journal
+ */
+class AddVolume : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit addVolume(QWidget *parent = 0);
-    ~addVolume();
+
+    explicit AddVolume(QWidget *parent = 0);
+    ~AddVolume();
+
+    /**
+     * @brief setJournalDets mutator function which sets prerequisite
+     * information for adding a volume to the database
+     * @param jI Journal ID
+     * @param jN Journal Name
+     */
     void setJournalDets(QString jI,QString jN);
-    QString jIndex;
-    QString jName;
+
 private slots:
+
+    /**
+     * @brief on_buttonBox_accepted confirmation that the
+     * author will be added
+     */
     void on_buttonBox_accepted();
 
-    void on_buttonBox_destroyed();
-
 private:
+
     Ui::addVolume *ui;
+    QString jIndex; // Journal Index
+    QString jName; // Journal Name
 };
 
 #endif // ADDVOLUME_H
