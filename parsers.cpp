@@ -4,6 +4,7 @@
 #include "QMessageBox"
 #include "QSqlQuery"
 #include "QDebug"
+
 parsers::parsers(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::parsers)

@@ -26,26 +26,32 @@ parseWizard::parseWizard(QWidget *parent) :
 {
     proxtotal = 0;
     flagDone = false;
-    ui->setupUi(this);
-    ui->tableView->alternatingRowColors();
-    model = new QStandardItemModel(0,2);
-    ui->tableView->setModel(model);
 
+    ui->setupUi(this);
+
+
+    //set up authors table
+    ui->authorTable->alternatingRowColors();
+    model = new QStandardItemModel(0,2);
     model->setHeaderData(0,Qt::Horizontal,tr("Author"));
-     model->setHeaderData(1,Qt::Horizontal,tr("Affiliation"));
-    ui->tableView->setModel(model);
+    model->setHeaderData(1,Qt::Horizontal,tr("Affiliation"));
+    ui->authorTable->setModel(model);
+
+    //author set up ends here
+
     on_lineEdit_2_textChanged("");
 
-  ui->tableView->resizeColumnsToContents();
-  QHeaderView* header = ui->tableView->horizontalHeader();
+    //
+      ui->authorTable->resizeColumnsToContents();
+      QHeaderView* header = ui->authorTable->horizontalHeader();
 
-  for(int i=0;i<header->count();i++)
-     header->setSectionResizeMode(i,QHeaderView::Stretch);
+      for(int i=0;i<header->count();i++)
+         header->setSectionResizeMode(i,QHeaderView::Stretch);
 
-  ui->tableView->setHorizontalHeader(header);
-  ui->tableView->resizeRowsToContents();
+      ui->authorTable->setHorizontalHeader(header);
+      ui->authorTable->resizeRowsToContents();
 
-  setOption( QWizard::DisabledBackButtonOnLastPage, true );
+      setOption( QWizard::DisabledBackButtonOnLastPage, true );
 
 
 
@@ -88,22 +94,22 @@ void parseWizard::on_lineEdit_2_textChanged(const QString &arg1)
     sqlmodel->setQuery(queryString);
 
     sqlmodel->setHeaderData(1,Qt::Horizontal,tr("Journal"));
-    ui->tableView_2->setModel(sqlmodel);
+    ui->journalTable->setModel(sqlmodel);
 
-    ui->tableView_2->resizeColumnsToContents();
-    QHeaderView* header = ui->tableView_2->horizontalHeader();
+    ui->journalTable->resizeColumnsToContents();
+    QHeaderView* header = ui->journalTable->horizontalHeader();
 
     header->setStretchLastSection(true);
 
-    ui->tableView_2->setHorizontalHeader(header);
-    ui->tableView_2->setColumnHidden(0,true);
+    ui->journalTable->setHorizontalHeader(header);
+    ui->journalTable->setColumnHidden(0,true);
 
 
 }
 
-void parseWizard::on_tableView_2_clicked(const QModelIndex &index)
+void parseWizard::on_journalTable_clicked(const QModelIndex &index)
 {
-    QString data = ui->tableView_2->model()->data(ui->tableView_2->model()->index(index.row(),0)).toString();
+    QString data = ui->journalTable->model()->data(ui->journalTable->model()->index(index.row(),0)).toString();
     cJourn=data;
     QSqlQueryModel *vol = new QSqlQueryModel;
     QString volquery = QString("SELECT volume FROM journal_volume where journal_id=%1").arg(data);
@@ -473,17 +479,17 @@ void parseWizard::on_parseWizard_accepted()
                    query.exec(querystring);
                }
 
-               int row = ui->tableView->model()->rowCount();
-               int col = ui->tableView->model()->columnCount();
+               int row = ui->authorTable->model()->rowCount();
+               int col = ui->authorTable->model()->columnCount();
 
 
                for(int i=0;i<row;i++){
-                   QModelIndex authqmi = ui->tableView->model()->index(i,0);
-                   QModelIndex affilqmi = ui->tableView->model()->index(i,1);
-                   QString author = ui->tableView->model()->data(authqmi)
+                   QModelIndex authqmi = ui->authorTable->model()->index(i,0);
+                   QModelIndex affilqmi = ui->authorTable->model()->index(i,1);
+                   QString author = ui->authorTable->model()->data(authqmi)
                                     .toString();
 
-                   QString affiliation = ui->tableView->model()->data(affilqmi)
+                   QString affiliation = ui->authorTable->model()->data(affilqmi)
                                         .toString();
                    QString insquery =
                            QString("INSERT INTO author values(NULL,'%1','%2',%3)")
@@ -555,7 +561,7 @@ void parseWizard::on_addAuthor_clicked()
 
 void parseWizard::on_deleteAuthor_clicked()
 {
-    QModelIndex index = ui->tableView->currentIndex();
+    QModelIndex index = ui->authorTable->currentIndex();
 
     if(index.row() != -1)
         model->removeRow(index.row());

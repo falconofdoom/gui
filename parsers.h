@@ -3,10 +3,14 @@
 
 #include <QDialog>
 #include "QSqlQueryModel"
+
 namespace Ui {
-class parsers;
+    class parsers;
 }
 
+/**
+ * @brief The parsers class is used to show the parsers saved in the database
+ */
 class parsers : public QDialog
 {
     Q_OBJECT

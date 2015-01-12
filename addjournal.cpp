@@ -26,11 +26,16 @@ void AddJournal::on_buttonBox_accepted()
                           .arg(jName);
         QSqlQuery qry;
         qry.exec(querystring);
+        QMessageBox success;
+        success.setText("Journal was successfully added!");
+        success.setWindowTitle("Journal Added!");
+        success.exec();
     }
     else
     {
        QMessageBox warning;
-       warning.setText("Journal name is blank, please fill in the information and try again! This transaction will not be saved!");
+       warning.setText("Journal name is blank, please fill in the information"
+                +   QString(" and try again!This transaction will not be saved!"));
        warning.setWindowTitle("No Journal Name");
        warning.exec();
     }

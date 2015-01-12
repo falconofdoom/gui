@@ -50,6 +50,7 @@ void EditIssue::on_buttonBox_accepted()
     QString issue = ui->spinBox->text();
     QMap <QString,QString> qm;
 
+    // loop through 1-12 and convert month into text form
      for(int i=1;i<=12;i++)
      {
        qm[ui->comboBox->itemText(i-1)]=QString("%1").arg(i);
@@ -57,18 +58,20 @@ void EditIssue::on_buttonBox_accepted()
      QString month = qm[ui->comboBox->currentText()];
      QString year = ui->spinBox_2->text();
 
+     // update query
      QString upd =
         "UPDATE journal_issue SET issue = " + issue +
         ", year = " + year + ", month = " + month +
         " WHERE id = " + issueID;
 
-    qDebug()<<upd;
-
 
 
     QSqlQuery query1;
+    QString prep =
+    QString("Select count(*) from journal_issue where journal_id=%1 and volume=%2 and issue=%3")
+                .arg(jIndex).arg(jVol).arg(issueNum);
 
-    query1.prepare(QString("Select count(*) from journal_issue where journal_id=%1 and volume=%2 and issue=%3").arg(jIndex).arg(jVol).arg(issueNum));
+    query1.prepare(prep);
     // Try to execute the query and position the result on the first and unique record
     if (!query1.exec() || !query1.first())
     {

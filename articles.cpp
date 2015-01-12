@@ -91,7 +91,10 @@ void Articles::on_iComboBox_currentTextChanged(const QString &arg1)
 {
     curIssue = ui->iComboBox->currentText();
 
-    QString queryString2 = QString("SELECT month,year FROM journal_issue WHERE journal_id = %1 and volume = %2 and issue = %3").arg(curJourn).arg(curVol).arg(curIssue);
+    QString queryString2 =
+
+     QString("SELECT month,year FROM journal_issue WHERE journal_id = %1 and volume = %2 and issue = %3")
+            .arg(curJourn).arg(curVol).arg(curIssue);
     QSqlQuery qry;
     qry.prepare(queryString2);
 

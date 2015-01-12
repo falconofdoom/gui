@@ -24,10 +24,10 @@ MainWindow::MainWindow(QWidget *parent) :
     this->move(QApplication::desktop()->screen()->rect().center() - this->rect().center());
 
     /*     Setup for toolButton for viewing parsed references         */
-    ui->toolButton->setIcon(QIcon(QPixmap(":images/viewicon.png")));
-    ui->toolButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-    ui->toolButton->setIconSize(QSize(175,175));
-    ui->toolButton->setText("View Parsed References");
+    ui->viewParseButton->setIcon(QIcon(QPixmap(":images/viewicon.png")));
+    ui->viewParseButton->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    ui->viewParseButton->setIconSize(QSize(175,175));
+    ui->viewParseButton->setText("View Parsed References");
 
     /*     Setup for toolButton for erasing parsed references         */
     ui->toolButton_4->setIcon(QIcon(QPixmap(":images/eraser.png")));
@@ -58,12 +58,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     db.open();
 
-    //ui->tableView->resizeColumnsToContents();
-//   QHeaderView* header = ui->tableView->horizontalHeader();
-
-   // header->setStretchLastSection(true);
-  //  ui->tableView->setHorizontalHeader(header);
-
     qDebug()<< db.lastError();
 }
 
@@ -80,7 +74,7 @@ void MainWindow::on_toolButton_2_clicked()
     connect(pw,SIGNAL(destroyed()),pw,SLOT(deleteLater()));
 }
 
-void MainWindow::on_toolButton_clicked()
+void MainWindow::on_viewParseButton_clicked()
 {
     ViewParsedReferences *vpr=new ViewParsedReferences;
     vpr->exec();
@@ -112,7 +106,6 @@ void MainWindow::on_toolButton_3_clicked()
 {
     parsers *p = new parsers;
     p->exec();
-    qDebug()<<"Test";
     connect(p,SIGNAL(destroyed()),p,SLOT(deleteLater()));
 }
 

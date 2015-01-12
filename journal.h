@@ -39,6 +39,8 @@ private slots:
 
     void on_volumeTable_activated(const QModelIndex &index);
 
+    void on_editJournButton_clicked();
+
 private:
     Ui::Journal *ui;
     void setTableView();

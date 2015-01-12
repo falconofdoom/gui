@@ -19,13 +19,17 @@ class Articles : public QDialog
 public:
     explicit Articles(QWidget *parent = 0);
     void journalSetup(QString entry);
-    QSqlQueryModel *sqlmodel; // SQL Model which will be
+
+    /**
+     * @brief sqlmodel will be used to setup article table
+     */
+    QSqlQueryModel *sqlmodel;
     ~Articles();
     QString curJourn;
     QString curJournName;
-    QString curVol; //current volume
+    QString curVol; /** current volume */
     QString curIssue;
-    QString curArt; // current article
+    QString curArt;  /** current article */
 
 private slots:
 

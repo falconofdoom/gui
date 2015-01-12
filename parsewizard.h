@@ -39,7 +39,7 @@ private slots:
 
     void on_lineEdit_2_textChanged(const QString &arg1);
 
-    void on_tableView_2_clicked(const QModelIndex &index);
+    void on_journalTable_clicked(const QModelIndex &index);
 
     void on_comboBox_currentTextChanged(const QString &arg1);
 

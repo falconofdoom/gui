@@ -9,7 +9,7 @@
 #include "addissue.h"
 #include "viewjournal.h"
 #include "addvolume.h"
-
+#include "editjournal.h"
 Journal::Journal(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::Journal)
@@ -236,9 +236,22 @@ void Journal::on_volumeTable_clicked(const QModelIndex &index)
 
 void Journal::on_volumeTable_activated(const QModelIndex &index)
 {
-    QString data = ui->volumeTable->model()->data(ui->volumeTable->model()->index(index.row(),0)).toString();
+    QString data = ui->volumeTable->model()->
+            data(ui->volumeTable->model()->index(index.row(),0))
+            .toString();
     curVol=data;
     ViewJournal *vj = new ViewJournal(curJourn,curJournName,curVol);
 
     vj->exec();
+    connect(vj,SIGNAL(destroyed()),vj,SLOT(deleteLater()));
+}
+
+void Journal::on_editJournButton_clicked()
+{
+    EditJournal *ej = new EditJournal(curJourn,curJournName);
+
+    ej->exec();
+    connect(ej,SIGNAL(destroyed()),ej,SLOT(deleteLater()));
+
+    setTableView();
 }

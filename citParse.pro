@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     viewjournal.cpp \
     utility.cpp \
     editissue.cpp \
-    viewarticle.cpp
+    viewarticle.cpp \
+    editjournal.cpp
 
 HEADERS  += mainwindow.h \
     editparsedreferences.h \
@@ -49,7 +50,8 @@ HEADERS  += mainwindow.h \
     viewjournal.h \
     utility.h \
     editissue.h \
-    viewarticle.h
+    viewarticle.h \
+    editjournal.h
 
 FORMS    += mainwindow.ui \
     editparsedreferences.ui \
@@ -67,7 +69,8 @@ FORMS    += mainwindow.ui \
     addparser.ui \
     viewjournal.ui \
     editissue.ui \
-    viewarticle.ui
+    viewarticle.ui \
+    editjournal.ui
 
 RESOURCES += \
     MyResources.qrc

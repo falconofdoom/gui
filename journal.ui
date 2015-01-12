@@ -67,7 +67,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QToolButton" name="toolButton_2">
+        <widget class="QToolButton" name="editJournButton">
          <property name="text">
           <string>Edit Journal</string>
          </property>
