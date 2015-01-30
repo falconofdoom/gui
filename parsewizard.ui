@@ -42,7 +42,7 @@
     <item row="1" column="1" alignment="Qt::AlignTop">
      <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>This wizard will help you through the parsing process .You can input the text needed for the parser, by manually typing copy and pasting, or uploading an input file.A default label will be assigned to the output, which is editable upon preference.</string>
+       <string>This wizard will help you through the parsing process .You can input the text needed for the parser, by manually typing copy and pasting, or uploading an input file.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -231,7 +231,7 @@
   </widget>
   <widget class="QWizardPage" name="wizardPage">
    <layout class="QGridLayout" name="gridLayout_5">
-    <item row="3" column="0" colspan="4">
+    <item row="3" column="0" colspan="3">
      <widget class="QTextEdit" name="textEdit"/>
     </item>
     <item row="2" column="0">
@@ -245,30 +245,6 @@
      <widget class="QPushButton" name="pushButton_3">
       <property name="text">
        <string>Clear</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="3">
-     <widget class="QLineEdit" name="lineEdit_3">
-      <property name="maximumSize">
-       <size>
-        <width>250</width>
-        <height>16777215</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QPushButton" name="pushButton_2">
-      <property name="text">
-       <string>File</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="1" alignment="Qt::AlignRight">
-     <widget class="QLabel" name="label_9">
-      <property name="text">
-       <string>or upload file</string>
       </property>
      </widget>
     </item>
@@ -286,13 +262,18 @@
       </item>
      </layout>
     </item>
+    <item row="2" column="2">
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="text">
+       <string>Upload File</string>
+      </property>
+     </widget>
+    </item>
    </layout>
    <zorder>label_10</zorder>
    <zorder>pushButton_3</zorder>
-   <zorder>lineEdit_3</zorder>
-   <zorder>pushButton_2</zorder>
-   <zorder>label_9</zorder>
    <zorder>textEdit</zorder>
+   <zorder>pushButton_2</zorder>
   </widget>
   <widget class="QWizardPage" name="wizardPage_2">
    <layout class="QGridLayout" name="gridLayout_6">
@@ -336,8 +317,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>18</width>
-         <height>16</height>
+         <width>98</width>
+         <height>28</height>
         </rect>
        </property>
       </widget>
@@ -356,7 +337,11 @@
      </widget>
     </item>
     <item row="1" column="1" rowspan="2" colspan="4">
-     <widget class="QTextEdit" name="textEdit_2"/>
+     <widget class="QTextEdit" name="textEdit_2">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item row="3" column="0" colspan="2">
      <layout class="QHBoxLayout" name="horizontalLayout_3">

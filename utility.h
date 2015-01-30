@@ -21,7 +21,18 @@ public:
 
     static QString intToMonth(int i);
 
+    /**
+     * @brief accumulate combines separated data fields from an AGM into ONE
+     * @param i
+     * @param vvqs
+     * @return
+     */
     static QString accumulate(int i,QVector < QVector < QString > > vvqs);
+    /**
+     * @brief sumOverErrors returns total of errors
+     * @param vI
+     * @return
+     */
     static int sumOverErrors(QVector <int> vI);
 };
 

@@ -16,7 +16,7 @@ public:
                          , QWidget *parent = 0);
     QString journID;
     QString journName;
-    QString volID;
+    QString volID; // volume ID
     QString issue;
     ~ViewJournal();
 
@@ -35,6 +35,9 @@ private slots:
      */
     void on_deleteIssueButton_clicked();
 
+    /**
+     * @brief on_editIssueButton_clicked opens window for editing issues
+     */
     void on_editIssueButton_clicked();
 
 private:

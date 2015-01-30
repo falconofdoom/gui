@@ -69,7 +69,7 @@ void EditIssue::on_buttonBox_accepted()
     QSqlQuery query1;
     QString prep =
     QString("Select count(*) from journal_issue where journal_id=%1 and volume=%2 and issue=%3")
-                .arg(jIndex).arg(jVol).arg(issueNum);
+                .arg(jIndex).arg(jVol).arg(issue);
 
     query1.prepare(prep);
     // Try to execute the query and position the result on the first and unique record
@@ -79,7 +79,7 @@ void EditIssue::on_buttonBox_accepted()
        qDebug() << query1.lastError().text();
     }
     // value(0) of first record will contain the "count(*)" value
-    else if (query1.value(0) == 0 || issueNum == issue )
+    else if (query1.value(0) == 0)
     {
         QSqlQuery updqry;
         updqry.exec(upd);

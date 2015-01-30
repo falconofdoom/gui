@@ -16,7 +16,7 @@
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="11" column="0">
+     <item row="12" column="0">
       <widget class="QLabel" name="parserLabel">
        <property name="font">
         <font>
@@ -55,7 +55,7 @@
        </property>
       </widget>
      </item>
-     <item row="9" column="0">
+     <item row="10" column="0">
       <widget class="QTableView" name="tableView">
        <attribute name="horizontalHeaderCascadingSectionResizes">
         <bool>false</bool>
@@ -121,7 +121,7 @@
        </item>
       </layout>
      </item>
-     <item row="6" column="0">
+     <item row="7" column="0">
       <widget class="Line" name="line_2">
        <property name="font">
         <font>
@@ -133,7 +133,7 @@
        </property>
       </widget>
      </item>
-     <item row="10" column="0">
+     <item row="11" column="0">
       <widget class="Line" name="line_3">
        <property name="font">
         <font>
@@ -157,8 +157,8 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="0">
-      <widget class="QLabel" name="label">
+     <item row="8" column="0">
+      <widget class="QLabel" name="authorLabel">
        <property name="font">
         <font>
          <family>Trebuchet MS</family>
@@ -166,6 +166,13 @@
        </property>
        <property name="text">
         <string>Authors:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="pageLabel">
+       <property name="text">
+        <string>Pages: </string>
        </property>
       </widget>
      </item>

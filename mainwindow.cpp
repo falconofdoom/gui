@@ -33,7 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_4->setIcon(QIcon(QPixmap(":images/eraser.png")));
     ui->toolButton_4->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButton_4->setIconSize(QSize(175,175));
-    ui->toolButton_4->setText("    Articles   ");
+    ui->toolButton_4->setText("    Article Management   ");
 
     /*     Setup for toolButton for parsing references         */
     ui->toolButton_2->setIcon(QIcon(QPixmap(":images/newicon.png")));
@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->toolButton_3->setIcon(QIcon(QPixmap(":images/editicon.png")));
     ui->toolButton_3->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
     ui->toolButton_3->setIconSize(QSize(175,175));
-    ui->toolButton_3->setText("     Parsers   ");
+    ui->toolButton_3->setText("   Parser Management   ");
 
     ui->toolButton_5->setIcon(QIcon(QPixmap(":images/journal.png")));
     ui->toolButton_5->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
@@ -68,7 +68,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_toolButton_2_clicked()
 {
-    parseWizard *pw = new parseWizard;
+    ParseWizard *pw = new ParseWizard;
     pw->exec();
 
     connect(pw,SIGNAL(destroyed()),pw,SLOT(deleteLater()));

@@ -20,13 +20,13 @@ QString cJourn;
 
 typedef QList< QStandardItem* > StandardItemList;
 
-parseWizard::parseWizard(QWidget *parent) :
+ParseWizard::ParseWizard(QWidget *parent) :
     QWizard(parent),
     ui(new Ui::parseWizard)
 {
     proxtotal = 0;
     flagDone = false;
-
+    outputClicked = false;
     ui->setupUi(this);
 
 
@@ -80,13 +80,13 @@ parseWizard::parseWizard(QWidget *parent) :
 
 }
 
-parseWizard::~parseWizard()
+ParseWizard::~ParseWizard()
 {
     delete ui;
 }
 
 
-void parseWizard::on_lineEdit_2_textChanged(const QString &arg1)
+void ParseWizard::on_lineEdit_2_textChanged(const QString &arg1)
 {
     sqlmodel = new QSqlQueryModel;
     QString wcard = ui->lineEdit_2->text();
@@ -107,7 +107,7 @@ void parseWizard::on_lineEdit_2_textChanged(const QString &arg1)
 
 }
 
-void parseWizard::on_journalTable_clicked(const QModelIndex &index)
+void ParseWizard::on_journalTable_clicked(const QModelIndex &index)
 {
     QString data = ui->journalTable->model()->data(ui->journalTable->model()->index(index.row(),0)).toString();
     cJourn=data;
@@ -117,7 +117,7 @@ void parseWizard::on_journalTable_clicked(const QModelIndex &index)
     ui->comboBox->setModel(vol);
 }
 
-void parseWizard::on_comboBox_currentTextChanged(const QString &arg1)
+void ParseWizard::on_comboBox_currentTextChanged(const QString &arg1)
 {
     QString volData = ui->comboBox->currentText();
     QSqlQueryModel *issue = new QSqlQueryModel;
@@ -126,12 +126,12 @@ void parseWizard::on_comboBox_currentTextChanged(const QString &arg1)
     ui->comboBox_2->setModel(issue);
 }
 
-void parseWizard::on_pushButton_3_clicked()
+void ParseWizard::on_pushButton_3_clicked()
 {
     ui->textEdit->clear();
 }
 
-void parseWizard::on_pushButton_2_clicked()
+void ParseWizard::on_pushButton_2_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this,"Open raw reference file",".","Reference Files (*.in)");
     if( filename.isEmpty())
@@ -151,15 +151,17 @@ void parseWizard::on_pushButton_2_clicked()
    }
 
 }
-void parseWizard::viewPage(int index)
+void ParseWizard::viewPage(int index)
 {
     editIndex=index;
     ui->textEdit_2->setText(Utility::accumulate(index,vvqs));
     ui->label_14->setText(QString("Errors for current output: %1")
     .arg(errCount[editIndex]));
+
+    outputClicked = true;
 }
 
-void parseWizard::on_parseWizard_currentIdChanged(int id)
+void ParseWizard::on_parseWizard_currentIdChanged(int id)
 {
     if(id == 2 && ui->lineEdit->text().trimmed() == ""){
         QMessageBox warning;
@@ -241,7 +243,6 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
 
        qmsg.exec();
        QString output(process->readAllStandardOutput());
-        qDebug()<<output;
 
 
         QTextStream qts(&output);
@@ -309,7 +310,7 @@ void parseWizard::on_parseWizard_currentIdChanged(int id)
 
  }
 
-void parseWizard::editPage()
+void ParseWizard::editPage()
 {
     editwidget=new EditParsedReferences;
     editwidget->setWindowTitle("Edit Parsed References");
@@ -323,7 +324,7 @@ void parseWizard::editPage()
 
     QSignalMapper *mapper = new QSignalMapper(this);
 
-    if(vvqs.empty())
+    if(vvqs.empty() || outputClicked == false)
     {
        QMessageBox warning;
        warning.setText("No Output Selected!");
@@ -401,7 +402,7 @@ void parseWizard::editPage()
 }
 
 
-void parseWizard::commitError()
+void ParseWizard::commitError()
 {
     errCount[editIndex]+=proxtotal;
     proxtotal=0;
@@ -421,7 +422,7 @@ void parseWizard::commitError()
     viewPage(editIndex);
 }
 
-void parseWizard::addError()
+void ParseWizard::addError()
 {
     QLineEdit *lineedit = dynamic_cast<QLineEdit*>(sender());
     if(lineedit->isModified()==true){
@@ -433,12 +434,12 @@ void parseWizard::addError()
    }
  }
 
-void parseWizard::eraseError()
+void ParseWizard::eraseError()
 {
     proxtotal=0;
 }
 
-void parseWizard::on_parseWizard_accepted()
+void ParseWizard::on_parseWizard_accepted()
 {
     if(vvqs.empty())
     {
@@ -503,7 +504,7 @@ void parseWizard::on_parseWizard_accepted()
     flagDone=false;
 }
 
-void parseWizard::deleteRow(int row){
+void ParseWizard::deleteRow(int row){
     QLayoutItem *item = qgrid->itemAtPosition(row,0);
     QLineEdit *lineedit = dynamic_cast<QLineEdit*> (item->widget());
 
@@ -533,7 +534,7 @@ void parseWizard::deleteRow(int row){
     vqle2[row-1]->setText("-1");
 }
 
-void parseWizard::on_addAuthor_clicked()
+void ParseWizard::on_addAuthor_clicked()
 {
 
     AddAuthor *aA = new AddAuthor;
@@ -559,7 +560,7 @@ void parseWizard::on_addAuthor_clicked()
     connect(aA,SIGNAL(destroyed()),aA,SLOT(deleteLater()));
 }
 
-void parseWizard::on_deleteAuthor_clicked()
+void ParseWizard::on_deleteAuthor_clicked()
 {
     QModelIndex index = ui->authorTable->currentIndex();
 
@@ -575,7 +576,7 @@ void parseWizard::on_deleteAuthor_clicked()
 }
 
 
-void parseWizard::addRow(){
+void ParseWizard::addRow(){
     proxtotal++;
     QLineEdit *qle1 = new QLineEdit;
     QLineEdit *qle2 = new QLineEdit;

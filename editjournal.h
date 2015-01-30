@@ -6,7 +6,10 @@
 namespace Ui {
 class EditJournal;
 }
-
+/**
+ * @brief The EditJournal class is a container used in editing the
+ * information of a journal that was already saved in the database
+ */
 class EditJournal : public QDialog
 {
     Q_OBJECT

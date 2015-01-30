@@ -50,6 +50,7 @@ ViewArticle::ViewArticle(QString artID, QWidget *parent) :
 
         QString journalID = qry.value(4).toString();
         QString article = qry.value(1).toString();
+        QString pages = qry.value(2).toString();
         QString volume = qry.value(5).toString();
         QString issue = qry.value(6).toString();
         QString parser = qry.value(3).toString();
@@ -74,6 +75,7 @@ ViewArticle::ViewArticle(QString artID, QWidget *parent) :
         ui->monthLabel->setText("Month: " + month);
         ui->yearLabel->setText("Year: " + year);
         ui->parserLabel->setText("Parser used: " + parser);
+        ui->pageLabel->setText("Pages: " + pages);
     }
 
 

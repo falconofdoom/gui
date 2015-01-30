@@ -12,6 +12,7 @@ EditJournal::EditJournal(QString jID, QString jName,QWidget *parent) :
     jourName = jName;
 
     ui->lineEdit->setText(jourName);
+   this->setWindowTitle("Edit Journal");
 }
 
 EditJournal::~EditJournal()

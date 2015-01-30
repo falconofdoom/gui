@@ -91,8 +91,9 @@ void ViewJournal::setLabels(){
        // SQL error (for example, if the table doesn't exist)
 
        QString errorText = qry.lastError().text();
+       qDebug()<<errorText;
        QMessageBox msgBox;
-       msgBox.critical(0,"Error",errorText);
+       msgBox.critical(0,"Error","No issues saved yet for this volume");
        msgBox.setFixedSize(500,200);
     }
     else

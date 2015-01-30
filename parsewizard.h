@@ -12,13 +12,19 @@ namespace Ui {
 class parseWizard;
 }
 
-class parseWizard : public QWizard
+/**
+ * @brief The ParseWizard class is used for data
+ * capture and bibliographic data extraction (AGMs)
+ *
+ */
+
+class ParseWizard : public QWizard
 {
     Q_OBJECT
 
 public:
-    explicit parseWizard(QWidget *parent = 0);
-    ~parseWizard();
+    explicit ParseWizard(QWidget *parent = 0);
+    ~ParseWizard();
     QVector <int> errCount;
     QVector < QPushButton * > qpb;
     QVector < QVector < QString > > vvqs;
@@ -35,6 +41,7 @@ public:
     QPushButton *cancel;
     QPushButton *addrow;
     bool flagDone;
+    bool outputClicked;
 private slots:
 
     void on_lineEdit_2_textChanged(const QString &arg1);

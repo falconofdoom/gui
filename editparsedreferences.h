@@ -25,7 +25,7 @@ public:
      * @param count
      */
     void changeError(int count);
-    QHBoxLayout* horLay();
+    QHBoxLayout* horLay(); // horizontal layout
     void setScrollArea(QLayout *layout);
 private:
     Ui::EditParsedReferences *ui;

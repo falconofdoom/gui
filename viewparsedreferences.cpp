@@ -109,7 +109,8 @@ void ViewParsedReferences::on_pushButton_clicked()
 {
     qDebug()<<edIndex;
     if( (errcount.size() > 0 || vvqs.size() > 0) && curart > 0){
-        QString filename = QFileDialog::getSaveFileName(this,"Export AGM",".","A Good Markup File (*.agm)");
+        QString filename = QFileDialog::getSaveFileName
+                (this,"Export AGM",".","A Good Markup File (*.agm)");
         QFile file(filename.append(".agm"));
 
         file.open(QIODevice::WriteOnly|QIODevice::Text);
@@ -230,7 +231,11 @@ void ViewParsedReferences::on_comboBox_2_currentTextChanged(const QString &arg1)
     ui->tableView->setColumnHidden(5,true);
     ui->tableView->setColumnHidden(6,true);
 
-    QString queryString2 = QString("SELECT month,year FROM journal_issue WHERE journal_id = %1 and volume = %2 and issue = %3").arg(curJourn).arg(curVol).arg(curIssue);
+    QString queryString2 =
+        QString
+            ("SELECT month,year FROM journal_issue WHERE") +
+                QString(" journal_id = %1 and volume = %2 and issue = %3")
+            .arg(curJourn).arg(curVol).arg(curIssue);
     QSqlQuery qry;
     qry.prepare(queryString2);
     if (!qry.exec() || !qry.first())
@@ -365,7 +370,8 @@ void ViewParsedReferences::commitError(){
                 && vqle2[i]->text().trimmed().length() > 0 ){
             QString str1 = vqle1[i]->text();
             QString str2= vqle2[i]->text();
-            vvqs[edIndex].push_back(str1.trimmed().append(" : ").append(str2).trimmed());
+            vvqs[edIndex].push_back(
+                        str1.trimmed().append(" : ").append(str2).trimmed());
         }
     }
 
@@ -384,11 +390,9 @@ void ViewParsedReferences::commitError(){
       query.exec(querystring);
       errcount[edIndex]=proxtotal;
 
-     // ui->label_3->setText(QString("No. of Errors: (No output selected yet!)"));
       ui->label_3->setText(QString("No. of Errors: %1").arg(proxtotal));
       proxtotal=0;
 
-     //  ui->textBrowser->clear();
 }
 
 
