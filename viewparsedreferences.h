@@ -44,7 +44,7 @@ public:
     QVector < QLineEdit* > vqle1; // will be used to edit data field
     QVector < QLineEdit *> vqle2; // will be used to edit data field value
 
-    QVector < QToolButton *> vqtb; // tool button for deleting rows
+    QVector < QToolButton *> vqtb; // tool buttons for deleting rows
     QSet < QLineEdit *> modifiedLine; // checks if a data field was modified
     QGridLayout *qgrid; // grid layout for editwindow
     QVBoxLayout *layout; // layout for pushbutton identifier of each agm
